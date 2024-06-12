@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(112, 196, 121);
+    background-color: rgb(104, 192, 113);
 }
 
 .title-font {
@@ -39,7 +39,7 @@ body {
 }
 
 .header.visible {
-    background-color: #29b64d;
+    background-color: #000000f5;
     color: #fff;
 }
 
@@ -54,4 +54,20 @@ body {
     padding: 5px;
     margin-top: 75px;
     text-align: center;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.card {
+    width: 300px;
+    height: 400px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
