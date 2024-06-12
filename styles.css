@@ -85,8 +85,8 @@ body {
 
 
 .social-icon {
-    font-size: 40px;
-    margin: 10px;
+    font-size: 2.5em;
+    margin: 0.25em;
     color: #555;
     transition: color 0.3s;
 }
@@ -132,4 +132,9 @@ body {
     .paragraph-font {
         font-size: 0.9em;
     }
+}
+
+@viewport {
+    width: device-width;
+    zoom: 1.0;
 }
