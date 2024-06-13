@@ -100,6 +100,20 @@ body {
     color: #000;
 }
 
+.footer {
+    background: transparent;
+    color: #000000;
+    text-align: center;
+    padding: 2px 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
 
 @keyframes fadeIn {
     from {
