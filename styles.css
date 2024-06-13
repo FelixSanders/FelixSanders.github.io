@@ -48,7 +48,7 @@ body {
 }
 
 .header.visible {
-    background-color: #000000f5;
+    background-color: #000000dc;
     color: #fff;
 }
 
@@ -80,7 +80,7 @@ body {
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    margin: 20px 20px 50px 20px;
+    margin: 20px 20px 20px 20px;
     animation: fadeIn 1s ease-in-out;
 }
 
