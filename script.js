@@ -6,4 +6,3 @@ window.addEventListener("scroll", function () {
     header.classList.toggle("visible", shouldToggle);
     headerlogo.classList.toggle("white", shouldToggle);
 });
-
