@@ -2,6 +2,7 @@ body {
     background-color: rgb(91, 196, 102);
     font-family: "Poppins", sans-serif;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     height: 100vh;
