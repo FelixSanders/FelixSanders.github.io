@@ -59,3 +59,13 @@ const tiltEffectSettings = {
       card.style.transition = "";
     }, tiltEffectSettings.speed);
   }
+
+
+const userInput = document.querySelector('.code-input');
+
+userInput.addEventListener('input', function() {
+    const inputValue = userInput.value.trim().toLowerCase();
+    if (inputValue === '4130') {
+        window.location.href = 'secret.html';
+    }
+});
