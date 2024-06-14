@@ -2,13 +2,11 @@ body {
     background-color: rgb(91, 196, 102);
     font-family: "Poppins", sans-serif;
     align-items: center;
-    overflow-x: hidden;
 }
 
 
 ::-webkit-scrollbar {
     width:0px;
-    height: 0px;
 }
 
 ::-webkit-scrollbar-track {
@@ -150,9 +148,10 @@ body {
     background: transparent;
     color: #000000;
     text-align: center;
+    margin-left: 5%;
     padding: 10px 20px;
     bottom: 0;
-    width: 100%;
+    width: 90%;
 }
 
 .footer p {
