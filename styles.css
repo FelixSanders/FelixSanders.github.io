@@ -190,6 +190,11 @@ body {
     color: #000;
 }
 
+.app-icon:hover {
+    content: url(images/BookINVBlack.svg);
+}
+
+
 .section-end {
     width: 100%;
     height: 15vh;
