@@ -25,7 +25,6 @@ if (document.querySelector('#sub-page')) {
 
 
 
-
 const tiltEffectSettings = {
     max: 15, // max tilt rotation (degrees (deg))
     perspective: 1000, // transform perspective, the lower the more extreme the tilt gets (pixels (px))
