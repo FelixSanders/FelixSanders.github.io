@@ -129,6 +129,18 @@ body {
     left: 0;
 }
 
+.section4 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: auto;
+    margin: 50px 5%;
+    background: linear-gradient(90deg, #000000b6, #3d9c2081, #000000b6);
+    width: 90%;
+    border-radius: 30px;
+}
 
 .content {
     font-weight: 400;
@@ -188,6 +200,8 @@ body {
 
 .social-icon:hover {
     color: #000;
+    background-color: #fff;
+    border-radius: 15px;
 }
 
 .app-icon:hover {
@@ -290,6 +304,41 @@ body {
     transform: translateY(-50%);
 }
 
+.app-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 400;
+    font-style: normal;
+    padding: 5px;
+    text-align: center;
+    background: white;
+    margin: 20px 20px 20px 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.visit-app {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 300;
+    display: inline-block;
+    background-color: #00bf63;
+    color: #fff;
+    padding: 15px 32px;
+    text-align: center;
+    margin: 15px 5px;
+    border: none;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.visit-app:hover {
+    background-color: #006b37;
+}
 
 .tiltable {
     transform-style: preserve-3d;
