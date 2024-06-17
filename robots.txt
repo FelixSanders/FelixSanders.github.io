@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://felixsanders.github.io/sitemap.xml
