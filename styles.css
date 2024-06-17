@@ -4,7 +4,6 @@ body {
     align-items: center;
 }
 
-
 ::-webkit-scrollbar {
     width: 0px;
 }
@@ -137,7 +136,7 @@ body {
     align-content: center;
     height: auto;
     margin: 50px 5%;
-    background: linear-gradient(90deg, #000000b6, #3d9c2081, #000000b6);
+    background: linear-gradient(90deg, #000000a1, #0c9600a1, #000000a1);
     width: 90%;
     border-radius: 30px;
 }
@@ -214,8 +213,11 @@ body {
     height: 15vh;
     font-size: 3vh;
     text-align: center;
+}
+
+.section-end p {
     animation: fadeIn 1s ease-in-out;
-    animation: bounce 2s infinite;
+    animation: bounce 2s infinite
 }
 
 .timeline {
@@ -326,10 +328,11 @@ body {
     font-weight: 300;
     display: inline-block;
     background-color: #00bf63;
+    font-size: 1.1em;
     color: #fff;
-    padding: 15px 32px;
+    padding: 15px 30px;
     text-align: center;
-    margin: 15px 5px;
+    margin: 15px 20px;
     border: none;
     text-decoration: none;
     border-radius: 12px;
@@ -337,7 +340,7 @@ body {
 }
 
 .visit-app:hover {
-    background-color: #006b37;
+    background-color: #005f31;
 }
 
 .tiltable {
