@@ -361,13 +361,35 @@ body {
     margin: 5px 0;
 }
 
+.footer-social-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.footer-social {
+    font-size: 1em;
+    margin: 0.05em 0.5em;
+    color: #000000;
+    transition: color 0.3s;
+}
+
+.footer-social:hover {
+    color: #444444;
+}
+
 .code-input {
-    padding: 5px;
+    padding: 2px;
     width: 300px;
     border: 2px solid #666666;
-    border-radius: 10px;
+    border-radius: 7px;
     font-family: "Poppins", sans-serif;
-    font-size: .65em;
+    font-size: .8em;
 }
 
 @keyframes fadeIn {
