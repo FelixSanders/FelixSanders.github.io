@@ -77,6 +77,16 @@ body {
     content: url(images/FSKLogo.svg);
 }
 
+.section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100%;
+    margin: 0;
+}
+
 .section1 {
     display: flex;
     flex-wrap: wrap;
