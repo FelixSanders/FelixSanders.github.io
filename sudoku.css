@@ -72,10 +72,7 @@ input[type="text"] {
     font-size: 20px;
     border: none;
     background-color: #00000000;
-    -moz-appearance: none; /* Hide spin buttons in Firefox */
-    appearance: none; /* Hide spin buttons in other browsers */
     inputmode: numeric; /* Suggest numeric keyboard on mobile */
-    pattern: "[0-9]"; /* Pattern to allow only single digits */
 }
 
 input[type="text"]:focus {
