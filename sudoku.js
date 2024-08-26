@@ -13,6 +13,11 @@ for (let i = 0; i < 9; i++) {
         input.maxLength = "1";  // Limit input to one character
         input.id = `cell-${i}-${j}`; // Set ID for each cell
         input.classList.add("editable"); // Add a class for editable cells
+        input.inputMode = "numeric"; // Suggest numeric keyboard on mobile
+        input.pattern = "[0-9]"; // Pattern to allow only single digits
+        input.addEventListener("input", function() {
+            this.value = this.value.replace(/[^0-9]/g, ''); // Ensure only numbers are entered
+        });
         cell.appendChild(input);
         row.appendChild(cell);
     }
