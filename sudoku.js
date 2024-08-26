@@ -1,4 +1,5 @@
 let solvedBoard = []; // Store the solved board here
+let generatedBoard = []; // Track the generated board to keep cells uneditable
 
 // Create the Sudoku grid in HTML
 const grid = document.getElementById("sudoku-grid");
@@ -33,15 +34,16 @@ function getBoard() {
     return board;
 }
 
-// Set the solved board to HTML inputs
-function setBoard(board, editable = true) {
+// Set the board to HTML inputs and control editability
+function setBoard(board) {
     const rows = document.querySelectorAll("#sudoku-grid tr");
     rows.forEach((row, i) => {
         const cols = row.querySelectorAll("input");
         cols.forEach((col, j) => {
             col.value = board[i][j] !== 0 ? board[i][j] : "";
-            col.disabled = !editable && board[i][j] !== 0; // Disable only cells with predefined numbers
-            col.classList.toggle('editable', editable || board[i][j] === 0); // Editable if not predefined
+            // If the cell is part of the generated board, keep it non-editable
+            col.disabled = generatedBoard[i][j] !== 0; 
+            col.classList.toggle('editable', generatedBoard[i][j] === 0); 
             col.style.backgroundColor = ""; // Reset background color
         });
     });
@@ -90,10 +92,10 @@ function isSafe(board, row, col, num) {
 function solveSudoku() {
     const board = getBoard();
     if (solve(board)) {
-        setBoard(board, false); // Make the solved board non-editable
+        setBoard(board); // Keep user-filled cells editable, generated cells non-editable
         solvedBoard = board; // Store the solved board for later checking
     } else {
-        alert("No solution exists!");
+        showResultMessage("No solution exists!", false);
     }
 }
 
@@ -106,6 +108,7 @@ function clearGrid() {
         input.classList.add('editable');
         input.style.backgroundColor = ""; // Reset background color
     });
+    generatedBoard = [];
 }
 
 // Generate a random Sudoku puzzle
@@ -114,7 +117,8 @@ function generateSudoku() {
     const board = generateFullSudoku();
     solvedBoard = JSON.parse(JSON.stringify(board)); // Store the full solution
     removeNumbersFromBoard(board, 50);  // Adjust this number to change difficulty
-    setBoard(board, false); // Make generated cells non-editable
+    generatedBoard = JSON.parse(JSON.stringify(board)); // Store generated board
+    setBoard(board); // Set the board with correct editability
 }
 
 // Generate a fully solved Sudoku board with randomization
@@ -172,30 +176,52 @@ function checkSolution() {
             const input = document.getElementById(`cell-${i}-${j}`);
             if (userBoard[i][j] === solvedBoard[i][j]) {
                 // If correct, turn the cell green
-                input.style.backgroundColor = '#04ff00';
+                input.style.backgroundColor = '#00e043';
             } else {
                 // If incorrect, turn it red
-                input.style.backgroundColor = '#FF6347';
+                input.style.backgroundColor = '#e00700';
                 isCorrect = false; // Mark the solution as incorrect
             }
         }
     }
 
     if (isCorrect) {
-        alert("Congratulations! The solution is correct.");
+        showResultMessage("The solution is correct!", true);
     } else {
-        alert("Some cells are incorrect. Please try again.");
+        showResultMessage("The solution is incorrect!", false);
 
         // Revert incorrect cells back to default color after 2 seconds
         setTimeout(() => {
             for (let i = 0; i < 9; i++) {
                 for (let j = 0; j < 9; j++) {
                     const input = document.getElementById(`cell-${i}-${j}`);
-                    if (input.style.backgroundColor === 'rgb(255, 99, 71)') { // Checking if it's red
+                    if (input.style.backgroundColor === 'rgb(224, 7, 0)') { // Checking if it's red
+                        input.style.backgroundColor = ''; // Reset background color
+                    } else if (input.style.backgroundColor === 'rgb(0, 224, 67)') { // Checking if it's green
                         input.style.backgroundColor = ''; // Reset background color
                     }
                 }
             }
-        }, 2000); // 2 seconds delay
+        }, 1500); // 2 seconds delay
     }
+}
+
+function showResultMessage(message, isCorrect) {
+    const resultMessageDiv = document.querySelector('.result-message');
+    const resultText = document.querySelector('.result-text');
+    resultText.textContent = message;
+
+    if (isCorrect) {
+        resultMessageDiv.style.backgroundColor = '#90EE90'; // Light green for correct
+    } else {
+        resultMessageDiv.style.backgroundColor = '#FFB6C1'; // Light pink for incorrect
+    }
+
+    resultMessageDiv.style.display = 'block';
+}
+
+// Function to close the popup
+function closePopup() {
+    const resultMessageDiv = document.querySelector('.result-message');
+    resultMessageDiv.style.display = 'none';
 }

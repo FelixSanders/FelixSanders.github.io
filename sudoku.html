@@ -33,11 +33,15 @@
         <h1>Sudoku [WIP]</h1>
         <table id="sudoku-grid"></table>
         <div class="buttons">
-            <button onclick="generateSudoku()">Generate</button>
-            <button onclick="solveSudoku()">Solution</button>
-            <button onclick="checkSolution()">Check</button>
-            <button onclick="clearGrid()">Clear</button>
+            <button onclick="generateSudoku()" class="action-button">Generate</button>
+            <button onclick="solveSudoku()" class="action-button">Solution</button>
+            <button onclick="checkSolution()" class="action-button">Check</button>
+            <button onclick="clearGrid()" class="action-button">Clear</button>
         </div>
+    </div>
+    <div class="result-message">
+        <p class="result-text"></p>
+        <button onclick="closePopup()" class="popup-button">Close</button>
     </div>
     <script src="script.js"></script>
     <script src="sudoku.js"></script>

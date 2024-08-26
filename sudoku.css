@@ -3,7 +3,43 @@
 }
 
 h1 {
+    font-size: 25px;
     margin-bottom: 20px;
+}
+
+.result-message {
+    display: none;
+    padding: 25px;
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+    position: fixed;
+    background-color: #ffffff;
+    border-radius: 15px;
+    margin: auto;
+    border: 3px solid rgb(0, 0, 0);
+    padding: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center the text inside the div */
+    z-index: 1000; /* Ensure the message stays on top of other elements */
+}
+
+.popup-button {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    background-color: #ff0000;
+    margin-top: 15px;
+    padding: 5px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.popup-button:hover {
+    background-color: #830000;
 }
 
 table {
@@ -36,7 +72,10 @@ input[type="text"] {
     font-size: 20px;
     border: none;
     background-color: #00000000;
-    
+    -moz-appearance: none; /* Hide spin buttons in Firefox */
+    appearance: none; /* Hide spin buttons in other browsers */
+    inputmode: numeric; /* Suggest numeric keyboard on mobile */
+    pattern: "[0-9]"; /* Pattern to allow only single digits */
 }
 
 input[type="text"]:focus {
@@ -46,7 +85,7 @@ input[type="text"]:focus {
 input:not(.editable) {
     font-weight: bold;
     background-color: #d1d1d1; /* Gray background for non-editable cells */
-    cursor: not-allowed; /* Change cursor to indicate non-editable */
+    cursor: default;
 }
 
 
@@ -54,7 +93,7 @@ input:not(.editable) {
     margin-top: 20px;
 }
 
-button {
+.action-button {
     cursor: pointer;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
@@ -70,7 +109,7 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.action-button:hover {
     background-color: #5a5a5a;
 }
 
