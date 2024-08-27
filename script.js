@@ -87,8 +87,5 @@ if (userInput) {
         if (inputValue === '4130') {
             window.location.href = 'secret.html';
         }
-        else if (inputValue === 'sudoku') {
-            window.location.href = 'sudoku.html';
-        }
     });
 }

@@ -151,6 +151,20 @@ body {
     border-radius: 30px;
 }
 
+.section5 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: auto;
+    margin: 50px 5%;
+    background: rgb(214, 174, 125);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+    width: 90%;
+    border-radius: 30px;
+}
+
 .content {
     font-weight: 400;
     font-style: normal;
@@ -350,6 +364,26 @@ body {
 }
 
 .visit-app:hover {
+    background-color: #005f31;
+}
+
+.play-game {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 300;
+    display: inline-block;
+    background-color: #00bf63;
+    font-size: 1.1em;
+    color: #fff;
+    padding: 15px 75px;
+    text-align: center;
+    margin: 15px 20px;
+    border: none;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.play-game:hover {
     background-color: #005f31;
 }
 
