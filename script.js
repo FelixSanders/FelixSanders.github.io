@@ -15,7 +15,7 @@ window.addEventListener("scroll", function () {
 document.querySelector('.header-container1').addEventListener('click', function () {
 
     if (document.querySelector('#sub-page')) {
-        window.location.href = "index.html";
+        window.location.href = "/";
     } else {
         window.scrollTo({
             top: 0,
@@ -91,7 +91,7 @@ if (userInput) {
     userInput.addEventListener('input', function () {
         const inputValue = userInput.value.trim().toLowerCase();
         if (inputValue === '4130') {
-            window.location.href = 'secret.html';
+            window.location.href = 'secret';
         }
     });
 }
