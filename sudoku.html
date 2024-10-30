@@ -30,19 +30,43 @@
     </div>
 
     <div class="sudoku-container" style="margin-top: 100px;">
-        <h1>Sudoku [WIP]</h1>
+        <h1>Sudoku</h1>
         <table id="sudoku-grid"></table>
         <div class="buttons">
-            <button onclick="generateSudoku()" class="action-button">Generate</button>
-            <button onclick="solveSudoku()" class="action-button">Solution</button>
-            <button onclick="checkSolution()" class="action-button">Check</button>
-            <button onclick="clearGrid()" class="action-button">Clear</button>
+            <button onclick="generateSudoku()" class="action-button"><i class="fa-solid fa-plus"></i> Generate</button>
+            <button onclick="solveSudoku()" class="action-button"><i class="fa-solid fa-lightbulb"></i> Solution</button>
+            <button onclick="checkSolution()" class="action-button"><i class="fa-solid fa-check"></i> Check</button>
+            <button onclick="clearGrid()" class="action-button"><i class="fa-solid fa-xmark"></i> Clear</button>
         </div>
     </div>
     <div class="result-message">
         <p class="result-text"></p>
         <button onclick="closePopup()" class="popup-button">Close</button>
     </div>
+
+    <hr style="height:3px;border-width:0;background-color:#000000; border-radius: 100%;">
+    <footer class="footer">
+        <div class="footer-social-container">
+            <a href="https://github.com/FelixSanders" target="_blank" class="footer-social"><i
+                    class="fa-brands fa-github"></i></a>
+            <a href="https://x.com/FelixSandersK" target="_blank" class="footer-social"><i
+                    class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://instagram.com/felixsanders.k" target="_blank" class="footer-social"><i
+                    class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com/@felixsanders" target="_blank" class="footer-social"><i
+                    class="fa-brands fa-youtube"></i></a>
+            <a href="https://tiktok.com/@felixsandersk" target="_blank" class="footer-social"><i
+                    class="fa-brands fa-tiktok"></i></a>
+            <a href="mailto:felixsanderskusuma@gmail.com" class="footer-social"><i
+                    class="fa-regular fa-envelope"></i></a>
+        </div>
+        <div>
+            <p class="title-font" style="font-size: 1em;">FSK<b>Websites</b> Personal</p>
+            <p class="paragraph-font" style="font-size: .8em;">&copy;2024 Felix Sanders Kusuma. All rights reserved.</p>
+        </div>
+    </footer>
+
+
     <script src="script.js"></script>
     <script src="sudoku.js"></script>
 </body>

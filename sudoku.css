@@ -3,7 +3,7 @@
 }
 
 h1 {
-    font-size: 25px;
+    font-size: 30px;
     margin-bottom: 20px;
 }
 
@@ -87,6 +87,7 @@ input:not(.editable) {
 
 .buttons {
     margin-top: 20px;
+    margin-bottom: 50px;
 }
 
 .action-button {
