@@ -87,6 +87,24 @@ body {
     margin: 0;
 }
 
+.title-section {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 25px;
+    margin-top: 80px;
+}
+
+.title-section h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    margin-bottom: 5px;
+}
+
+.title-section p {
+    margin-top: 5px;
+}
+
 .section1 {
     display: flex;
     flex-wrap: wrap;

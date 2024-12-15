@@ -2,11 +2,6 @@
     text-align: center;
 }
 
-h1 {
-    font-size: 30px;
-    margin-bottom: 20px;
-}
-
 .result-message {
     display: none;
     padding: 25px;
