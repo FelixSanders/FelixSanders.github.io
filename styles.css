@@ -89,7 +89,7 @@ body {
 
 .title-section {
     text-align: center;
-    font-size: 15px;
+    font-size: 1.1em;
     margin-bottom: 25px;
     margin-top: 80px;
 }
@@ -98,11 +98,12 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-style: normal;
-    margin-bottom: 5px;
+    margin: 10px;
 }
 
 .title-section p {
-    margin-top: 5px;
+    margin: 10px;
+    font-size: 0.9em;
 }
 
 .section1 {
