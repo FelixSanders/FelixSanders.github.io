@@ -6,14 +6,20 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 
+
 <url>
   <loc>https://felixsanders.com/</loc>
-  <lastmod>2024-10-29T23:08:04+00:00</lastmod>
+  <lastmod>2024-12-16T15:23:19+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>https://felixsanders.com/gallery</loc>
+  <lastmod>2024-12-16T15:23:19+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://felixsanders.com/sudoku</loc>
-  <lastmod>2024-10-29T23:08:04+00:00</lastmod>
+  <lastmod>2024-12-16T15:23:19+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 
