@@ -2,6 +2,8 @@ body {
     background-color: rgb(91, 196, 102);
     font-family: "Poppins", sans-serif;
     align-items: center;
+    padding: 0;
+    margin: 0;
 }
 
 ::-webkit-scrollbar {
@@ -62,9 +64,12 @@ body {
     transition: opacity 0.3s ease, colors 0.2s ease-out, transform 0.3s ease, background-color 0.5s ease-in;
     margin: 0 10px;
 
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 
@@ -73,9 +78,114 @@ body {
     color: #fff;
 }
 
+.header a,
+.header button {
+    color: #000;
+}
+
+.header.visible a,
+.header.visible button {
+    color: #fff;
+}
+
+.header.visible a:hover {
+    color: #b8b8b8;
+}
+
 .header-logo.white {
     content: url(images/FSKLogo.svg);
 }
+
+nav {
+    margin-left: auto;
+    margin-right: 1em;
+}
+
+nav ul {
+    margin: 0px;
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    transition: color 0.3s ease-out;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav ul li a:hover {
+    color: #414141;
+}
+
+#menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 1em;
+}
+
+@media (max-width: 550px) {
+    nav ul {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-20px);
+        /* Initially slides up */
+        transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease, background-color 0.5s ease-in;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header.visible ul {
+        background-color: #000000dc;
+    }
+
+    nav ul.active {
+        max-height: 300px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    nav ul li {
+        margin: 10px 0;
+        text-align: center;
+        opacity: 0;
+        animation: fade-in 0.5s ease forwards;
+        animation-delay: calc(var(--i) * 0.1s);
+    }
+
+    #menu-toggle {
+        display: block;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 
 .section {
     display: flex;
@@ -92,6 +202,7 @@ body {
     font-size: 1.1em;
     margin-bottom: 25px;
     margin-top: 80px;
+    padding-top: 50px;
 }
 
 .title-section h1 {
@@ -168,6 +279,13 @@ body {
     background: linear-gradient(90deg, #000000a1, #0c9600a1, #000000a1);
     width: 90%;
     border-radius: 30px;
+}
+
+.section4 h2 {
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
 }
 
 .section5 {
@@ -386,6 +504,26 @@ body {
     background-color: #005f31;
 }
 
+.projects-button {
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+}
+
+.projects-button a {
+    background-color: #000000;
+    border-radius: 12px;
+    font-size: 1.1em;
+    color: #fff;
+    padding: 15px 30px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.projects-button a:hover {
+    background-color: #202020;
+}
+
 .play-game {
     font-family: "DM Sans", sans-serif;
     font-weight: 300;
@@ -430,9 +568,12 @@ body {
     align-items: center;
     justify-content: center;
 
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 .footer-social {
