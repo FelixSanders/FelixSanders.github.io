@@ -1,5 +1,6 @@
 .sudoku-container {
     text-align: center;
+    padding: 5px;
 }
 
 .result-message {
