@@ -25,15 +25,9 @@ body {
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
-    font-size: 1.5em;
+    font-size: 1.5rem;
 }
 
-.paragraph-font {
-    font-family: "Poppins", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-    font-size: 1em;
-}
 
 .header {
     background-color: transparent;
@@ -403,6 +397,24 @@ nav ul li a:hover {
     position: relative;
     margin: 20px 0;
     padding-left: 20%;
+}
+
+.timeline-school {
+    font-size: 1.25em;
+}
+
+.timeline-city {
+    font-size: 1em;
+    color: #555;
+}
+
+.timeline-address {
+    font-size: .75em;
+}
+
+.timeline-link {
+    font-size: .8em;
+    color: blue;
 }
 
 .timeline-year {

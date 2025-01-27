@@ -37,7 +37,6 @@ menuToggle.addEventListener("click", () => {
     onMenu = !onMenu;
 
     if (onTop && !document.querySelector('#sub-page')) {
-        // Toggle visibility and white class if onTop
         header.classList.toggle("visible", onMenu);
         headerlogo.classList.toggle("white", onMenu);
     }
