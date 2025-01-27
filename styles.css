@@ -193,7 +193,7 @@ nav ul li a:hover {
 
 .title-section {
     text-align: center;
-    font-size: 1.1em;
+    font-size: 1.1rem;
     margin-bottom: 25px;
     margin-top: 80px;
     padding-top: 15px;
@@ -208,7 +208,7 @@ nav ul li a:hover {
 
 .title-section p {
     margin: 10px;
-    font-size: 0.9em;
+    font-size: 0.9rem;
 }
 
 .section1 {
@@ -219,6 +219,7 @@ nav ul li a:hover {
     align-content: center;
     height: 85vh;
     margin: 0;
+    padding-top: 30px;
     background: linear-gradient(0deg, rgb(91, 196, 102), rgb(150, 255, 162), rgb(91, 196, 102));
 }
 
@@ -279,7 +280,7 @@ nav ul li a:hover {
     color: #fff;
     width: 100%;
     text-align: center;
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 .section5 {
@@ -302,7 +303,7 @@ nav ul li a:hover {
     padding: 5px;
     text-align: center;
     background: white;
-    margin: 20px 20px 20px 20px;
+    margin: 20px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -310,12 +311,13 @@ nav ul li a:hover {
     animation: fadeIn 1s ease-in-out;
 }
 
+.content h1 {
+    margin-top: 5px;
+}
 
 .content-logo {
     position: relative;
     display: inline-block;
-    width: 150px;
-    height: 150px;
     overflow: hidden;
 }
 
@@ -331,6 +333,16 @@ nav ul li a:hover {
     animation: shine 7s infinite;
 }
 
+.content-description {
+    color: #555;
+}
+
+.content-role {
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+}
+
 .socials {
     font-weight: 400;
     font-style: normal;
@@ -339,14 +351,16 @@ nav ul li a:hover {
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    margin: 20px 20px 20px 20px;
+    margin: 20px;
     animation: fadeIn 1s ease-in-out;
 }
 
-
+.socials h2 {
+    font-size: 1.3rem;
+}
 
 .social-icon {
-    font-size: 2.5em;
+    font-size: 2.3rem;
     margin: 0.25em;
     color: #555;
     transition: color 0.3s;
@@ -364,16 +378,55 @@ nav ul li a:hover {
 
 
 .section-end {
+    display: flex;
     width: 100%;
-    height: 15vh;
-    font-size: 1.5em;
+    height: 10vh;
+    font-size: 1.2rem;
     text-align: center;
+    justify-content: center;
 }
 
 .section-end p {
     animation: fadeIn 1s ease-in-out;
     animation: bounce 2s infinite
 }
+
+@media (max-width: 750px) {
+    .content {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    .content-logo img {
+        width: 110px;
+        height: auto;
+    }
+
+    .content-description {
+        font-size: 0.85rem;
+    }
+
+    .content-role {
+        font-size: 0.8rem;
+    }
+
+    .title-font {
+        font-size: 1.2rem;
+    }
+
+    .socials h2 {
+        font-size: 1.1rem;
+    }
+
+    .social-icon {
+        font-size: 2rem;
+        margin: 0.25em;
+        color: #555;
+        transition: color 0.3s;
+    }
+}
+
+
 
 .timeline {
     position: relative;
@@ -400,20 +453,20 @@ nav ul li a:hover {
 }
 
 .timeline-school {
-    font-size: 1.25em;
+    font-size: 1.25rem;
 }
 
 .timeline-city {
-    font-size: 1em;
+    font-size: 1rem;
     color: #555;
 }
 
 .timeline-address {
-    font-size: .75em;
+    font-size: 0.75rem;
 }
 
 .timeline-link {
-    font-size: .8em;
+    font-size: 0.8rem;
     color: blue;
 }
 
@@ -501,7 +554,7 @@ nav ul li a:hover {
     font-weight: 300;
     display: inline-block;
     background-color: #00bf63;
-    font-size: 1.1em;
+    font-size: 1.1rem;
     color: #fff;
     padding: 15px 30px;
     text-align: center;
@@ -525,7 +578,7 @@ nav ul li a:hover {
 .projects-button a {
     background-color: #000000;
     border-radius: 12px;
-    font-size: 1.1em;
+    font-size: 1.1rem;
     color: #fff;
     padding: 15px 30px;
     text-decoration: none;
@@ -541,7 +594,7 @@ nav ul li a:hover {
     font-weight: 300;
     display: inline-block;
     background-color: #00bf63;
-    font-size: 1.1em;
+    font-size: 1.1rem;
     color: #fff;
     padding: 15px 75px;
     text-align: center;
@@ -589,7 +642,7 @@ nav ul li a:hover {
 }
 
 .footer-social {
-    font-size: 1em;
+    font-size: 1rem;
     margin: 0.05em 0.5em;
     color: #000000;
     transition: color 0.3s;
@@ -605,7 +658,7 @@ nav ul li a:hover {
     border: 2px solid #666666;
     border-radius: 7px;
     font-family: "Poppins", sans-serif;
-    font-size: .8em;
+    font-size: 0.8rem;
 }
 
 @keyframes fadeIn {
@@ -667,20 +720,6 @@ nav ul li a:hover {
 }
 
 
-@media (max-width: 600px) {
-    .content {
-        max-width: 90%;
-        padding: 15px;
-    }
-
-    .title-font {
-        font-size: 1.2em;
-    }
-
-    .paragraph-font {
-        font-size: 0.9em;
-    }
-}
 
 @viewport {
     width: device-width;
