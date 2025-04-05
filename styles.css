@@ -411,7 +411,7 @@ h2 {
         height: auto;
     }
 
-    .content-description {
+    .content-text {
         font-size: 0.85rem;
     }
 
@@ -419,7 +419,7 @@ h2 {
         font-size: 0.8rem;
     }
 
-    .title-font {
+    h2 {
         font-size: 1.2rem;
     }
 
