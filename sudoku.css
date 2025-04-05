@@ -23,7 +23,7 @@
 }
 
 .popup-button {
-    font-family: "Poppins", sans-serif;
+    font-family: "DM Sans", sans-serif;
     font-weight: 500;
     background-color: #ff0000;
     margin-top: 15px;
@@ -31,6 +31,7 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 10px;
+    text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
