@@ -618,6 +618,16 @@ h2 {
     background-color: #202020;
 }
 
+.back-project-btn {
+  background-color: #888;
+}
+
+.back-project-btn:hover {
+  background-color: #4e4e4e; /* slightly darker gray */
+  transform: translateY(-2px);
+}
+
+
 .play-game {
     font-family: "DM Sans", sans-serif;
     font-weight: 300;
