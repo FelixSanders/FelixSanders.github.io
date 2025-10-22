@@ -1,24 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>FSK | RafiaCutter</title>
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <link rel="stylesheet" href="../styles.css">
-  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <link rel='stylesheet'
+    href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
   <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-brands/css/uicons-brands.css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://kit.fontawesome.com/8904a90371.js" crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 
   <style>
     h2.title-font {
-      font-weight: 200 !important;
-      text-align: start !important;
-    }
+            font-weight: 200 !important;
+            text-align: start !important;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .content .button-group a {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .title-section {
+                margin-top: 70px !important;
+                padding: 0 12px;
+            }
+
+            .content {
+                width: 100%;
+                padding: 16px;
+            }
+
+            .content img {
+                margin: 0 auto;
+                display: block;
+            }
+
+            .content .button-group {
+                flex-direction: row;
+                align-items: stretch;
+                gap: 5px;
+            }
+
+            .visit-app, .back-project-btn {
+                margin: 10px;
+            }
+
+            .content .button-group a {
+                width: 100%;
+            }
+        }
   </style>
 </head>
 
@@ -40,32 +93,38 @@
   <div class="title-section" style="margin-top: 90px; display:flex; justify-content:center;">
     <div class="content" style="max-width:760px; width:calc(100% - 40px); text-align:left;">
       <div style="display:flex; gap:18px; align-items:center; flex-wrap:wrap;">
-        <img src="../images/rafiacutter.png" alt="BookINV" width="120" height="120" style="border-radius:25%; border:2px solid #a5a5a5;">
+        <img src="../images/rafiacutter.png" alt="BookINV" width="120" height="120"
+          style="border-radius:25%; border:2px solid #a5a5a5;">
         <div>
           <h2 class="title-font" style="margin:0;"><b>RafiaCutter</b></h2>
-          <p style="margin:6px 0; color:#555; font-family:'Poppins',sans-serif;">A remote-controlled raffia rope cutting system.</p>
+          <p style="margin:6px 0; color:#555; font-family:'Poppins',sans-serif;">A remote-controlled raffia rope cutting
+            system.</p>
         </div>
       </div>
 
       <hr style="margin:18px 0;">
 
       <p style="color:#555; font-family:'Poppins',sans-serif;">
-        RafiaCutter is a functional prototype integrating Arduino Uno with a web-based interface to automate the process of cutting raffia rope. Using HTML for control and Arduino for hardware execution, it allows remote operation for precision and efficiency — a small-scale example of automation in everyday applications.</p>
+        RafiaCutter is a functional prototype integrating Arduino Uno with a web-based interface to automate the process
+        of cutting raffia rope. Using HTML for control and Arduino for hardware execution, it allows remote operation
+        for precision and efficiency — a small-scale example of automation in everyday applications.</p>
 
       <p style="color:#333; margin-top:12px; font-family:'Poppins',sans-serif;"><b>Built using:</b> HTML & Arduino</p>
 
       <div id="slideshow" style="display:none; margin-top:20px; text-align:center;">
         <img id="slideImage" src="" alt="BookINV Screenshot"
-             style="width:100%; max-width:700px; border-radius:12px; border:2px solid #aaa;">
+          style="width:100%; max-width:700px; border-radius:12px; border:2px solid #aaa;">
         <div id="slideControls" style="margin-top:10px;">
-          <button class="projects-button title-font" id="prevBtn" style="padding:8px 15px; font-size:.9rem;">&#10094; Prev</button>
-          <button class="projects-button title-font" id="nextBtn" style="padding:8px 15px; font-size:.9rem;">Next &#10095;</button>
+          <button class="projects-button title-font" id="prevBtn" style="padding:8px 15px; font-size:.9rem;">&#10094;
+            Prev</button>
+          <button class="projects-button title-font" id="nextBtn" style="padding:8px 15px; font-size:.9rem;">Next
+            &#10095;</button>
         </div>
       </div>
 
-      <div style="margin-top:25px;">
+      <div class="button-group">
         <a class="visit-app title-font" href="https://felixsanders.com/rafiacutter" target="_blank">Open Project <i
-                        class="fa-solid fa-arrow-right"></i></a>
+            class="fa-solid fa-arrow-right"></i></a>
         <a href="/projects" class="projects-button title-font back-project-btn">Back to Projects</a>
       </div>
     </div>
@@ -75,11 +134,16 @@
 
   <footer class="footer" style="height:10vh;">
     <div class="footer-social-container">
-      <a href="https://github.com/FelixSanders" target="_blank" class="footer-social"><i class="fa-brands fa-github"></i></a>
-      <a href="https://x.com/FelixSandersK" target="_blank" class="footer-social"><i class="fa-brands fa-x-twitter"></i></a>
-      <a href="https://instagram.com/felixsanders.k" target="_blank" class="footer-social"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://youtube.com/@felixsanders" target="_blank" class="footer-social"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://tiktok.com/@felixsandersk" target="_blank" class="footer-social"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://github.com/FelixSanders" target="_blank" class="footer-social"><i
+          class="fa-brands fa-github"></i></a>
+      <a href="https://x.com/FelixSandersK" target="_blank" class="footer-social"><i
+          class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://instagram.com/felixsanders.k" target="_blank" class="footer-social"><i
+          class="fa-brands fa-instagram"></i></a>
+      <a href="https://youtube.com/@felixsanders" target="_blank" class="footer-social"><i
+          class="fa-brands fa-youtube"></i></a>
+      <a href="https://tiktok.com/@felixsandersk" target="_blank" class="footer-social"><i
+          class="fa-brands fa-tiktok"></i></a>
       <a href="mailto:felix@felixsanders.com" class="footer-social"><i class="fa-regular fa-envelope"></i></a>
     </div>
     <div>
@@ -131,4 +195,5 @@
     };
   </script>
 </body>
+
 </html>

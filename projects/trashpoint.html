@@ -16,9 +16,58 @@
 
   <style>
     h2.title-font {
-      font-weight: 200 !important;
-      text-align: start !important;
-    }
+            font-weight: 200 !important;
+            text-align: start !important;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .content .button-group a {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .title-section {
+                margin-top: 70px !important;
+                padding: 0 12px;
+            }
+
+            .content {
+                width: 100%;
+                padding: 16px;
+            }
+
+            .content img {
+                margin: 0 auto;
+                display: block;
+            }
+
+            .content .button-group {
+                flex-direction: row;
+                align-items: stretch;
+                gap: 5px;
+            }
+
+            .visit-app, .back-project-btn {
+                margin: 10px;
+            }
+
+            .content .button-group a {
+                width: 100%;
+            }
+        }
   </style>
 </head>
 
@@ -63,7 +112,7 @@
         </div>
       </div>
 
-      <div style="margin-top:25px;">
+      <div class="button-group">
         <a class="visit-app title-font" href="https://felixsanders.com/trashpoint" target="_blank">Open Project <i
                         class="fa-solid fa-arrow-right"></i></a>
         <a href="/projects" class="projects-button title-font back-project-btn">Back to Projects</a>
