@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>FSK | Task'n'Test</title>
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-brands/css/uicons-brands.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://kit.fontawesome.com/8904a90371.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <style>
+    h2.title-font {
+            font-weight: 200 !important;
+            text-align: start !important;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .content .button-group a {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .title-section {
+                margin-top: 70px !important;
+                padding: 0 12px;
+            }
+
+            .content {
+                width: 100%;
+                padding: 16px;
+            }
+
+            .content img {
+                margin: 0 auto;
+                display: block;
+            }
+
+            .content .button-group {
+                flex-direction: row;
+                align-items: stretch;
+                gap: 5px;
+            }
+
+            .visit-app, .back-project-btn {
+                margin: 10px;
+            }
+
+            .content .button-group a {
+                width: 100%;
+            }
+        }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-container1" id="sub-page">
+      <img class="header-logo" src="../images/FSKLogoBlack.svg" alt="Logo" width="45" height="45">
+      <h1 class="title-font header-logo header-title">FSK</h1>
+    </div>
+    <nav>
+      <ul id="menu">
+        <li><a href="/gallery">GALLERY</a></li>
+        <li><a href="/projects">PROJECTS</a></li>
+      </ul>
+    </nav>
+    <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+  </div>
+
+  <div class="title-section" style="margin-top: 90px; display:flex; justify-content:center;">
+    <div class="content" style="max-width:760px; width:calc(100% - 40px); text-align:left;">
+      <div style="display:flex; gap:18px; align-items:center; flex-wrap:wrap;">
+        <img src="../images/taskntest.svg" alt="Task'n'Test" width="120" height="120" style="border-radius:25%; border:2px solid #a5a5a5;">
+        <div>
+          <h2 class="title-font" style="margin:0;"><b>Task'n'Test</b></h2>
+          <p style="margin:6px 0; color:#555; font-family:'Poppins',sans-serif;">An assigment management application prototype for schools.</p>
+        </div>
+      </div>
+
+      <hr style="margin:18px 0;">
+
+      <p style="color:#555; font-family:'Poppins',sans-serif;">
+        Task’n’Test is a prototype application designed to help students and teachers organize and manage assignments more effectively. It provides tools for creating, tracking, and submitting tasks, along with built-in reminders and notifications to keep everyone on schedule.</p>
+
+      <p style="color:#333; margin-top:12px; font-family:'Poppins',sans-serif;"><b>Built using:</b> Figma</p>
+
+      <div id="slideshow" style="display:none; margin-top:20px; text-align:center;">
+        <img id="slideImage" src="" alt="BookINV Screenshot"
+             style="width:100%; max-width:700px; border-radius:12px; border:2px solid #aaa;">
+        <div id="slideControls" style="margin-top:10px;">
+          <button class="projects-button title-font" id="prevBtn" style="padding:8px 15px; font-size:.9rem;">&#10094; Prev</button>
+          <button class="projects-button title-font" id="nextBtn" style="padding:8px 15px; font-size:.9rem;">Next &#10095;</button>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <a class="visit-app title-font" href="https://link.felixsanders.com/taskntest" target="_blank">Open Project <i
+                        class="fa-solid fa-arrow-right"></i></a>
+        <a href="/projects" class="projects-button title-font back-project-btn">Back to Projects</a>
+      </div>
+    </div>
+  </div>
+
+  <hr style="height:3px;border-width:0;background-color:#000000; border-radius:100%;">
+
+  <footer class="footer" style="height:10vh;">
+    <div class="footer-social-container">
+      <a href="https://github.com/FelixSanders" target="_blank" class="footer-social"><i class="fa-brands fa-github"></i></a>
+      <a href="https://x.com/FelixSandersK" target="_blank" class="footer-social"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://instagram.com/felixsanders.k" target="_blank" class="footer-social"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://youtube.com/@felixsanders" target="_blank" class="footer-social"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://tiktok.com/@felixsandersk" target="_blank" class="footer-social"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="mailto:felix@felixsanders.com" class="footer-social"><i class="fa-regular fa-envelope"></i></a>
+    </div>
+    <div>
+      <p class="title-font" style="font-size:1em;">FSK<b>Websites</b> Personal</p>
+      <p style="font-size:.8em;">&copy;2025 Felix Sanders Kusuma. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+  <script>
+    const img = document.getElementById("slideImage");
+    const slideshow = document.getElementById("slideshow");
+    const prev = document.getElementById("prevBtn");
+    const next = document.getElementById("nextBtn");
+
+    const path = "../projects/thumbnail/bookinv/";
+    const ext = ".jpg";
+    const maxImages = 20;
+    let found = [];
+    let index = 0;
+
+    async function preload() {
+      for (let i = 1; i <= maxImages; i++) {
+        const url = path + i + ext;
+        try {
+          const res = await fetch(url, { method: "HEAD" });
+          if (res.ok) found.push(url);
+          else break;
+        } catch { break; }
+      }
+
+      if (found.length > 0) {
+        slideshow.style.display = "block";
+        img.src = found[0];
+      }
+    }
+
+    preload();
+
+    prev.onclick = () => {
+      if (found.length === 0) return;
+      index = (index - 1 + found.length) % found.length;
+      img.src = found[index];
+    };
+    next.onclick = () => {
+      if (found.length === 0) return;
+      index = (index + 1) % found.length;
+      img.src = found[index];
+    };
+  </script>
+</body>
+</html>

@@ -624,7 +624,6 @@ h2 {
 
 .back-project-btn:hover {
   background-color: #4e4e4e; /* slightly darker gray */
-  transform: translateY(-2px);
 }
 
 
