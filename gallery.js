@@ -20,6 +20,14 @@ function loadGallery() {
         'images/gallery/20241001_MargiCoffee.png',
         'images/gallery/20241024_Keris.png',
         'images/gallery/20241024_MesinKetikHurufJawa.png',
+        'images/gallery/20250905_Kopeng.png',
+        'images/gallery/20251012_WestJavaTrain.png',
+        'images/gallery/20251217_Klaten.png',
+        'images/gallery/20260103_Batu.png',
+        'images/gallery/20260424_Orchid.png',
+        'images/gallery/20260424_Strobilus.png',
+        'images/gallery/20260525_Bali.png',
+        'images/gallery/20260605_GrojoganSewu.png'
     ];
 
     images.forEach((src) => {
