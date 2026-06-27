@@ -1,27 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
 <urlset
       xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:fo="http://www.w3.org/1999/XSL/Format"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 
-
 <url>
   <loc>https://felixsanders.com/</loc>
-  <lastmod>2024-12-16T15:23:19+00:00</lastmod>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://felixsanders.com/gallery</loc>
-  <lastmod>2024-12-16T15:23:19+00:00</lastmod>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects/bookinv</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects/taskntest</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://felixsanders.com/sudoku</loc>
-  <lastmod>2024-12-16T15:23:19+00:00</lastmod>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
   <priority>0.80</priority>
 </url>
-
+<url>
+  <loc>https://felixsanders.com/projects/heal</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects/rafiacutter</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects/trashpoint</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects/studyswap</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/projects/gedu</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/heal/</loc>
+  <lastmod>2026-05-19T14:32:30+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/rafiacutter/</loc>
+  <lastmod>2026-06-27T16:50:15+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/trashpoint</loc>
+  <lastmod>2026-06-26T18:09:22+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/gedu/</loc>
+  <lastmod>2026-06-27T16:43:23+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://felixsanders.com/media/trashpoint/TrashPoint.apk</loc>
+  <lastmod>2026-06-27T17:02:23+00:00</lastmod>
+  <priority>0.41</priority>
+</url>
 
 </urlset>
