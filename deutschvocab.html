@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verbentisch — German Verb Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F2E7;
+    --paper2:#F1EADA;
+    --rule:#E2D8C0;
+    --margin:#E8B9CE;
+    --ink:#2A2520;
+    --ink-soft:#6b6255;
+    --pink:#E0187E;
+    --pink-soft:#F6B9D8;
+    --pink-pale:#FBE1EE;
+    --mint:#38C793;
+    --mint-soft:#B7EEDA;
+    --mint-pale:#E3F9F0;
+    --lav:#8A7FD8;
+    --lav-soft:#DCD7F7;
+    --white:#FFFDF8;
+    --shadow: 0 6px 0 rgba(42,37,32,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 38px, var(--rule) 38px 39px),
+      var(--paper);
+    background-position: 0 90px;
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    min-height:100vh;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    top:0; bottom:0; left:64px;
+    width:2px;
+    background:var(--margin);
+    opacity:.55;
+    z-index:0;
+  }
+  #app{ position:relative; z-index:1; max-width:980px; margin:0 auto; padding:36px 28px 90px 84px; }
+  @media (max-width:680px){
+    body::before{ left:26px; }
+    #app{ padding:28px 16px 90px 40px; }
+  }
+
+  /* ---------- Header ---------- */
+  header{ margin-bottom:28px; }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:64px;
+    line-height:.9;
+    margin:0 0 4px;
+    color:var(--ink);
+    position:relative;
+    display:inline-block;
+  }
+  h1 .underline{
+    position:absolute; left:-4px; right:-4px; bottom:-6px; height:16px;
+  }
+  .sub{ color:var(--ink-soft); font-size:15px; margin:14px 0 0; max-width:60ch; }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex; gap:8px; flex-wrap:wrap;
+    margin:26px 0 22px;
+    border-bottom:2px solid var(--rule);
+    padding-bottom:14px;
+  }
+  .tab-btn{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600; font-size:14px;
+    background:var(--white);
+    border:2px solid var(--ink);
+    color:var(--ink);
+    padding:9px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition:transform .12s ease;
+  }
+  .tab-btn:hover{ transform:translateY(-2px); }
+  .tab-btn.active{ background:var(--ink); color:var(--white); }
+  .tab-btn:focus-visible{ outline:3px solid var(--lav); outline-offset:2px; }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; animation:fadein .25s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  /* ---------- Pills for hat/ist ---------- */
+  .pill{
+    display:inline-block;
+    font-family:'Space Mono', monospace;
+    font-size:12.5px; font-weight:700;
+    padding:2px 9px;
+    border-radius:999px;
+    line-height:1.5;
+  }
+  .pill.hat{ background:var(--mint-soft); color:#0d5c42; }
+  .pill.ist{ background:var(--pink-soft); color:#8c0f52; }
+  .pill.hatist{ background:linear-gradient(90deg, var(--mint-soft) 50%, var(--pink-soft) 50%); color:var(--ink); }
+
+  /* squiggle underline */
+  .squiggle{ height:14px; display:block; margin:2px 0 18px; }
+
+  /* ---------- Section title ---------- */
+  .section-title{
+    font-family:'Caveat', cursive;
+    font-size:32px; font-weight:700;
+    color:var(--pink);
+    margin:0 0 2px;
+  }
+  .section-desc{ color:var(--ink-soft); font-size:14px; margin:0 0 16px; max-width:65ch;}
+
+  /* ---------- Filter row ---------- */
+  .filter-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; align-items:center; }
+  .chip{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    border:1.5px solid var(--ink);
+    background:transparent;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .chip.active{ background:var(--pink); border-color:var(--pink); color:var(--white); }
+  .search-input{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14px;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--ink);
+    background:var(--white);
+    min-width:200px;
+  }
+  .search-input:focus{ outline:2px solid var(--lav); }
+
+  /* ---------- Flashcard ---------- */
+  .card-stage{ display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .card-count{ font-family:'Space Mono', monospace; font-size:13px; color:var(--ink-soft); }
+  .flashcard{
+    width:100%; max-width:460px; min-height:260px;
+    background:var(--white);
+    border:2.5px solid var(--ink);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    padding:32px 28px;
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    position:relative;
+    user-select:none;
+  }
+  .flashcard .cat-tag{
+    position:absolute; top:14px; left:18px;
+    font-family:'Space Mono', monospace; font-size:11px; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em;
+  }
+  .flashcard .flip-hint{
+    position:absolute; top:14px; right:18px;
+    font-family:'Space Mono', monospace; font-size:11px; color:var(--lav);
+  }
+  .fc-v1{ font-family:'Caveat', cursive; font-weight:700; font-size:46px; color:var(--ink); }
+  .fc-er{ font-family:'Space Mono', monospace; font-size:15px; color:var(--ink-soft); margin-top:4px; }
+  .fc-back{ display:none; width:100%; }
+  .flashcard.flipped .fc-front{ display:none; }
+  .flashcard.flipped .fc-back{ display:flex; flex-direction:column; gap:10px; align-items:center; }
+  .fc-row{ display:flex; align-items:baseline; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .fc-label{ font-family:'Space Mono', monospace; font-size:11px; color:var(--ink-soft); text-transform:uppercase; width:36px; text-align:right;}
+  .fc-word{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:22px; }
+  .fc-meaning{ margin-top:6px; font-size:15px; color:var(--ink-soft); font-style:italic; }
+  .fc-dualnote{ margin-top:10px; font-size:13px; background:var(--lav-soft); padding:8px 12px; border-radius:10px; text-align:left; }
+
+  .card-controls{ display:flex; gap:10px; margin-top:6px; flex-wrap:wrap; justify-content:center; }
+  .btn{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px;
+    padding:10px 18px; border-radius:10px; border:2px solid var(--ink);
+    background:var(--white); color:var(--ink); cursor:pointer; box-shadow:var(--shadow);
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn.primary{ background:var(--ink); color:var(--white); }
+  .btn.pink{ background:var(--pink); border-color:var(--pink); color:var(--white); }
+  .btn.mint{ background:var(--mint); border-color:var(--mint); color:#083c2b; }
+  .btn:focus-visible{ outline:3px solid var(--lav); outline-offset:2px; }
+  .btn:disabled{ opacity:.4; cursor:not-allowed; }
+
+  .progress-wrap{ width:100%; max-width:460px; height:8px; background:var(--rule); border-radius:99px; overflow:hidden; }
+  .progress-bar{ height:100%; background:var(--mint); transition:width .3s ease; }
+
+  /* ---------- Quiz ---------- */
+  .quiz-card{
+    background:var(--white); border:2.5px solid var(--ink); border-radius:18px;
+    padding:30px 28px; max-width:560px; margin:0 auto; box-shadow:var(--shadow);
+  }
+  .quiz-score{ font-family:'Space Mono', monospace; font-size:13px; color:var(--ink-soft); text-align:right; margin-bottom:6px; }
+  .quiz-prompt{ text-align:center; margin-bottom:22px; }
+  .quiz-v1{ font-family:'Caveat', cursive; font-size:42px; font-weight:700; }
+  .quiz-meaning{ color:var(--ink-soft); font-style:italic; font-size:14px; }
+  .quiz-field{ margin-bottom:14px; }
+  .quiz-field label{ display:block; font-family:'Space Mono', monospace; font-size:12px; color:var(--ink-soft); margin-bottom:4px; text-transform:uppercase; }
+  .quiz-field input{
+    width:100%; font-family:'Space Grotesk', sans-serif; font-size:16px;
+    padding:10px 14px; border-radius:10px; border:2px solid var(--rule); background:var(--paper2);
+  }
+  .quiz-field input.correct{ border-color:var(--mint); background:var(--mint-pale); }
+  .quiz-field input.wrong{ border-color:var(--pink); background:var(--pink-pale); }
+  .quiz-field input:focus{ outline:2px solid var(--lav); }
+  .quiz-feedback{ margin-top:14px; font-size:14px; text-align:center; min-height:20px; }
+  .quiz-actions{ display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+
+  /* ---------- Table ---------- */
+  table{ width:100%; border-collapse:collapse; background:var(--white); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); }
+  thead th{
+    font-family:'Space Mono', monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em;
+    background:var(--ink); color:var(--white); text-align:left; padding:10px 12px;
+  }
+  tbody td{ padding:9px 12px; border-bottom:1px solid var(--rule); font-size:14px; vertical-align:top; }
+  tbody tr:hover{ background:var(--paper2); }
+  .word-de{ font-weight:700; }
+  .er-form{ color:var(--ink-soft); font-family:'Space Mono', monospace; font-size:12.5px; }
+  .meaning-cell{ color:var(--ink-soft); font-style:italic; }
+
+  /* ---------- Dual verbs panel ---------- */
+  .dual-grid{ display:grid; grid-template-columns:1fr; gap:16px; }
+  .dual-card{
+    background:var(--white); border:2px solid var(--ink); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow);
+  }
+  .dual-head{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
+  .dual-v1{ font-family:'Caveat', cursive; font-size:30px; font-weight:700; }
+  .dual-split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:560px){ .dual-split{ grid-template-columns:1fr; } }
+  .dual-col{ padding:12px 14px; border-radius:10px; }
+  .dual-col.hatcol{ background:var(--mint-pale); }
+  .dual-col.istcol{ background:var(--pink-pale); }
+  .dual-col .tag{ font-family:'Space Mono', monospace; font-size:11px; text-transform:uppercase; font-weight:700; margin-bottom:4px; }
+  .dual-col.hatcol .tag{ color:#0d5c42; }
+  .dual-col.istcol .tag{ color:#8c0f52; }
+  .dual-col .verb-form{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:15px; margin-bottom:3px; }
+  .dual-col .desc{ font-size:13.5px; color:var(--ink); }
+  .dual-col .example{ font-size:12.5px; color:var(--ink-soft); margin-top:6px; font-style:italic; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:12px; margin-top:60px; font-family:'Space Mono', monospace;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <p class="eyebrow">V1 · V2 · V3 — irregular &amp; modal verb drills</p>
+    <h1>Verbentisch
+      <svg class="underline" viewBox="0 0 300 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 10 Q 20 2, 40 9 T 80 9 T 120 9 T 160 9 T 200 9 T 240 9 T 280 9" stroke="#E0187E" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </h1>
+    <p class="sub">Straight from your notebook: Hilfsverben, Modalverben, and every strong verb table — turned into flashcards, a quiz, a searchable reference, and a deep dive on the verbs that switch between <span class="pill hat">hat</span> and <span class="pill ist">ist</span>.</p>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <div class="panel active" id="panel-flash">
+    <p class="section-title">Flashcards</p>
+    <p class="section-desc">Tap a card to flip it. Mark whether you knew it — cards you miss come back around.</p>
+    <div class="filter-row" id="flash-filters"></div>
+    <div class="card-stage">
+      <div class="card-count" id="flash-count"></div>
+      <div class="progress-wrap"><div class="progress-bar" id="flash-progress"></div></div>
+      <div class="flashcard" id="flashcard">
+        <span class="cat-tag" id="fc-cat"></span>
+        <span class="flip-hint">tap to flip ↻</span>
+        <div class="fc-front">
+          <div class="fc-v1" id="fc-v1"></div>
+          <div class="fc-er" id="fc-er"></div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-row"><span class="fc-label">V1</span><span class="fc-word" id="fc-b-v1"></span></div>
+          <div class="fc-row"><span class="fc-label">V2</span><span class="fc-word" id="fc-b-v2"></span></div>
+          <div class="fc-row"><span class="fc-label">V3</span><span class="fc-word" id="fc-b-v3"></span><span id="fc-b-aux"></span></div>
+          <div class="fc-meaning" id="fc-b-meaning"></div>
+          <div class="fc-dualnote" id="fc-b-dual" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="card-controls">
+        <button class="btn" id="btn-prev">← Back</button>
+        <button class="btn pink" id="btn-miss">Study again</button>
+        <button class="btn mint" id="btn-know">Got it ✓</button>
+        <button class="btn" id="btn-next">Skip →</button>
+      </div>
+      <button class="btn primary" id="btn-shuffle" style="margin-top:6px;">Shuffle deck</button>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-quiz">
+    <p class="section-title">Quiz</p>
+    <p class="section-desc">Given V1, type V2 and the full V3 (include <span class="pill hat">hat</span>/<span class="pill ist">ist</span> where it's fixed — for dual verbs, either auxiliary is accepted).</p>
+    <div class="filter-row" id="quiz-filters"></div>
+    <div class="quiz-card">
+      <div class="quiz-score" id="quiz-score">Score: 0 / 0</div>
+      <div class="quiz-prompt">
+        <div class="quiz-v1" id="quiz-v1"></div>
+        <div class="quiz-meaning" id="quiz-meaning"></div>
+      </div>
+      <div class="quiz-field">
+        <label for="quiz-v2-input">V2 (er/sie/es)</label>
+        <input id="quiz-v2-input" autocomplete="off" placeholder="e.g. brach">
+      </div>
+      <div class="quiz-field">
+        <label for="quiz-v3-input">V3 (Partizip II, with hat/ist)</label>
+        <input id="quiz-v3-input" autocomplete="off" placeholder="e.g. hat gebrochen">
+      </div>
+      <div class="quiz-actions">
+        <button class="btn primary" id="quiz-check">Check</button>
+        <button class="btn" id="quiz-skip">Skip →</button>
+      </div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-table">
+    <p class="section-title">Reference table</p>
+    <p class="section-desc">Every verb from the notebook, searchable and filterable.</p>
+    <div class="filter-row">
+      <input class="search-input" id="table-search" placeholder="Search German or meaning…">
+      <span id="table-filters" style="display:flex; gap:8px; flex-wrap:wrap;"></span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>V1 (Infinitiv)</th><th>er/sie/es</th><th>V2</th><th>V3</th><th>Meaning</th></tr></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-dual">
+    <p class="section-title">Hat vs. ist — the switch-hitters</p>
+    <p class="section-desc">These verbs take <span class="pill hat">hat</span> when something is done <em>to</em> an object, and <span class="pill ist">ist</span> when the subject changes state or moves on its own.</p>
+    <div class="dual-grid" id="dual-grid"></div>
+  </div>
+
+  <footer>Made from your V1 / V2 / V3 notebook · felixsanders.com</footer>
+</div>
+
+<script>
+/* ======================= DATA ======================= */
+const AUX = { HAT:'hat', IST:'ist', BOTH:'hat/ist' };
+
+const VERBS = [
+  // Hilfsverben
+  {v1:'sein', er:'ist', v2:'war', v3:'gewesen', aux:AUX.IST, cat:'hilfs', m:'to be'},
+  {v1:'haben', er:'hat', v2:'hatte', v3:'gehabt', aux:AUX.HAT, cat:'hilfs', m:'to have'},
+  {v1:'werden', er:'wird', v2:'wurde', v3:'geworden', aux:AUX.IST, cat:'hilfs', m:'to become'},
+  // Modalverben
+  {v1:'können', er:'kann', v2:'konnte', v3:'gekonnt', aux:AUX.HAT, cat:'modal', m:'can / to be able to'},
+  {v1:'wollen', er:'will', v2:'wollte', v3:'gewollt', aux:AUX.HAT, cat:'modal', m:'to want'},
+  {v1:'dürfen', er:'darf', v2:'durfte', v3:'gedurft', aux:AUX.HAT, cat:'modal', m:'may / to be allowed to'},
+  {v1:'müssen', er:'muss', v2:'musste', v3:'gemusst', aux:AUX.HAT, cat:'modal', m:'must / to have to'},
+  {v1:'sollen', er:'soll', v2:'sollte', v3:'gesollt', aux:AUX.HAT, cat:'modal', m:'should / to be supposed to'},
+  {v1:'mögen', er:'mag', v2:'mochte', v3:'gemocht', aux:AUX.HAT, cat:'modal', m:'to like'},
+  // Strong verbs — page 2, list 1
+  {v1:'brechen', er:'bricht', v2:'brach', v3:'gebrochen', aux:AUX.BOTH, cat:'strong', m:'to break', dual:true, hatM:'to break something', istM:'to break (itself)'},
+  {v1:'empfehlen', er:'empfiehlt', v2:'empfahl', v3:'empfohlen', aux:AUX.HAT, cat:'strong', m:'to recommend'},
+  {v1:'denken', er:'denkt', v2:'dachte', v3:'gedacht', aux:AUX.HAT, cat:'strong', m:'to think'},
+  {v1:'bringen', er:'bringt', v2:'brachte', v3:'gebracht', aux:AUX.HAT, cat:'strong', m:'to bring'},
+  {v1:'bleiben', er:'bleibt', v2:'blieb', v3:'geblieben', aux:AUX.IST, cat:'strong', m:'to stay'},
+  {v1:'bitten', er:'bittet', v2:'bat', v3:'gebeten', aux:AUX.HAT, cat:'strong', m:'to request / ask'},
+  {v1:'entscheiden', er:'entscheidet', v2:'entschied', v3:'entschieden', aux:AUX.HAT, cat:'strong', m:'to decide'},
+  {v1:'beißen', er:'beißt', v2:'biss', v3:'gebissen', aux:AUX.HAT, cat:'strong', m:'to bite'},
+  {v1:'binden', er:'bindet', v2:'band', v3:'gebunden', aux:AUX.HAT, cat:'strong', m:'to tie / bind'},
+  {v1:'blasen', er:'bläst', v2:'blies', v3:'geblasen', aux:AUX.HAT, cat:'strong', m:'to blow'},
+  {v1:'essen', er:'isst', v2:'aß', v3:'gegessen', aux:AUX.HAT, cat:'strong', m:'to eat'},
+  {v1:'fahren', er:'fährt', v2:'fuhr', v3:'gefahren', aux:AUX.BOTH, cat:'strong', m:'to drive / go', dual:true, hatM:'to drive/take someone or something', istM:'to go (by vehicle)'},
+  {v1:'biegen', er:'biegt', v2:'bog', v3:'gebogen', aux:AUX.BOTH, cat:'strong', m:'to bend', dual:true, hatM:'to bend something', istM:'to bend (itself)'},
+  {v1:'braten', er:'brät', v2:'briet', v3:'gebraten', aux:AUX.HAT, cat:'strong', m:'to roast / fry'},
+  {v1:'brennen', er:'brennt', v2:'brannte', v3:'gebrannt', aux:AUX.HAT, cat:'strong', m:'to burn'},
+  // page 2, list 2
+  {v1:'beginnen', er:'beginnt', v2:'begann', v3:'begonnen', aux:AUX.HAT, cat:'strong', m:'to begin'},
+  {v1:'befehlen', er:'befiehlt', v2:'befahl', v3:'befohlen', aux:AUX.HAT, cat:'strong', m:'to command'},
+  {v1:'betrügen', er:'betrügt', v2:'betrog', v3:'betrogen', aux:AUX.HAT, cat:'strong', m:'to cheat / deceive'},
+  {v1:'bieten', er:'bietet', v2:'bot', v3:'geboten', aux:AUX.HAT, cat:'strong', m:'to offer'},
+  {v1:'fallen', er:'fällt', v2:'fiel', v3:'gefallen', aux:AUX.IST, cat:'strong', m:'to fall'},
+  {v1:'fangen', er:'fängt', v2:'fing', v3:'gefangen', aux:AUX.HAT, cat:'strong', m:'to catch'},
+  {v1:'finden', er:'findet', v2:'fand', v3:'gefunden', aux:AUX.HAT, cat:'strong', m:'to find'},
+  {v1:'fliegen', er:'fliegt', v2:'flog', v3:'geflogen', aux:AUX.BOTH, cat:'strong', m:'to fly', dual:true, hatM:'to fly / pilot something', istM:'to go (by air)'},
+  {v1:'fliehen', er:'flieht', v2:'floh', v3:'geflohen', aux:AUX.IST, cat:'strong', m:'to flee'},
+  {v1:'fließen', er:'fließt', v2:'floss', v3:'geflossen', aux:AUX.IST, cat:'strong', m:'to flow'},
+  {v1:'gefrieren', er:'gefriert', v2:'gefror', v3:'gefroren', aux:AUX.BOTH, cat:'strong', m:'to freeze', dual:true, hatM:'to freeze something', istM:'to freeze (itself)'},
+  {v1:'geben', er:'gibt', v2:'gab', v3:'gegeben', aux:AUX.HAT, cat:'strong', m:'to give'},
+  {v1:'gehen', er:'geht', v2:'ging', v3:'gegangen', aux:AUX.IST, cat:'strong', m:'to go / walk'},
+  {v1:'genießen', er:'genießt', v2:'genoss', v3:'genossen', aux:AUX.HAT, cat:'strong', m:'to enjoy'},
+  {v1:'vergleichen', er:'vergleicht', v2:'verglich', v3:'verglichen', aux:AUX.HAT, cat:'strong', m:'to compare'},
+  // page 3, list 1
+  {v1:'greifen', er:'greift', v2:'griff', v3:'gegriffen', aux:AUX.HAT, cat:'strong', m:'to grab / grip'},
+  {v1:'graben', er:'gräbt', v2:'grub', v3:'gegraben', aux:AUX.HAT, cat:'strong', m:'to dig'},
+  {v1:'halten', er:'hält', v2:'hielt', v3:'gehalten', aux:AUX.HAT, cat:'strong', m:'to hold'},
+  {v1:'hängen', er:'hängt', v2:'hing', v3:'gehangen', aux:AUX.HAT, cat:'strong', m:'to hang (be hanging)', note:'Jam itu tergantung di dinding.'},
+  {v1:'heben', er:'hebt', v2:'hob', v3:'gehoben', aux:AUX.HAT, cat:'strong', m:'to lift'},
+  {v1:'heißen', er:'heißt', v2:'hieß', v3:'geheißen', aux:AUX.HAT, cat:'strong', m:'to be called'},
+  {v1:'helfen', er:'hilft', v2:'half', v3:'geholfen', aux:AUX.HAT, cat:'strong', m:'to help'},
+  {v1:'kennen', er:'kennt', v2:'kannte', v3:'gekannt', aux:AUX.HAT, cat:'strong', m:'to know / be acquainted with'},
+  {v1:'kommen', er:'kommt', v2:'kam', v3:'gekommen', aux:AUX.IST, cat:'strong', m:'to come / arrive'},
+  {v1:'laden', er:'lädt', v2:'lud', v3:'geladen', aux:AUX.HAT, cat:'strong', m:'to load'},
+  {v1:'lassen', er:'lässt', v2:'ließ', v3:'gelassen', aux:AUX.HAT, cat:'strong', m:'to let'},
+  {v1:'laufen', er:'läuft', v2:'lief', v3:'gelaufen', aux:AUX.IST, cat:'strong', m:'to run'},
+  {v1:'leiden', er:'leidet', v2:'litt', v3:'gelitten', aux:AUX.HAT, cat:'strong', m:'to suffer'},
+  {v1:'leihen', er:'leiht', v2:'lieh', v3:'geliehen', aux:AUX.HAT, cat:'strong', m:'to lend'},
+  {v1:'lesen', er:'liest', v2:'las', v3:'gelesen', aux:AUX.HAT, cat:'strong', m:'to read'},
+  // page 3, list 2
+  {v1:'liegen', er:'liegt', v2:'lag', v3:'gelegen', aux:AUX.HAT, cat:'strong', m:'to lie / be located'},
+  {v1:'lügen', er:'lügt', v2:'log', v3:'gelogen', aux:AUX.HAT, cat:'strong', m:'to lie (tell an untruth)'},
+  {v1:'vermeiden', er:'vermeidet', v2:'vermied', v3:'vermieden', aux:AUX.HAT, cat:'strong', m:'to avoid'},
+  {v1:'messen', er:'misst', v2:'maß', v3:'gemessen', aux:AUX.HAT, cat:'strong', m:'to measure'},
+  {v1:'nehmen', er:'nimmt', v2:'nahm', v3:'genommen', aux:AUX.HAT, cat:'strong', m:'to take'},
+  {v1:'nennen', er:'nennt', v2:'nannte', v3:'genannt', aux:AUX.HAT, cat:'strong', m:'to name'},
+  {v1:'raten', er:'rät', v2:'riet', v3:'geraten', aux:AUX.HAT, cat:'strong', m:'to advise'},
+  {v1:'reiben', er:'reibt', v2:'rieb', v3:'gerieben', aux:AUX.HAT, cat:'strong', m:'to rub'},
+  {v1:'reißen', er:'reißt', v2:'riss', v3:'gerissen', aux:AUX.BOTH, cat:'strong', m:'to tear', dual:true, hatM:'to tear something', istM:'to tear (itself)'},
+  {v1:'rennen', er:'rennt', v2:'rannte', v3:'gerannt', aux:AUX.IST, cat:'strong', m:'to run / sprint'},
+  {v1:'riechen', er:'riecht', v2:'roch', v3:'gerochen', aux:AUX.HAT, cat:'strong', m:'to smell'},
+  {v1:'rufen', er:'ruft', v2:'rief', v3:'gerufen', aux:AUX.HAT, cat:'strong', m:'to call out'},
+  {v1:'schaffen', er:'schafft', v2:'schuf', v3:'geschaffen', aux:AUX.HAT, cat:'strong', m:'to create'},
+  {v1:'schaffen', er:'schafft', v2:'schaffte', v3:'geschafft', aux:AUX.HAT, cat:'strong', m:'to manage / succeed', note:'A separate weak verb from the "to create" schaffen above — same infinitive, different meaning and conjugation.'},
+  {v1:'scheinen', er:'scheint', v2:'schien', v3:'geschienen', aux:AUX.HAT, cat:'strong', m:'to shine / seem'},
+  {v1:'schieben', er:'schiebt', v2:'schob', v3:'geschoben', aux:AUX.HAT, cat:'strong', m:'to push / shove'},
+  // page 4, list 1
+  {v1:'schlafen', er:'schläft', v2:'schlief', v3:'geschlafen', aux:AUX.HAT, cat:'strong', m:'to sleep'},
+  {v1:'schlagen', er:'schlägt', v2:'schlug', v3:'geschlagen', aux:AUX.HAT, cat:'strong', m:'to hit / beat'},
+  {v1:'schließen', er:'schließt', v2:'schloss', v3:'geschlossen', aux:AUX.HAT, cat:'strong', m:'to close'},
+  {v1:'schmelzen', er:'schmilzt', v2:'schmolz', v3:'geschmolzen', aux:AUX.BOTH, cat:'strong', m:'to melt', dual:true, hatM:'to melt something', istM:'to melt (itself)'},
+  {v1:'schneiden', er:'schneidet', v2:'schnitt', v3:'geschnitten', aux:AUX.HAT, cat:'strong', m:'to cut / slice'},
+  {v1:'erschrecken', er:'erschrickt', v2:'erschrak', v3:'erschrocken', aux:AUX.IST, cat:'strong', m:'to be startled'},
+  {v1:'schreien', er:'schreit', v2:'schrie', v3:'geschrien', aux:AUX.HAT, cat:'strong', m:'to scream'},
+  {v1:'schreiten', er:'schreitet', v2:'schritt', v3:'geschritten', aux:AUX.IST, cat:'strong', m:'to stride'},
+  {v1:'schweigen', er:'schweigt', v2:'schwieg', v3:'geschwiegen', aux:AUX.HAT, cat:'strong', m:'to stay silent'},
+  {v1:'schwimmen', er:'schwimmt', v2:'schwamm', v3:'geschwommen', aux:AUX.IST, cat:'strong', m:'to swim'},
+  {v1:'verschwinden', er:'verschwindet', v2:'verschwand', v3:'verschwunden', aux:AUX.IST, cat:'strong', m:'to disappear'},
+  {v1:'sehen', er:'sieht', v2:'sah', v3:'gesehen', aux:AUX.HAT, cat:'strong', m:'to see'},
+  {v1:'singen', er:'singt', v2:'sang', v3:'gesungen', aux:AUX.HAT, cat:'strong', m:'to sing'},
+  {v1:'sitzen', er:'sitzt', v2:'saß', v3:'gesessen', aux:AUX.HAT, cat:'strong', m:'to sit'},
+  {v1:'sprechen', er:'spricht', v2:'sprach', v3:'gesprochen', aux:AUX.HAT, cat:'strong', m:'to speak'},
+  // page 4, list 2
+  {v1:'springen', er:'springt', v2:'sprang', v3:'gesprungen', aux:AUX.IST, cat:'strong', m:'to jump'},
+  {v1:'stechen', er:'sticht', v2:'stach', v3:'gestochen', aux:AUX.HAT, cat:'strong', m:'to sting / prick'},
+  {v1:'stehen', er:'steht', v2:'stand', v3:'gestanden', aux:AUX.HAT, cat:'strong', m:'to stand'},
+  {v1:'stehlen', er:'stiehlt', v2:'stahl', v3:'gestohlen', aux:AUX.HAT, cat:'strong', m:'to steal'},
+  {v1:'steigen', er:'steigt', v2:'stieg', v3:'gestiegen', aux:AUX.IST, cat:'strong', m:'to climb / rise'},
+  {v1:'sterben', er:'stirbt', v2:'starb', v3:'gestorben', aux:AUX.IST, cat:'strong', m:'to die'},
+  {v1:'stoßen', er:'stößt', v2:'stieß', v3:'gestoßen', aux:AUX.BOTH, cat:'strong', m:'to push / bump', dual:true, hatM:'to shove/push something or someone', istM:'to come across / encounter'},
+  {v1:'streichen', er:'streicht', v2:'strich', v3:'gestrichen', aux:AUX.HAT, cat:'strong', m:'to paint (a wall)'},
+  {v1:'streiten', er:'streitet', v2:'stritt', v3:'gestritten', aux:AUX.HAT, cat:'strong', m:'to argue'},
+  {v1:'tragen', er:'trägt', v2:'trug', v3:'getragen', aux:AUX.HAT, cat:'strong', m:'to carry / wear'},
+  {v1:'treffen', er:'trifft', v2:'traf', v3:'getroffen', aux:AUX.HAT, cat:'strong', m:'to meet'},
+  {v1:'treiben', er:'treibt', v2:'trieb', v3:'getrieben', aux:AUX.HAT, cat:'strong', m:'to drive / propel'},
+  {v1:'treten', er:'tritt', v2:'trat', v3:'getreten', aux:AUX.BOTH, cat:'strong', m:'to step / kick', dual:true, hatM:'to kick something', istM:'to step / appear'},
+  {v1:'trinken', er:'trinkt', v2:'trank', v3:'getrunken', aux:AUX.HAT, cat:'strong', m:'to drink'},
+  {v1:'tun', er:'tut', v2:'tat', v3:'getan', aux:AUX.HAT, cat:'strong', m:'to do'},
+  // page 5
+  {v1:'verderben', er:'verdirbt', v2:'verdarb', v3:'verdorben', aux:AUX.BOTH, cat:'strong', m:'to spoil / ruin', dual:true, hatM:'to ruin something', istM:'to spoil (itself)'},
+  {v1:'vergessen', er:'vergisst', v2:'vergaß', v3:'vergessen', aux:AUX.HAT, cat:'strong', m:'to forget'},
+  {v1:'verlieren', er:'verliert', v2:'verlor', v3:'verloren', aux:AUX.HAT, cat:'strong', m:'to lose'},
+  {v1:'wachsen', er:'wächst', v2:'wuchs', v3:'gewachsen', aux:AUX.IST, cat:'strong', m:'to grow'},
+  {v1:'waschen', er:'wäscht', v2:'wusch', v3:'gewaschen', aux:AUX.HAT, cat:'strong', m:'to wash'},
+  {v1:'weisen', er:'weist', v2:'wies', v3:'gewiesen', aux:AUX.HAT, cat:'strong', m:'to point / direct'},
+  {v1:'wenden', er:'wendet', v2:'wandte', v3:'gewandt', aux:AUX.HAT, cat:'strong', m:'to turn (something) around', note:'wandte/wendete and gewandt/gewendet are both fine — usage is interchangeable.'},
+  {v1:'werben', er:'wirbt', v2:'warb', v3:'geworben', aux:AUX.HAT, cat:'strong', m:'to advertise'},
+  {v1:'werfen', er:'wirft', v2:'warf', v3:'geworfen', aux:AUX.HAT, cat:'strong', m:'to throw'},
+  {v1:'wiegen', er:'wiegt', v2:'wog', v3:'gewogen', aux:AUX.HAT, cat:'strong', m:'to weigh'},
+  {v1:'wissen', er:'weiß', v2:'wusste', v3:'gewusst', aux:AUX.HAT, cat:'strong', m:'to know (a fact)'},
+  {v1:'verzeihen', er:'verzeiht', v2:'verzieh', v3:'verziehen', aux:AUX.HAT, cat:'strong', m:'to forgive (+ Dative)'},
+  {v1:'ziehen', er:'zieht', v2:'zog', v3:'gezogen', aux:AUX.BOTH, cat:'strong', m:'to pull / move', dual:true, hatM:'to pull something', istM:'to move (change residence)', note:'Ex: Sie zog nach Berlin.'},
+  {v1:'zwingen', er:'zwingt', v2:'zwang', v3:'gezwungen', aux:AUX.HAT, cat:'strong', m:'to force'},
+  {v1:'gießen', er:'gießt', v2:'goss', v3:'gegossen', aux:AUX.HAT, cat:'strong', m:'to water / pour'},
+  {v1:'schmeißen', er:'schmeißt', v2:'schmiss', v3:'geschmissen', aux:AUX.HAT, cat:'strong', m:'to chuck / throw'},
+  {v1:'schreiben', er:'schreibt', v2:'schrieb', v3:'geschrieben', aux:AUX.HAT, cat:'strong', m:'to write'},
+  // extra transitive pair not on the main table but noted separately
+  {v1:'hängen', er:'hängt', v2:'hängte', v3:'gehängt', aux:AUX.HAT, cat:'strong', m:'to hang (something) up', note:'The transitive twin of hängen above — this one is weak. Ex: Ich hängte meine Wäsche dort auf.'},
+];
+
+VERBS.forEach((v,i)=>v.id=i);
+
+const CAT_LABELS = { hilfs:'Hilfsverben', modal:'Modalverben', strong:'Strong verbs' };
+
+/* ======================= STATE ======================= */
+let activeTab = 'flash';
+let flashCategory = 'all';
+let flashDeck = [];
+let flashIndex = 0;
+let flashKnown = new Set();
+let flashMissed = new Set();
+
+let quizCategory = 'all';
+let quizPool = [];
+let quizIndex = 0;
+let quizScore = { correct:0, total:0 };
+
+/* ======================= HELPERS ======================= */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function auxPillHTML(aux){
+  if(aux===AUX.HAT) return '<span class="pill hat">hat</span>';
+  if(aux===AUX.IST) return '<span class="pill ist">ist</span>';
+  return '<span class="pill hatist">hat / ist</span>';
+}
+function filterByCategory(list, cat){
+  if(cat==='all') return list;
+  if(cat==='dual') return list.filter(v=>v.dual);
+  return list.filter(v=>v.cat===cat);
+}
+
+/* ======================= TABS ======================= */
+const TABS = [
+  {id:'flash', label:'Flashcards'},
+  {id:'quiz', label:'Quiz'},
+  {id:'table', label:'Reference table'},
+  {id:'dual', label:'Hat vs. ist'},
+];
+function renderTabs(){
+  const nav = document.getElementById('tabs');
+  nav.innerHTML = TABS.map(t=>`<button class="tab-btn ${t.id===activeTab?'active':''}" data-tab="${t.id}">${t.label}</button>`).join('');
+  nav.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeTab = btn.dataset.tab;
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('panel-'+activeTab).classList.add('active');
+      renderTabs();
+    });
+  });
+}
+
+/* ======================= FLASHCARDS ======================= */
+const FLASH_CATS = [
+  {id:'all', label:'All'},
+  {id:'hilfs', label:'Hilfsverben'},
+  {id:'modal', label:'Modalverben'},
+  {id:'strong', label:'Strong verbs'},
+  {id:'dual', label:'hat/ist verbs'},
+];
+function renderFlashFilters(){
+  const row = document.getElementById('flash-filters');
+  row.innerHTML = FLASH_CATS.map(c=>`<button class="chip ${c.id===flashCategory?'active':''}" data-cat="${c.id}">${c.label}</button>`).join('');
+  row.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      flashCategory = chip.dataset.cat;
+      buildFlashDeck();
+      renderFlashFilters();
+    });
+  });
+}
+function buildFlashDeck(){
+  flashDeck = shuffle(filterByCategory(VERBS, flashCategory));
+  flashIndex = 0;
+  flashKnown = new Set();
+  flashMissed = new Set();
+  renderFlashcard();
+}
+function renderFlashcard(){
+  const card = document.getElementById('flashcard');
+  card.classList.remove('flipped');
+  if(flashDeck.length===0){
+    document.getElementById('fc-v1').textContent = '—';
+    document.getElementById('fc-er').textContent = '';
+    document.getElementById('flash-count').textContent = 'No cards';
+    document.getElementById('flash-progress').style.width='0%';
+    return;
+  }
+  const v = flashDeck[flashIndex];
+  document.getElementById('fc-cat').textContent = CAT_LABELS[v.cat] || v.cat;
+  document.getElementById('fc-v1').textContent = v.v1;
+  document.getElementById('fc-er').textContent = 'er/sie/es: ' + v.er;
+  document.getElementById('fc-b-v1').textContent = v.v1;
+  document.getElementById('fc-b-v2').textContent = v.v2;
+  document.getElementById('fc-b-v3').textContent = v.v3;
+  document.getElementById('fc-b-aux').innerHTML = ' ' + auxPillHTML(v.aux);
+  document.getElementById('fc-b-meaning').textContent = v.m;
+  const dualBox = document.getElementById('fc-b-dual');
+  if(v.dual){
+    dualBox.style.display='block';
+    dualBox.innerHTML = `<strong>hat</strong> → ${v.hatM} &nbsp;·&nbsp; <strong>ist</strong> → ${v.istM}`;
+  } else if(v.note){
+    dualBox.style.display='block';
+    dualBox.innerHTML = v.note;
+  } else {
+    dualBox.style.display='none';
+  }
+  document.getElementById('flash-count').textContent = `Card ${flashIndex+1} of ${flashDeck.length} · known ${flashKnown.size} · to review ${flashMissed.size}`;
+  document.getElementById('flash-progress').style.width = `${Math.round((flashKnown.size/flashDeck.length)*100)}%`;
+}
+function flashAdvance(){
+  if(flashDeck.length===0) return;
+  flashIndex = (flashIndex+1) % flashDeck.length;
+  renderFlashcard();
+}
+function initFlashcards(){
+  document.getElementById('flashcard').addEventListener('click', ()=>{
+    document.getElementById('flashcard').classList.toggle('flipped');
+  });
+  document.getElementById('btn-next').addEventListener('click', flashAdvance);
+  document.getElementById('btn-prev').addEventListener('click', ()=>{
+    if(flashDeck.length===0) return;
+    flashIndex = (flashIndex-1+flashDeck.length) % flashDeck.length;
+    renderFlashcard();
+  });
+  document.getElementById('btn-know').addEventListener('click', ()=>{
+    if(flashDeck.length===0) return;
+    flashKnown.add(flashDeck[flashIndex].id);
+    flashMissed.delete(flashDeck[flashIndex].id);
+    flashAdvance();
+  });
+  document.getElementById('btn-miss').addEventListener('click', ()=>{
+    if(flashDeck.length===0) return;
+    flashMissed.add(flashDeck[flashIndex].id);
+    flashKnown.delete(flashDeck[flashIndex].id);
+    flashAdvance();
+  });
+  document.getElementById('btn-shuffle').addEventListener('click', buildFlashDeck);
+  renderFlashFilters();
+  buildFlashDeck();
+}
+
+/* ======================= QUIZ ======================= */
+function renderQuizFilters(){
+  const row = document.getElementById('quiz-filters');
+  row.innerHTML = FLASH_CATS.map(c=>`<button class="chip ${c.id===quizCategory?'active':''}" data-cat="${c.id}">${c.label}</button>`).join('');
+  row.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      quizCategory = chip.dataset.cat;
+      buildQuizPool();
+    });
+  });
+}
+function buildQuizPool(){
+  quizPool = shuffle(filterByCategory(VERBS, quizCategory));
+  quizIndex = 0;
+  quizScore = {correct:0, total:0};
+  renderQuizQuestion();
+}
+function normalize(s){
+  return s.trim().toLowerCase().replace(/\s+/g,' ');
+}
+function stripAux(v3full){
+  return normalize(v3full).replace(/^(hat|ist)\s*\/?\s*(hat|ist)?\s*/,'').replace(/^(hat|ist)\s+/,'');
+}
+function renderQuizQuestion(){
+  document.getElementById('quiz-score').textContent = `Score: ${quizScore.correct} / ${quizScore.total}`;
+  const v2in = document.getElementById('quiz-v2-input');
+  const v3in = document.getElementById('quiz-v3-input');
+  v2in.value=''; v3in.value='';
+  v2in.classList.remove('correct','wrong');
+  v3in.classList.remove('correct','wrong');
+  document.getElementById('quiz-feedback').textContent='';
+  if(quizPool.length===0){
+    document.getElementById('quiz-v1').textContent = '—';
+    document.getElementById('quiz-meaning').textContent = 'No verbs in this filter.';
+    return;
+  }
+  const v = quizPool[quizIndex];
+  document.getElementById('quiz-v1').textContent = v.v1;
+  document.getElementById('quiz-meaning').textContent = v.m + ` (er/sie/es: ${v.er})`;
+}
+function checkQuiz(){
+  if(quizPool.length===0) return;
+  const v = quizPool[quizIndex];
+  const v2in = document.getElementById('quiz-v2-input');
+  const v3in = document.getElementById('quiz-v3-input');
+  const v2ok = normalize(v2in.value) === normalize(v.v2);
+  let v3ok;
+  const userV3 = normalize(v3in.value);
+  if(v.aux===AUX.BOTH){
+    v3ok = userV3 === normalize('hat '+v.v3) || userV3 === normalize('ist '+v.v3) || userV3 === normalize(v.v3);
+  } else {
+    v3ok = userV3 === normalize(v.aux+' '+v.v3) || userV3 === normalize(v.v3);
+  }
+  v2in.classList.toggle('correct', v2ok);
+  v2in.classList.toggle('wrong', !v2ok);
+  v3in.classList.toggle('correct', v3ok);
+  v3in.classList.toggle('wrong', !v3ok);
+  quizScore.total++;
+  if(v2ok && v3ok) quizScore.correct++;
+  const fb = document.getElementById('quiz-feedback');
+  if(v2ok && v3ok){
+    fb.innerHTML = `<strong style="color:#0d5c42;">Correct!</strong>`;
+  } else {
+    fb.innerHTML = `Answer: <strong>${v.v2}</strong> · <strong>${auxPillHTML(v.aux)} ${v.v3}</strong>` + (v.dual ? ` <br><span style="color:var(--ink-soft);">hat → ${v.hatM} · ist → ${v.istM}</span>`:'');
+  }
+  document.getElementById('quiz-score').textContent = `Score: ${quizScore.correct} / ${quizScore.total}`;
+}
+function nextQuiz(){
+  if(quizPool.length===0) return;
+  quizIndex = (quizIndex+1) % quizPool.length;
+  renderQuizQuestion();
+}
+function initQuiz(){
+  document.getElementById('quiz-check').addEventListener('click', checkQuiz);
+  document.getElementById('quiz-skip').addEventListener('click', nextQuiz);
+  document.getElementById('quiz-v3-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){
+      if(document.getElementById('quiz-v3-input').classList.contains('correct') || document.getElementById('quiz-v3-input').classList.contains('wrong')){
+        nextQuiz();
+      } else {
+        checkQuiz();
+      }
+    }
+  });
+  renderQuizFilters();
+  buildQuizPool();
+}
+
+/* ======================= TABLE ======================= */
+let tableCategory='all';
+let tableSearch='';
+function renderTableFilters(){
+  const row = document.getElementById('table-filters');
+  row.innerHTML = FLASH_CATS.map(c=>`<button class="chip ${c.id===tableCategory?'active':''}" data-cat="${c.id}">${c.label}</button>`).join('');
+  row.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      tableCategory = chip.dataset.cat;
+      renderTableFilters();
+      renderTable();
+    });
+  });
+}
+function renderTable(){
+  let list = filterByCategory(VERBS, tableCategory);
+  if(tableSearch){
+    const q = tableSearch.toLowerCase();
+    list = list.filter(v => v.v1.toLowerCase().includes(q) || v.v2.toLowerCase().includes(q) || v.v3.toLowerCase().includes(q) || v.m.toLowerCase().includes(q));
+  }
+  const body = document.getElementById('table-body');
+  if(list.length===0){
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--ink-soft); padding:20px;">No matches.</td></tr>`;
+    return;
+  }
+  body.innerHTML = list.map(v=>`
+    <tr>
+      <td class="word-de">${v.v1}</td>
+      <td class="er-form">${v.er}</td>
+      <td class="word-de">${v.v2}</td>
+      <td>${auxPillHTML(v.aux)} <span class="word-de">${v.v3}</span></td>
+      <td class="meaning-cell">${v.m}</td>
+    </tr>
+  `).join('');
+}
+function initTable(){
+  renderTableFilters();
+  document.getElementById('table-search').addEventListener('input', e=>{
+    tableSearch = e.target.value;
+    renderTable();
+  });
+  renderTable();
+}
+
+/* ======================= DUAL VERBS ======================= */
+function initDual(){
+  const grid = document.getElementById('dual-grid');
+  const duals = VERBS.filter(v=>v.dual);
+  grid.innerHTML = duals.map(v=>`
+    <div class="dual-card">
+      <div class="dual-head">
+        <span class="dual-v1">${v.v1}</span>
+        <span class="er-form">er/sie/es: ${v.er} · V2: ${v.v2}</span>
+      </div>
+      <div class="dual-split">
+        <div class="dual-col hatcol">
+          <div class="tag">hat ${v.v3}</div>
+          <div class="verb-form">transitive</div>
+          <div class="desc">${v.hatM}</div>
+        </div>
+        <div class="dual-col istcol">
+          <div class="tag">ist ${v.v3}</div>
+          <div class="verb-form">intransitive</div>
+          <div class="desc">${v.istM}</div>
+        </div>
+      </div>
+      ${v.note ? `<div class="example">${v.note}</div>` : ''}
+    </div>
+  `).join('');
+
+  // schaffen and hängen special notes
+  const specialNote = document.createElement('div');
+  specialNote.className = 'dual-card';
+  specialNote.innerHTML = `
+    <div class="dual-head"><span class="dual-v1">schaffen &amp; hängen</span><span class="er-form">two verbs hiding under one infinitive</span></div>
+    <div class="dual-split">
+      <div class="dual-col hatcol">
+        <div class="tag">schaffen (strong)</div>
+        <div class="verb-form">schuf · hat geschaffen</div>
+        <div class="desc">to create</div>
+      </div>
+      <div class="dual-col istcol">
+        <div class="tag">schaffen (weak)</div>
+        <div class="verb-form">schaffte · hat geschafft</div>
+        <div class="desc">to manage / succeed</div>
+      </div>
+    </div>
+    <div class="dual-split" style="margin-top:14px;">
+      <div class="dual-col hatcol">
+        <div class="tag">hängen (strong, intr.)</div>
+        <div class="verb-form">hing · hat gehangen</div>
+        <div class="desc">to be hanging</div>
+        <div class="example">Die Uhr hing an der Wand.</div>
+      </div>
+      <div class="dual-col istcol">
+        <div class="tag">hängen (weak, transitive)</div>
+        <div class="verb-form">hängte · hat gehängt</div>
+        <div class="desc">to hang something up</div>
+        <div class="example">Ich hängte meine Wäsche dort auf.</div>
+      </div>
+    </div>
+  `;
+  grid.appendChild(specialNote);
+}
+
+/* ======================= INIT ======================= */
+renderTabs();
+initFlashcards();
+initQuiz();
+initTable();
+initDual();
+</script>
+</body>
+</html>
