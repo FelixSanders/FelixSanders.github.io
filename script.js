@@ -107,7 +107,7 @@ if (userInput) {
         const inputValue = userInput.value.trim().toLowerCase();
         if (inputValue === '4130') {
             window.location.href = 'secret';
-        } elseif (inputValue === 'mogen') {
+        } else if (inputValue === 'mogen') {
             window.location.href = 'deutschvocab';
         }
     });

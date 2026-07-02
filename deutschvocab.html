@@ -294,6 +294,7 @@
           <div class="fc-row"><span class="fc-label">V2</span><span class="fc-word" id="fc-b-v2"></span></div>
           <div class="fc-row"><span class="fc-label">V3</span><span class="fc-word" id="fc-b-v3"></span><span id="fc-b-aux"></span></div>
           <div class="fc-meaning" id="fc-b-meaning"></div>
+          <div class="fc-meaning" id="fc-b-meaning-id" style="margin-top:-4px;"></div>
           <div class="fc-dualnote" id="fc-b-dual" style="display:none;"></div>
         </div>
       </div>
@@ -333,6 +334,36 @@
     </div>
   </div>
 
+  <div class="panel" id="panel-tquiz">
+    <p class="section-title">Translation quiz</p>
+    <p class="section-desc">You get the Indonesian meaning — type the German V1, V2, and V3 (with <span class="pill hat">hat</span>/<span class="pill ist">ist</span> where it's fixed).</p>
+    <div class="filter-row" id="tquiz-filters"></div>
+    <div class="quiz-card">
+      <div class="quiz-score" id="tquiz-score">Score: 0 / 0</div>
+      <div class="quiz-prompt">
+        <div class="quiz-v1" id="tquiz-mid" style="font-size:30px;"></div>
+        <div class="quiz-meaning" id="tquiz-en"></div>
+      </div>
+      <div class="quiz-field">
+        <label for="tquiz-v1-input">V1 (Infinitiv)</label>
+        <input id="tquiz-v1-input" autocomplete="off" placeholder="e.g. brechen">
+      </div>
+      <div class="quiz-field">
+        <label for="tquiz-v2-input">V2 (er/sie/es)</label>
+        <input id="tquiz-v2-input" autocomplete="off" placeholder="e.g. brach">
+      </div>
+      <div class="quiz-field">
+        <label for="tquiz-v3-input">V3 (Partizip II, with hat/ist)</label>
+        <input id="tquiz-v3-input" autocomplete="off" placeholder="e.g. hat gebrochen">
+      </div>
+      <div class="quiz-actions">
+        <button class="btn primary" id="tquiz-check">Check</button>
+        <button class="btn" id="tquiz-skip">Skip →</button>
+      </div>
+      <div class="quiz-feedback" id="tquiz-feedback"></div>
+    </div>
+  </div>
+
   <div class="panel" id="panel-table">
     <p class="section-title">Reference table</p>
     <p class="section-desc">Every verb from the notebook, searchable and filterable.</p>
@@ -342,7 +373,7 @@
     </div>
     <div style="overflow-x:auto;">
       <table>
-        <thead><tr><th>V1 (Infinitiv)</th><th>er/sie/es</th><th>V2</th><th>V3</th><th>Meaning</th></tr></thead>
+        <thead><tr><th>V1 (Infinitiv)</th><th>er/sie/es</th><th>V2</th><th>V3</th><th>English</th><th>Indonesia</th></tr></thead>
         <tbody id="table-body"></tbody>
       </table>
     </div>
@@ -363,133 +394,133 @@ const AUX = { HAT:'hat', IST:'ist', BOTH:'hat/ist' };
 
 const VERBS = [
   // Hilfsverben
-  {v1:'sein', er:'ist', v2:'war', v3:'gewesen', aux:AUX.IST, cat:'hilfs', m:'to be'},
-  {v1:'haben', er:'hat', v2:'hatte', v3:'gehabt', aux:AUX.HAT, cat:'hilfs', m:'to have'},
-  {v1:'werden', er:'wird', v2:'wurde', v3:'geworden', aux:AUX.IST, cat:'hilfs', m:'to become'},
+  {v1:'sein', er:'ist', v2:'war', v3:'gewesen', aux:AUX.IST, cat:'hilfs', m:'to be', mid:'ada / menjadi'},
+  {v1:'haben', er:'hat', v2:'hatte', v3:'gehabt', aux:AUX.HAT, cat:'hilfs', m:'to have', mid:'memiliki'},
+  {v1:'werden', er:'wird', v2:'wurde', v3:'geworden', aux:AUX.IST, cat:'hilfs', m:'to become', mid:'menjadi'},
   // Modalverben
-  {v1:'können', er:'kann', v2:'konnte', v3:'gekonnt', aux:AUX.HAT, cat:'modal', m:'can / to be able to'},
-  {v1:'wollen', er:'will', v2:'wollte', v3:'gewollt', aux:AUX.HAT, cat:'modal', m:'to want'},
-  {v1:'dürfen', er:'darf', v2:'durfte', v3:'gedurft', aux:AUX.HAT, cat:'modal', m:'may / to be allowed to'},
-  {v1:'müssen', er:'muss', v2:'musste', v3:'gemusst', aux:AUX.HAT, cat:'modal', m:'must / to have to'},
-  {v1:'sollen', er:'soll', v2:'sollte', v3:'gesollt', aux:AUX.HAT, cat:'modal', m:'should / to be supposed to'},
-  {v1:'mögen', er:'mag', v2:'mochte', v3:'gemocht', aux:AUX.HAT, cat:'modal', m:'to like'},
+  {v1:'können', er:'kann', v2:'konnte', v3:'gekonnt', aux:AUX.HAT, cat:'modal', m:'can / to be able to', mid:'bisa / mampu'},
+  {v1:'wollen', er:'will', v2:'wollte', v3:'gewollt', aux:AUX.HAT, cat:'modal', m:'to want', mid:'mau / ingin'},
+  {v1:'dürfen', er:'darf', v2:'durfte', v3:'gedurft', aux:AUX.HAT, cat:'modal', m:'may / to be allowed to', mid:'boleh'},
+  {v1:'müssen', er:'muss', v2:'musste', v3:'gemusst', aux:AUX.HAT, cat:'modal', m:'must / to have to', mid:'harus'},
+  {v1:'sollen', er:'soll', v2:'sollte', v3:'gesollt', aux:AUX.HAT, cat:'modal', m:'should / to be supposed to', mid:'seharusnya'},
+  {v1:'mögen', er:'mag', v2:'mochte', v3:'gemocht', aux:AUX.HAT, cat:'modal', m:'to like', mid:'suka'},
   // Strong verbs — page 2, list 1
-  {v1:'brechen', er:'bricht', v2:'brach', v3:'gebrochen', aux:AUX.BOTH, cat:'strong', m:'to break', dual:true, hatM:'to break something', istM:'to break (itself)'},
-  {v1:'empfehlen', er:'empfiehlt', v2:'empfahl', v3:'empfohlen', aux:AUX.HAT, cat:'strong', m:'to recommend'},
-  {v1:'denken', er:'denkt', v2:'dachte', v3:'gedacht', aux:AUX.HAT, cat:'strong', m:'to think'},
-  {v1:'bringen', er:'bringt', v2:'brachte', v3:'gebracht', aux:AUX.HAT, cat:'strong', m:'to bring'},
-  {v1:'bleiben', er:'bleibt', v2:'blieb', v3:'geblieben', aux:AUX.IST, cat:'strong', m:'to stay'},
-  {v1:'bitten', er:'bittet', v2:'bat', v3:'gebeten', aux:AUX.HAT, cat:'strong', m:'to request / ask'},
-  {v1:'entscheiden', er:'entscheidet', v2:'entschied', v3:'entschieden', aux:AUX.HAT, cat:'strong', m:'to decide'},
-  {v1:'beißen', er:'beißt', v2:'biss', v3:'gebissen', aux:AUX.HAT, cat:'strong', m:'to bite'},
-  {v1:'binden', er:'bindet', v2:'band', v3:'gebunden', aux:AUX.HAT, cat:'strong', m:'to tie / bind'},
-  {v1:'blasen', er:'bläst', v2:'blies', v3:'geblasen', aux:AUX.HAT, cat:'strong', m:'to blow'},
-  {v1:'essen', er:'isst', v2:'aß', v3:'gegessen', aux:AUX.HAT, cat:'strong', m:'to eat'},
-  {v1:'fahren', er:'fährt', v2:'fuhr', v3:'gefahren', aux:AUX.BOTH, cat:'strong', m:'to drive / go', dual:true, hatM:'to drive/take someone or something', istM:'to go (by vehicle)'},
-  {v1:'biegen', er:'biegt', v2:'bog', v3:'gebogen', aux:AUX.BOTH, cat:'strong', m:'to bend', dual:true, hatM:'to bend something', istM:'to bend (itself)'},
-  {v1:'braten', er:'brät', v2:'briet', v3:'gebraten', aux:AUX.HAT, cat:'strong', m:'to roast / fry'},
-  {v1:'brennen', er:'brennt', v2:'brannte', v3:'gebrannt', aux:AUX.HAT, cat:'strong', m:'to burn'},
+  {v1:'brechen', er:'bricht', v2:'brach', v3:'gebrochen', aux:AUX.BOTH, cat:'strong', m:'to break', mid:'mematahkan / patah sendiri', dual:true, hatM:'to break something', istM:'to break (itself)'},
+  {v1:'empfehlen', er:'empfiehlt', v2:'empfahl', v3:'empfohlen', aux:AUX.HAT, cat:'strong', m:'to recommend', mid:'menyarankan'},
+  {v1:'denken', er:'denkt', v2:'dachte', v3:'gedacht', aux:AUX.HAT, cat:'strong', m:'to think', mid:'berpikir'},
+  {v1:'bringen', er:'bringt', v2:'brachte', v3:'gebracht', aux:AUX.HAT, cat:'strong', m:'to bring', mid:'membawa'},
+  {v1:'bleiben', er:'bleibt', v2:'blieb', v3:'geblieben', aux:AUX.IST, cat:'strong', m:'to stay', mid:'tetap tinggal'},
+  {v1:'bitten', er:'bittet', v2:'bat', v3:'gebeten', aux:AUX.HAT, cat:'strong', m:'to request / ask', mid:'meminta'},
+  {v1:'entscheiden', er:'entscheidet', v2:'entschied', v3:'entschieden', aux:AUX.HAT, cat:'strong', m:'to decide', mid:'memutuskan'},
+  {v1:'beißen', er:'beißt', v2:'biss', v3:'gebissen', aux:AUX.HAT, cat:'strong', m:'to bite', mid:'menggigit'},
+  {v1:'binden', er:'bindet', v2:'band', v3:'gebunden', aux:AUX.HAT, cat:'strong', m:'to tie / bind', mid:'mengikat'},
+  {v1:'blasen', er:'bläst', v2:'blies', v3:'geblasen', aux:AUX.HAT, cat:'strong', m:'to blow', mid:'meniup'},
+  {v1:'essen', er:'isst', v2:'aß', v3:'gegessen', aux:AUX.HAT, cat:'strong', m:'to eat', mid:'makan'},
+  {v1:'fahren', er:'fährt', v2:'fuhr', v3:'gefahren', aux:AUX.BOTH, cat:'strong', m:'to drive / go', mid:'mengemudikan / pergi (dgn kendaraan)', dual:true, hatM:'to drive/take someone or something', istM:'to go (by vehicle)'},
+  {v1:'biegen', er:'biegt', v2:'bog', v3:'gebogen', aux:AUX.BOTH, cat:'strong', m:'to bend', mid:'membengkokkan / membengkok sendiri', dual:true, hatM:'to bend something', istM:'to bend (itself)'},
+  {v1:'braten', er:'brät', v2:'briet', v3:'gebraten', aux:AUX.HAT, cat:'strong', m:'to roast / fry', mid:'memanggang'},
+  {v1:'brennen', er:'brennt', v2:'brannte', v3:'gebrannt', aux:AUX.HAT, cat:'strong', m:'to burn', mid:'membakar'},
   // page 2, list 2
-  {v1:'beginnen', er:'beginnt', v2:'begann', v3:'begonnen', aux:AUX.HAT, cat:'strong', m:'to begin'},
-  {v1:'befehlen', er:'befiehlt', v2:'befahl', v3:'befohlen', aux:AUX.HAT, cat:'strong', m:'to command'},
-  {v1:'betrügen', er:'betrügt', v2:'betrog', v3:'betrogen', aux:AUX.HAT, cat:'strong', m:'to cheat / deceive'},
-  {v1:'bieten', er:'bietet', v2:'bot', v3:'geboten', aux:AUX.HAT, cat:'strong', m:'to offer'},
-  {v1:'fallen', er:'fällt', v2:'fiel', v3:'gefallen', aux:AUX.IST, cat:'strong', m:'to fall'},
-  {v1:'fangen', er:'fängt', v2:'fing', v3:'gefangen', aux:AUX.HAT, cat:'strong', m:'to catch'},
-  {v1:'finden', er:'findet', v2:'fand', v3:'gefunden', aux:AUX.HAT, cat:'strong', m:'to find'},
-  {v1:'fliegen', er:'fliegt', v2:'flog', v3:'geflogen', aux:AUX.BOTH, cat:'strong', m:'to fly', dual:true, hatM:'to fly / pilot something', istM:'to go (by air)'},
-  {v1:'fliehen', er:'flieht', v2:'floh', v3:'geflohen', aux:AUX.IST, cat:'strong', m:'to flee'},
-  {v1:'fließen', er:'fließt', v2:'floss', v3:'geflossen', aux:AUX.IST, cat:'strong', m:'to flow'},
-  {v1:'gefrieren', er:'gefriert', v2:'gefror', v3:'gefroren', aux:AUX.BOTH, cat:'strong', m:'to freeze', dual:true, hatM:'to freeze something', istM:'to freeze (itself)'},
-  {v1:'geben', er:'gibt', v2:'gab', v3:'gegeben', aux:AUX.HAT, cat:'strong', m:'to give'},
-  {v1:'gehen', er:'geht', v2:'ging', v3:'gegangen', aux:AUX.IST, cat:'strong', m:'to go / walk'},
-  {v1:'genießen', er:'genießt', v2:'genoss', v3:'genossen', aux:AUX.HAT, cat:'strong', m:'to enjoy'},
-  {v1:'vergleichen', er:'vergleicht', v2:'verglich', v3:'verglichen', aux:AUX.HAT, cat:'strong', m:'to compare'},
+  {v1:'beginnen', er:'beginnt', v2:'begann', v3:'begonnen', aux:AUX.HAT, cat:'strong', m:'to begin', mid:'mulai'},
+  {v1:'befehlen', er:'befiehlt', v2:'befahl', v3:'befohlen', aux:AUX.HAT, cat:'strong', m:'to command', mid:'memerintahkan'},
+  {v1:'betrügen', er:'betrügt', v2:'betrog', v3:'betrogen', aux:AUX.HAT, cat:'strong', m:'to cheat / deceive', mid:'menipu'},
+  {v1:'bieten', er:'bietet', v2:'bot', v3:'geboten', aux:AUX.HAT, cat:'strong', m:'to offer', mid:'menawarkan'},
+  {v1:'fallen', er:'fällt', v2:'fiel', v3:'gefallen', aux:AUX.IST, cat:'strong', m:'to fall', mid:'jatuh'},
+  {v1:'fangen', er:'fängt', v2:'fing', v3:'gefangen', aux:AUX.HAT, cat:'strong', m:'to catch', mid:'menangkap'},
+  {v1:'finden', er:'findet', v2:'fand', v3:'gefunden', aux:AUX.HAT, cat:'strong', m:'to find', mid:'menemukan'},
+  {v1:'fliegen', er:'fliegt', v2:'flog', v3:'geflogen', aux:AUX.BOTH, cat:'strong', m:'to fly', mid:'menerbangkan / pergi (terbang)', dual:true, hatM:'to fly / pilot something', istM:'to go (by air)'},
+  {v1:'fliehen', er:'flieht', v2:'floh', v3:'geflohen', aux:AUX.IST, cat:'strong', m:'to flee', mid:'kabur'},
+  {v1:'fließen', er:'fließt', v2:'floss', v3:'geflossen', aux:AUX.IST, cat:'strong', m:'to flow', mid:'mengalir'},
+  {v1:'gefrieren', er:'gefriert', v2:'gefror', v3:'gefroren', aux:AUX.BOTH, cat:'strong', m:'to freeze', mid:'membekukan / membeku sendiri', dual:true, hatM:'to freeze something', istM:'to freeze (itself)'},
+  {v1:'geben', er:'gibt', v2:'gab', v3:'gegeben', aux:AUX.HAT, cat:'strong', m:'to give', mid:'memberi'},
+  {v1:'gehen', er:'geht', v2:'ging', v3:'gegangen', aux:AUX.IST, cat:'strong', m:'to go / walk', mid:'pergi / jalan'},
+  {v1:'genießen', er:'genießt', v2:'genoss', v3:'genossen', aux:AUX.HAT, cat:'strong', m:'to enjoy', mid:'menikmati'},
+  {v1:'vergleichen', er:'vergleicht', v2:'verglich', v3:'verglichen', aux:AUX.HAT, cat:'strong', m:'to compare', mid:'membandingkan'},
   // page 3, list 1
-  {v1:'greifen', er:'greift', v2:'griff', v3:'gegriffen', aux:AUX.HAT, cat:'strong', m:'to grab / grip'},
-  {v1:'graben', er:'gräbt', v2:'grub', v3:'gegraben', aux:AUX.HAT, cat:'strong', m:'to dig'},
-  {v1:'halten', er:'hält', v2:'hielt', v3:'gehalten', aux:AUX.HAT, cat:'strong', m:'to hold'},
-  {v1:'hängen', er:'hängt', v2:'hing', v3:'gehangen', aux:AUX.HAT, cat:'strong', m:'to hang (be hanging)', note:'Jam itu tergantung di dinding.'},
-  {v1:'heben', er:'hebt', v2:'hob', v3:'gehoben', aux:AUX.HAT, cat:'strong', m:'to lift'},
-  {v1:'heißen', er:'heißt', v2:'hieß', v3:'geheißen', aux:AUX.HAT, cat:'strong', m:'to be called'},
-  {v1:'helfen', er:'hilft', v2:'half', v3:'geholfen', aux:AUX.HAT, cat:'strong', m:'to help'},
-  {v1:'kennen', er:'kennt', v2:'kannte', v3:'gekannt', aux:AUX.HAT, cat:'strong', m:'to know / be acquainted with'},
-  {v1:'kommen', er:'kommt', v2:'kam', v3:'gekommen', aux:AUX.IST, cat:'strong', m:'to come / arrive'},
-  {v1:'laden', er:'lädt', v2:'lud', v3:'geladen', aux:AUX.HAT, cat:'strong', m:'to load'},
-  {v1:'lassen', er:'lässt', v2:'ließ', v3:'gelassen', aux:AUX.HAT, cat:'strong', m:'to let'},
-  {v1:'laufen', er:'läuft', v2:'lief', v3:'gelaufen', aux:AUX.IST, cat:'strong', m:'to run'},
-  {v1:'leiden', er:'leidet', v2:'litt', v3:'gelitten', aux:AUX.HAT, cat:'strong', m:'to suffer'},
-  {v1:'leihen', er:'leiht', v2:'lieh', v3:'geliehen', aux:AUX.HAT, cat:'strong', m:'to lend'},
-  {v1:'lesen', er:'liest', v2:'las', v3:'gelesen', aux:AUX.HAT, cat:'strong', m:'to read'},
+  {v1:'greifen', er:'greift', v2:'griff', v3:'gegriffen', aux:AUX.HAT, cat:'strong', m:'to grab / grip', mid:'menggapai / menggenggam'},
+  {v1:'graben', er:'gräbt', v2:'grub', v3:'gegraben', aux:AUX.HAT, cat:'strong', m:'to dig', mid:'menggali / mengubur'},
+  {v1:'halten', er:'hält', v2:'hielt', v3:'gehalten', aux:AUX.HAT, cat:'strong', m:'to hold', mid:'memegang'},
+  {v1:'hängen', er:'hängt', v2:'hing', v3:'gehangen', aux:AUX.HAT, cat:'strong', m:'to hang (be hanging)', mid:'tergantung / tersangkut', note:'Jam itu tergantung di dinding.'},
+  {v1:'heben', er:'hebt', v2:'hob', v3:'gehoben', aux:AUX.HAT, cat:'strong', m:'to lift', mid:'mengangkat'},
+  {v1:'heißen', er:'heißt', v2:'hieß', v3:'geheißen', aux:AUX.HAT, cat:'strong', m:'to be called', mid:'dipanggil / bernama'},
+  {v1:'helfen', er:'hilft', v2:'half', v3:'geholfen', aux:AUX.HAT, cat:'strong', m:'to help', mid:'membantu'},
+  {v1:'kennen', er:'kennt', v2:'kannte', v3:'gekannt', aux:AUX.HAT, cat:'strong', m:'to know / be acquainted with', mid:'kenal'},
+  {v1:'kommen', er:'kommt', v2:'kam', v3:'gekommen', aux:AUX.IST, cat:'strong', m:'to come / arrive', mid:'datang'},
+  {v1:'laden', er:'lädt', v2:'lud', v3:'geladen', aux:AUX.HAT, cat:'strong', m:'to load', mid:'memuat'},
+  {v1:'lassen', er:'lässt', v2:'ließ', v3:'gelassen', aux:AUX.HAT, cat:'strong', m:'to let', mid:'membiarkan'},
+  {v1:'laufen', er:'läuft', v2:'lief', v3:'gelaufen', aux:AUX.IST, cat:'strong', m:'to run', mid:'berlari'},
+  {v1:'leiden', er:'leidet', v2:'litt', v3:'gelitten', aux:AUX.HAT, cat:'strong', m:'to suffer', mid:'menderita'},
+  {v1:'leihen', er:'leiht', v2:'lieh', v3:'geliehen', aux:AUX.HAT, cat:'strong', m:'to lend', mid:'meminjamkan'},
+  {v1:'lesen', er:'liest', v2:'las', v3:'gelesen', aux:AUX.HAT, cat:'strong', m:'to read', mid:'membaca'},
   // page 3, list 2
-  {v1:'liegen', er:'liegt', v2:'lag', v3:'gelegen', aux:AUX.HAT, cat:'strong', m:'to lie / be located'},
-  {v1:'lügen', er:'lügt', v2:'log', v3:'gelogen', aux:AUX.HAT, cat:'strong', m:'to lie (tell an untruth)'},
-  {v1:'vermeiden', er:'vermeidet', v2:'vermied', v3:'vermieden', aux:AUX.HAT, cat:'strong', m:'to avoid'},
-  {v1:'messen', er:'misst', v2:'maß', v3:'gemessen', aux:AUX.HAT, cat:'strong', m:'to measure'},
-  {v1:'nehmen', er:'nimmt', v2:'nahm', v3:'genommen', aux:AUX.HAT, cat:'strong', m:'to take'},
-  {v1:'nennen', er:'nennt', v2:'nannte', v3:'genannt', aux:AUX.HAT, cat:'strong', m:'to name'},
-  {v1:'raten', er:'rät', v2:'riet', v3:'geraten', aux:AUX.HAT, cat:'strong', m:'to advise'},
-  {v1:'reiben', er:'reibt', v2:'rieb', v3:'gerieben', aux:AUX.HAT, cat:'strong', m:'to rub'},
-  {v1:'reißen', er:'reißt', v2:'riss', v3:'gerissen', aux:AUX.BOTH, cat:'strong', m:'to tear', dual:true, hatM:'to tear something', istM:'to tear (itself)'},
-  {v1:'rennen', er:'rennt', v2:'rannte', v3:'gerannt', aux:AUX.IST, cat:'strong', m:'to run / sprint'},
-  {v1:'riechen', er:'riecht', v2:'roch', v3:'gerochen', aux:AUX.HAT, cat:'strong', m:'to smell'},
-  {v1:'rufen', er:'ruft', v2:'rief', v3:'gerufen', aux:AUX.HAT, cat:'strong', m:'to call out'},
-  {v1:'schaffen', er:'schafft', v2:'schuf', v3:'geschaffen', aux:AUX.HAT, cat:'strong', m:'to create'},
-  {v1:'schaffen', er:'schafft', v2:'schaffte', v3:'geschafft', aux:AUX.HAT, cat:'strong', m:'to manage / succeed', note:'A separate weak verb from the "to create" schaffen above — same infinitive, different meaning and conjugation.'},
-  {v1:'scheinen', er:'scheint', v2:'schien', v3:'geschienen', aux:AUX.HAT, cat:'strong', m:'to shine / seem'},
-  {v1:'schieben', er:'schiebt', v2:'schob', v3:'geschoben', aux:AUX.HAT, cat:'strong', m:'to push / shove'},
+  {v1:'liegen', er:'liegt', v2:'lag', v3:'gelegen', aux:AUX.HAT, cat:'strong', m:'to lie / be located', mid:'terletak / tiduran'},
+  {v1:'lügen', er:'lügt', v2:'log', v3:'gelogen', aux:AUX.HAT, cat:'strong', m:'to lie (tell an untruth)', mid:'berbohong'},
+  {v1:'vermeiden', er:'vermeidet', v2:'vermied', v3:'vermieden', aux:AUX.HAT, cat:'strong', m:'to avoid', mid:'menghindari'},
+  {v1:'messen', er:'misst', v2:'maß', v3:'gemessen', aux:AUX.HAT, cat:'strong', m:'to measure', mid:'mengukur'},
+  {v1:'nehmen', er:'nimmt', v2:'nahm', v3:'genommen', aux:AUX.HAT, cat:'strong', m:'to take', mid:'mengambil'},
+  {v1:'nennen', er:'nennt', v2:'nannte', v3:'genannt', aux:AUX.HAT, cat:'strong', m:'to name', mid:'menamai'},
+  {v1:'raten', er:'rät', v2:'riet', v3:'geraten', aux:AUX.HAT, cat:'strong', m:'to advise', mid:'menyarankan'},
+  {v1:'reiben', er:'reibt', v2:'rieb', v3:'gerieben', aux:AUX.HAT, cat:'strong', m:'to rub', mid:'menggosok'},
+  {v1:'reißen', er:'reißt', v2:'riss', v3:'gerissen', aux:AUX.BOTH, cat:'strong', m:'to tear', mid:'merobek / robek sendiri', dual:true, hatM:'to tear something', istM:'to tear (itself)'},
+  {v1:'rennen', er:'rennt', v2:'rannte', v3:'gerannt', aux:AUX.IST, cat:'strong', m:'to run / sprint', mid:'berlari'},
+  {v1:'riechen', er:'riecht', v2:'roch', v3:'gerochen', aux:AUX.HAT, cat:'strong', m:'to smell', mid:'mencium'},
+  {v1:'rufen', er:'ruft', v2:'rief', v3:'gerufen', aux:AUX.HAT, cat:'strong', m:'to call out', mid:'memanggil'},
+  {v1:'schaffen', er:'schafft', v2:'schuf', v3:'geschaffen', aux:AUX.HAT, cat:'strong', m:'to create', mid:'menciptakan'},
+  {v1:'schaffen', er:'schafft', v2:'schaffte', v3:'geschafft', aux:AUX.HAT, cat:'strong', m:'to manage / succeed', mid:'berhasil', note:'A separate weak verb from the "to create" schaffen above — same infinitive, different meaning and conjugation.'},
+  {v1:'scheinen', er:'scheint', v2:'schien', v3:'geschienen', aux:AUX.HAT, cat:'strong', m:'to shine / seem', mid:'bersinar'},
+  {v1:'schieben', er:'schiebt', v2:'schob', v3:'geschoben', aux:AUX.HAT, cat:'strong', m:'to push / shove', mid:'mendorong / menggeser'},
   // page 4, list 1
-  {v1:'schlafen', er:'schläft', v2:'schlief', v3:'geschlafen', aux:AUX.HAT, cat:'strong', m:'to sleep'},
-  {v1:'schlagen', er:'schlägt', v2:'schlug', v3:'geschlagen', aux:AUX.HAT, cat:'strong', m:'to hit / beat'},
-  {v1:'schließen', er:'schließt', v2:'schloss', v3:'geschlossen', aux:AUX.HAT, cat:'strong', m:'to close'},
-  {v1:'schmelzen', er:'schmilzt', v2:'schmolz', v3:'geschmolzen', aux:AUX.BOTH, cat:'strong', m:'to melt', dual:true, hatM:'to melt something', istM:'to melt (itself)'},
-  {v1:'schneiden', er:'schneidet', v2:'schnitt', v3:'geschnitten', aux:AUX.HAT, cat:'strong', m:'to cut / slice'},
-  {v1:'erschrecken', er:'erschrickt', v2:'erschrak', v3:'erschrocken', aux:AUX.IST, cat:'strong', m:'to be startled'},
-  {v1:'schreien', er:'schreit', v2:'schrie', v3:'geschrien', aux:AUX.HAT, cat:'strong', m:'to scream'},
-  {v1:'schreiten', er:'schreitet', v2:'schritt', v3:'geschritten', aux:AUX.IST, cat:'strong', m:'to stride'},
-  {v1:'schweigen', er:'schweigt', v2:'schwieg', v3:'geschwiegen', aux:AUX.HAT, cat:'strong', m:'to stay silent'},
-  {v1:'schwimmen', er:'schwimmt', v2:'schwamm', v3:'geschwommen', aux:AUX.IST, cat:'strong', m:'to swim'},
-  {v1:'verschwinden', er:'verschwindet', v2:'verschwand', v3:'verschwunden', aux:AUX.IST, cat:'strong', m:'to disappear'},
-  {v1:'sehen', er:'sieht', v2:'sah', v3:'gesehen', aux:AUX.HAT, cat:'strong', m:'to see'},
-  {v1:'singen', er:'singt', v2:'sang', v3:'gesungen', aux:AUX.HAT, cat:'strong', m:'to sing'},
-  {v1:'sitzen', er:'sitzt', v2:'saß', v3:'gesessen', aux:AUX.HAT, cat:'strong', m:'to sit'},
-  {v1:'sprechen', er:'spricht', v2:'sprach', v3:'gesprochen', aux:AUX.HAT, cat:'strong', m:'to speak'},
+  {v1:'schlafen', er:'schläft', v2:'schlief', v3:'geschlafen', aux:AUX.HAT, cat:'strong', m:'to sleep', mid:'tidur'},
+  {v1:'schlagen', er:'schlägt', v2:'schlug', v3:'geschlagen', aux:AUX.HAT, cat:'strong', m:'to hit / beat', mid:'memukul'},
+  {v1:'schließen', er:'schließt', v2:'schloss', v3:'geschlossen', aux:AUX.HAT, cat:'strong', m:'to close', mid:'menutup'},
+  {v1:'schmelzen', er:'schmilzt', v2:'schmolz', v3:'geschmolzen', aux:AUX.BOTH, cat:'strong', m:'to melt', mid:'melelehkan / meleleh sendiri', dual:true, hatM:'to melt something', istM:'to melt (itself)'},
+  {v1:'schneiden', er:'schneidet', v2:'schnitt', v3:'geschnitten', aux:AUX.HAT, cat:'strong', m:'to cut / slice', mid:'memotong'},
+  {v1:'erschrecken', er:'erschrickt', v2:'erschrak', v3:'erschrocken', aux:AUX.IST, cat:'strong', m:'to be startled', mid:'kaget'},
+  {v1:'schreien', er:'schreit', v2:'schrie', v3:'geschrien', aux:AUX.HAT, cat:'strong', m:'to scream', mid:'berteriak'},
+  {v1:'schreiten', er:'schreitet', v2:'schritt', v3:'geschritten', aux:AUX.IST, cat:'strong', m:'to stride', mid:'melangkah'},
+  {v1:'schweigen', er:'schweigt', v2:'schwieg', v3:'geschwiegen', aux:AUX.HAT, cat:'strong', m:'to stay silent', mid:'berdiam diri'},
+  {v1:'schwimmen', er:'schwimmt', v2:'schwamm', v3:'geschwommen', aux:AUX.IST, cat:'strong', m:'to swim', mid:'berenang'},
+  {v1:'verschwinden', er:'verschwindet', v2:'verschwand', v3:'verschwunden', aux:AUX.IST, cat:'strong', m:'to disappear', mid:'lenyap'},
+  {v1:'sehen', er:'sieht', v2:'sah', v3:'gesehen', aux:AUX.HAT, cat:'strong', m:'to see', mid:'melihat'},
+  {v1:'singen', er:'singt', v2:'sang', v3:'gesungen', aux:AUX.HAT, cat:'strong', m:'to sing', mid:'bernyanyi'},
+  {v1:'sitzen', er:'sitzt', v2:'saß', v3:'gesessen', aux:AUX.HAT, cat:'strong', m:'to sit', mid:'duduk'},
+  {v1:'sprechen', er:'spricht', v2:'sprach', v3:'gesprochen', aux:AUX.HAT, cat:'strong', m:'to speak', mid:'berbicara'},
   // page 4, list 2
-  {v1:'springen', er:'springt', v2:'sprang', v3:'gesprungen', aux:AUX.IST, cat:'strong', m:'to jump'},
-  {v1:'stechen', er:'sticht', v2:'stach', v3:'gestochen', aux:AUX.HAT, cat:'strong', m:'to sting / prick'},
-  {v1:'stehen', er:'steht', v2:'stand', v3:'gestanden', aux:AUX.HAT, cat:'strong', m:'to stand'},
-  {v1:'stehlen', er:'stiehlt', v2:'stahl', v3:'gestohlen', aux:AUX.HAT, cat:'strong', m:'to steal'},
-  {v1:'steigen', er:'steigt', v2:'stieg', v3:'gestiegen', aux:AUX.IST, cat:'strong', m:'to climb / rise'},
-  {v1:'sterben', er:'stirbt', v2:'starb', v3:'gestorben', aux:AUX.IST, cat:'strong', m:'to die'},
-  {v1:'stoßen', er:'stößt', v2:'stieß', v3:'gestoßen', aux:AUX.BOTH, cat:'strong', m:'to push / bump', dual:true, hatM:'to shove/push something or someone', istM:'to come across / encounter'},
-  {v1:'streichen', er:'streicht', v2:'strich', v3:'gestrichen', aux:AUX.HAT, cat:'strong', m:'to paint (a wall)'},
-  {v1:'streiten', er:'streitet', v2:'stritt', v3:'gestritten', aux:AUX.HAT, cat:'strong', m:'to argue'},
-  {v1:'tragen', er:'trägt', v2:'trug', v3:'getragen', aux:AUX.HAT, cat:'strong', m:'to carry / wear'},
-  {v1:'treffen', er:'trifft', v2:'traf', v3:'getroffen', aux:AUX.HAT, cat:'strong', m:'to meet'},
-  {v1:'treiben', er:'treibt', v2:'trieb', v3:'getrieben', aux:AUX.HAT, cat:'strong', m:'to drive / propel'},
-  {v1:'treten', er:'tritt', v2:'trat', v3:'getreten', aux:AUX.BOTH, cat:'strong', m:'to step / kick', dual:true, hatM:'to kick something', istM:'to step / appear'},
-  {v1:'trinken', er:'trinkt', v2:'trank', v3:'getrunken', aux:AUX.HAT, cat:'strong', m:'to drink'},
-  {v1:'tun', er:'tut', v2:'tat', v3:'getan', aux:AUX.HAT, cat:'strong', m:'to do'},
+  {v1:'springen', er:'springt', v2:'sprang', v3:'gesprungen', aux:AUX.IST, cat:'strong', m:'to jump', mid:'melompat'},
+  {v1:'stechen', er:'sticht', v2:'stach', v3:'gestochen', aux:AUX.HAT, cat:'strong', m:'to sting / prick', mid:'menyengat'},
+  {v1:'stehen', er:'steht', v2:'stand', v3:'gestanden', aux:AUX.HAT, cat:'strong', m:'to stand', mid:'berdiri'},
+  {v1:'stehlen', er:'stiehlt', v2:'stahl', v3:'gestohlen', aux:AUX.HAT, cat:'strong', m:'to steal', mid:'mencuri'},
+  {v1:'steigen', er:'steigt', v2:'stieg', v3:'gestiegen', aux:AUX.IST, cat:'strong', m:'to climb / rise', mid:'meningkat / naik'},
+  {v1:'sterben', er:'stirbt', v2:'starb', v3:'gestorben', aux:AUX.IST, cat:'strong', m:'to die', mid:'meninggal'},
+  {v1:'stoßen', er:'stößt', v2:'stieß', v3:'gestoßen', aux:AUX.BOTH, cat:'strong', m:'to push / bump', mid:'mendorong / bertemu tak sengaja', dual:true, hatM:'to shove/push something or someone', istM:'to come across / encounter'},
+  {v1:'streichen', er:'streicht', v2:'strich', v3:'gestrichen', aux:AUX.HAT, cat:'strong', m:'to paint (a wall)', mid:'mengecat'},
+  {v1:'streiten', er:'streitet', v2:'stritt', v3:'gestritten', aux:AUX.HAT, cat:'strong', m:'to argue', mid:'bertengkar'},
+  {v1:'tragen', er:'trägt', v2:'trug', v3:'getragen', aux:AUX.HAT, cat:'strong', m:'to carry / wear', mid:'membawa / mengenakan'},
+  {v1:'treffen', er:'trifft', v2:'traf', v3:'getroffen', aux:AUX.HAT, cat:'strong', m:'to meet', mid:'menemui'},
+  {v1:'treiben', er:'treibt', v2:'trieb', v3:'getrieben', aux:AUX.HAT, cat:'strong', m:'to drive / propel', mid:'menjalankan / memacu'},
+  {v1:'treten', er:'tritt', v2:'trat', v3:'getreten', aux:AUX.BOTH, cat:'strong', m:'to step / kick', mid:'menendang / muncul', dual:true, hatM:'to kick something', istM:'to step / appear'},
+  {v1:'trinken', er:'trinkt', v2:'trank', v3:'getrunken', aux:AUX.HAT, cat:'strong', m:'to drink', mid:'minum'},
+  {v1:'tun', er:'tut', v2:'tat', v3:'getan', aux:AUX.HAT, cat:'strong', m:'to do', mid:'melakukan'},
   // page 5
-  {v1:'verderben', er:'verdirbt', v2:'verdarb', v3:'verdorben', aux:AUX.BOTH, cat:'strong', m:'to spoil / ruin', dual:true, hatM:'to ruin something', istM:'to spoil (itself)'},
-  {v1:'vergessen', er:'vergisst', v2:'vergaß', v3:'vergessen', aux:AUX.HAT, cat:'strong', m:'to forget'},
-  {v1:'verlieren', er:'verliert', v2:'verlor', v3:'verloren', aux:AUX.HAT, cat:'strong', m:'to lose'},
-  {v1:'wachsen', er:'wächst', v2:'wuchs', v3:'gewachsen', aux:AUX.IST, cat:'strong', m:'to grow'},
-  {v1:'waschen', er:'wäscht', v2:'wusch', v3:'gewaschen', aux:AUX.HAT, cat:'strong', m:'to wash'},
-  {v1:'weisen', er:'weist', v2:'wies', v3:'gewiesen', aux:AUX.HAT, cat:'strong', m:'to point / direct'},
-  {v1:'wenden', er:'wendet', v2:'wandte', v3:'gewandt', aux:AUX.HAT, cat:'strong', m:'to turn (something) around', note:'wandte/wendete and gewandt/gewendet are both fine — usage is interchangeable.'},
-  {v1:'werben', er:'wirbt', v2:'warb', v3:'geworben', aux:AUX.HAT, cat:'strong', m:'to advertise'},
-  {v1:'werfen', er:'wirft', v2:'warf', v3:'geworfen', aux:AUX.HAT, cat:'strong', m:'to throw'},
-  {v1:'wiegen', er:'wiegt', v2:'wog', v3:'gewogen', aux:AUX.HAT, cat:'strong', m:'to weigh'},
-  {v1:'wissen', er:'weiß', v2:'wusste', v3:'gewusst', aux:AUX.HAT, cat:'strong', m:'to know (a fact)'},
-  {v1:'verzeihen', er:'verzeiht', v2:'verzieh', v3:'verziehen', aux:AUX.HAT, cat:'strong', m:'to forgive (+ Dative)'},
-  {v1:'ziehen', er:'zieht', v2:'zog', v3:'gezogen', aux:AUX.BOTH, cat:'strong', m:'to pull / move', dual:true, hatM:'to pull something', istM:'to move (change residence)', note:'Ex: Sie zog nach Berlin.'},
-  {v1:'zwingen', er:'zwingt', v2:'zwang', v3:'gezwungen', aux:AUX.HAT, cat:'strong', m:'to force'},
-  {v1:'gießen', er:'gießt', v2:'goss', v3:'gegossen', aux:AUX.HAT, cat:'strong', m:'to water / pour'},
-  {v1:'schmeißen', er:'schmeißt', v2:'schmiss', v3:'geschmissen', aux:AUX.HAT, cat:'strong', m:'to chuck / throw'},
-  {v1:'schreiben', er:'schreibt', v2:'schrieb', v3:'geschrieben', aux:AUX.HAT, cat:'strong', m:'to write'},
+  {v1:'verderben', er:'verdirbt', v2:'verdarb', v3:'verdorben', aux:AUX.BOTH, cat:'strong', m:'to spoil / ruin', mid:'merusak / rusak sendiri', dual:true, hatM:'to ruin something', istM:'to spoil (itself)'},
+  {v1:'vergessen', er:'vergisst', v2:'vergaß', v3:'vergessen', aux:AUX.HAT, cat:'strong', m:'to forget', mid:'lupa'},
+  {v1:'verlieren', er:'verliert', v2:'verlor', v3:'verloren', aux:AUX.HAT, cat:'strong', m:'to lose', mid:'kalah'},
+  {v1:'wachsen', er:'wächst', v2:'wuchs', v3:'gewachsen', aux:AUX.IST, cat:'strong', m:'to grow', mid:'bertumbuh'},
+  {v1:'waschen', er:'wäscht', v2:'wusch', v3:'gewaschen', aux:AUX.HAT, cat:'strong', m:'to wash', mid:'mencuci'},
+  {v1:'weisen', er:'weist', v2:'wies', v3:'gewiesen', aux:AUX.HAT, cat:'strong', m:'to point / direct', mid:'mengarahkan'},
+  {v1:'wenden', er:'wendet', v2:'wandte', v3:'gewandt', aux:AUX.HAT, cat:'strong', m:'to turn (something) around', mid:'membalikkan', note:'wandte/wendete and gewandt/gewendet are both fine — usage is interchangeable.'},
+  {v1:'werben', er:'wirbt', v2:'warb', v3:'geworben', aux:AUX.HAT, cat:'strong', m:'to advertise', mid:'mengiklankan'},
+  {v1:'werfen', er:'wirft', v2:'warf', v3:'geworfen', aux:AUX.HAT, cat:'strong', m:'to throw', mid:'melempar'},
+  {v1:'wiegen', er:'wiegt', v2:'wog', v3:'gewogen', aux:AUX.HAT, cat:'strong', m:'to weigh', mid:'menimbang'},
+  {v1:'wissen', er:'weiß', v2:'wusste', v3:'gewusst', aux:AUX.HAT, cat:'strong', m:'to know (a fact)', mid:'mengetahui'},
+  {v1:'verzeihen', er:'verzeiht', v2:'verzieh', v3:'verziehen', aux:AUX.HAT, cat:'strong', m:'to forgive (+ Dative)', mid:'mengampuni'},
+  {v1:'ziehen', er:'zieht', v2:'zog', v3:'gezogen', aux:AUX.BOTH, cat:'strong', m:'to pull / move', mid:'menarik / pindah', dual:true, hatM:'to pull something', istM:'to move (change residence)', note:'Ex: Sie zog nach Berlin.'},
+  {v1:'zwingen', er:'zwingt', v2:'zwang', v3:'gezwungen', aux:AUX.HAT, cat:'strong', m:'to force', mid:'memaksa'},
+  {v1:'gießen', er:'gießt', v2:'goss', v3:'gegossen', aux:AUX.HAT, cat:'strong', m:'to water / pour', mid:'menyiram / menuang'},
+  {v1:'schmeißen', er:'schmeißt', v2:'schmiss', v3:'geschmissen', aux:AUX.HAT, cat:'strong', m:'to chuck / throw', mid:'melempar'},
+  {v1:'schreiben', er:'schreibt', v2:'schrieb', v3:'geschrieben', aux:AUX.HAT, cat:'strong', m:'to write', mid:'menulis'},
   // extra transitive pair not on the main table but noted separately
-  {v1:'hängen', er:'hängt', v2:'hängte', v3:'gehängt', aux:AUX.HAT, cat:'strong', m:'to hang (something) up', note:'The transitive twin of hängen above — this one is weak. Ex: Ich hängte meine Wäsche dort auf.'},
+  {v1:'hängen', er:'hängt', v2:'hängte', v3:'gehängt', aux:AUX.HAT, cat:'strong', m:'to hang (something) up', mid:'menyangkutkan / menggantungkan', note:'The transitive twin of hängen above — this one is weak. Ex: Ich hängte meine Wäsche dort auf.'},
 ];
 
 VERBS.forEach((v,i)=>v.id=i);
@@ -533,6 +564,7 @@ function filterByCategory(list, cat){
 const TABS = [
   {id:'flash', label:'Flashcards'},
   {id:'quiz', label:'Quiz'},
+  {id:'tquiz', label:'Translation quiz'},
   {id:'table', label:'Reference table'},
   {id:'dual', label:'Hat vs. ist'},
 ];
@@ -545,6 +577,8 @@ function renderTabs(){
       document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
       document.getElementById('panel-'+activeTab).classList.add('active');
       renderTabs();
+      if(activeTab==='quiz'){ const el=document.getElementById('quiz-v2-input'); if(el) el.focus(); }
+      if(activeTab==='tquiz'){ const el=document.getElementById('tquiz-v1-input'); if(el) el.focus(); }
     });
   });
 }
@@ -594,6 +628,7 @@ function renderFlashcard(){
   document.getElementById('fc-b-v3').textContent = v.v3;
   document.getElementById('fc-b-aux').innerHTML = ' ' + auxPillHTML(v.aux);
   document.getElementById('fc-b-meaning').textContent = v.m;
+  document.getElementById('fc-b-meaning-id').textContent = 'ID: ' + v.mid;
   const dualBox = document.getElementById('fc-b-dual');
   if(v.dual){
     dualBox.style.display='block';
@@ -677,7 +712,8 @@ function renderQuizQuestion(){
   }
   const v = quizPool[quizIndex];
   document.getElementById('quiz-v1').textContent = v.v1;
-  document.getElementById('quiz-meaning').textContent = v.m + ` (er/sie/es: ${v.er})`;
+  document.getElementById('quiz-meaning').textContent = `${v.m} · ${v.mid}  (er/sie/es: ${v.er})`;
+  v2in.focus();
 }
 function checkQuiz(){
   if(quizPool.length===0) return;
@@ -714,8 +750,12 @@ function nextQuiz(){
 function initQuiz(){
   document.getElementById('quiz-check').addEventListener('click', checkQuiz);
   document.getElementById('quiz-skip').addEventListener('click', nextQuiz);
+  document.getElementById('quiz-v2-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); document.getElementById('quiz-v3-input').focus(); }
+  });
   document.getElementById('quiz-v3-input').addEventListener('keydown', e=>{
     if(e.key==='Enter'){
+      e.preventDefault();
       if(document.getElementById('quiz-v3-input').classList.contains('correct') || document.getElementById('quiz-v3-input').classList.contains('wrong')){
         nextQuiz();
       } else {
@@ -725,6 +765,102 @@ function initQuiz(){
   });
   renderQuizFilters();
   buildQuizPool();
+}
+
+/* ======================= TRANSLATION QUIZ ======================= */
+let tquizCategory = 'all';
+let tquizPool = [];
+let tquizIndex = 0;
+let tquizScore = { correct:0, total:0 };
+
+function renderTquizFilters(){
+  const row = document.getElementById('tquiz-filters');
+  row.innerHTML = FLASH_CATS.map(c=>`<button class="chip ${c.id===tquizCategory?'active':''}" data-cat="${c.id}">${c.label}</button>`).join('');
+  row.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      tquizCategory = chip.dataset.cat;
+      buildTquizPool();
+    });
+  });
+}
+function buildTquizPool(){
+  tquizPool = shuffle(filterByCategory(VERBS, tquizCategory));
+  tquizIndex = 0;
+  tquizScore = {correct:0, total:0};
+  renderTquizQuestion();
+}
+function renderTquizQuestion(){
+  document.getElementById('tquiz-score').textContent = `Score: ${tquizScore.correct} / ${tquizScore.total}`;
+  const v1in = document.getElementById('tquiz-v1-input');
+  const v2in = document.getElementById('tquiz-v2-input');
+  const v3in = document.getElementById('tquiz-v3-input');
+  v1in.value=''; v2in.value=''; v3in.value='';
+  [v1in,v2in,v3in].forEach(el=>el.classList.remove('correct','wrong'));
+  document.getElementById('tquiz-feedback').textContent='';
+  if(tquizPool.length===0){
+    document.getElementById('tquiz-mid').textContent = '—';
+    document.getElementById('tquiz-en').textContent = 'No verbs in this filter.';
+    return;
+  }
+  const v = tquizPool[tquizIndex];
+  document.getElementById('tquiz-mid').textContent = v.mid;
+  document.getElementById('tquiz-en').textContent = `(${v.m})`;
+  v1in.focus();
+}
+function checkTquiz(){
+  if(tquizPool.length===0) return;
+  const v = tquizPool[tquizIndex];
+  const v1in = document.getElementById('tquiz-v1-input');
+  const v2in = document.getElementById('tquiz-v2-input');
+  const v3in = document.getElementById('tquiz-v3-input');
+  const v1ok = normalize(v1in.value) === normalize(v.v1);
+  const v2ok = normalize(v2in.value) === normalize(v.v2);
+  let v3ok;
+  const userV3 = normalize(v3in.value);
+  if(v.aux===AUX.BOTH){
+    v3ok = userV3 === normalize('hat '+v.v3) || userV3 === normalize('ist '+v.v3) || userV3 === normalize(v.v3);
+  } else {
+    v3ok = userV3 === normalize(v.aux+' '+v.v3) || userV3 === normalize(v.v3);
+  }
+  v1in.classList.toggle('correct', v1ok); v1in.classList.toggle('wrong', !v1ok);
+  v2in.classList.toggle('correct', v2ok); v2in.classList.toggle('wrong', !v2ok);
+  v3in.classList.toggle('correct', v3ok); v3in.classList.toggle('wrong', !v3ok);
+  tquizScore.total++;
+  if(v1ok && v2ok && v3ok) tquizScore.correct++;
+  const fb = document.getElementById('tquiz-feedback');
+  if(v1ok && v2ok && v3ok){
+    fb.innerHTML = `<strong style="color:#0d5c42;">Correct!</strong>`;
+  } else {
+    fb.innerHTML = `Answer: <strong>${v.v1}</strong> · <strong>${v.v2}</strong> · <strong>${auxPillHTML(v.aux)} ${v.v3}</strong>` + (v.dual ? ` <br><span style="color:var(--ink-soft);">hat → ${v.hatM} · ist → ${v.istM}</span>`:'');
+  }
+  document.getElementById('tquiz-score').textContent = `Score: ${tquizScore.correct} / ${tquizScore.total}`;
+}
+function nextTquiz(){
+  if(tquizPool.length===0) return;
+  tquizIndex = (tquizIndex+1) % tquizPool.length;
+  renderTquizQuestion();
+}
+function initTquiz(){
+  document.getElementById('tquiz-check').addEventListener('click', checkTquiz);
+  document.getElementById('tquiz-skip').addEventListener('click', nextTquiz);
+  document.getElementById('tquiz-v1-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); document.getElementById('tquiz-v2-input').focus(); }
+  });
+  document.getElementById('tquiz-v2-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); document.getElementById('tquiz-v3-input').focus(); }
+  });
+  document.getElementById('tquiz-v3-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){
+      e.preventDefault();
+      if(document.getElementById('tquiz-v3-input').classList.contains('correct') || document.getElementById('tquiz-v3-input').classList.contains('wrong')){
+        nextTquiz();
+      } else {
+        checkTquiz();
+      }
+    }
+  });
+  renderTquizFilters();
+  buildTquizPool();
 }
 
 /* ======================= TABLE ======================= */
@@ -745,11 +881,11 @@ function renderTable(){
   let list = filterByCategory(VERBS, tableCategory);
   if(tableSearch){
     const q = tableSearch.toLowerCase();
-    list = list.filter(v => v.v1.toLowerCase().includes(q) || v.v2.toLowerCase().includes(q) || v.v3.toLowerCase().includes(q) || v.m.toLowerCase().includes(q));
+    list = list.filter(v => v.v1.toLowerCase().includes(q) || v.v2.toLowerCase().includes(q) || v.v3.toLowerCase().includes(q) || v.m.toLowerCase().includes(q) || v.mid.toLowerCase().includes(q));
   }
   const body = document.getElementById('table-body');
   if(list.length===0){
-    body.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--ink-soft); padding:20px;">No matches.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--ink-soft); padding:20px;">No matches.</td></tr>`;
     return;
   }
   body.innerHTML = list.map(v=>`
@@ -759,6 +895,7 @@ function renderTable(){
       <td class="word-de">${v.v2}</td>
       <td>${auxPillHTML(v.aux)} <span class="word-de">${v.v3}</span></td>
       <td class="meaning-cell">${v.m}</td>
+      <td class="meaning-cell">${v.mid}</td>
     </tr>
   `).join('');
 }
@@ -836,6 +973,7 @@ function initDual(){
 renderTabs();
 initFlashcards();
 initQuiz();
+initTquiz();
 initTable();
 initDual();
 </script>
