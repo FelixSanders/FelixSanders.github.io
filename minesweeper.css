@@ -1,0 +1,216 @@
+
+:root {
+    --ms-green: #00BF63;
+    --ms-green-dark: #00913f;
+    --ms-black: #0a0a0a;
+    --ms-panel: #141414;
+    --ms-cell-hidden: #1e1e1e;
+    --ms-cell-hidden-hover: #262626;
+    --ms-cell-revealed: #f4f4f4;
+    --ms-border: #2a2a2a;
+}
+
+.minesweeper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto 40px;
+    max-width: 640px;
+}
+
+/* Status bar: mine counter, face/reset button, timer */
+.ms-status-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--ms-panel);
+    border: 2px solid var(--ms-green);
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+}
+
+.ms-status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', 'DM Sans', monospace;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--ms-green);
+    min-width: 70px;
+}
+
+.ms-status-item i {
+    color: var(--ms-green);
+}
+
+.ms-face-button {
+    background-color: var(--ms-black);
+    border: 2px solid var(--ms-green);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.ms-face-button:hover {
+    background-color: var(--ms-green);
+    transform: scale(1.08);
+}
+
+.ms-face-button:active {
+    transform: scale(0.95);
+}
+
+/* Difficulty selector */
+.ms-difficulty {
+    display: flex;
+    gap: 10px;
+}
+
+/* Difficulty selector */
+.ms-difficulty {
+    display: flex;
+    gap: 10px;
+}
+
+.difficulty-button {
+    background-color: transparent;
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: 'Space Grotesk', 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Easy — green */
+#diff-easy {
+    color: #00ae5a;
+    border-color: #00ae5a;
+}
+#diff-easy:hover {
+    background-color: rgba(0, 191, 99, 0.15);
+}
+#diff-easy.active {
+    background-color: #00ae5a;
+    color: #0a0a0a;
+}
+
+/* Medium — yellow */
+#diff-medium {
+    color: #FFC107;
+    border-color: #FFC107;
+}
+#diff-medium:hover {
+    background-color: rgba(255, 193, 7, 0.15);
+}
+#diff-medium.active {
+    background-color: #FFC107;
+    color: #0a0a0a;
+}
+
+/* Hard — red */
+#diff-hard {
+    color: #EF4444;
+    border-color: #EF4444;
+}
+#diff-hard:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+}
+#diff-hard.active {
+    background-color: #EF4444;
+    color: #0a0a0a;
+}
+/* Board */
+.ms-board-wrapper {
+    background-color: var(--ms-panel);
+    border: 2px solid var(--ms-green);
+    border-radius: 12px;
+    padding: 12px;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+#minesweeper-grid {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+#minesweeper-grid td {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid var(--ms-border);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+    background-color: var(--ms-cell-hidden);
+    transition: background-color 0.1s ease;
+}
+
+#minesweeper-grid td.ms-hidden:hover {
+    background-color: var(--ms-cell-hidden-hover);
+}
+
+#minesweeper-grid td.ms-revealed {
+    background-color: var(--ms-cell-revealed);
+    color: var(--ms-black);
+    cursor: default;
+}
+
+#minesweeper-grid td.ms-flagged {
+    background-color: var(--ms-cell-hidden);
+    color: var(--ms-green);
+}
+
+#minesweeper-grid td.ms-mine {
+    background-color: #d32f2f;
+    color: #ffffff;
+}
+
+#minesweeper-grid td.ms-mine-triggered {
+    background-color: #ff4444;
+    color: #ffffff;
+}
+
+/* Number colors, classic minesweeper palette adapted to theme */
+#minesweeper-grid td.ms-n1 { color: #1976d2; }
+#minesweeper-grid td.ms-n2 { color: var(--ms-green-dark); }
+#minesweeper-grid td.ms-n3 { color: #d32f2f; }
+#minesweeper-grid td.ms-n4 { color: #7b1fa2; }
+#minesweeper-grid td.ms-n5 { color: #ff8f00; }
+#minesweeper-grid td.ms-n6 { color: #00838f; }
+#minesweeper-grid td.ms-n7 { color: #212121; }
+#minesweeper-grid td.ms-n8 { color: #5d4037; }
+
+#flag-mode-button.active {
+    background-color: var(--ms-green);
+    color: var(--ms-black);
+}
+
+@media (max-width: 480px) {
+    #minesweeper-grid td {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+        font-size: 12px;
+    }
+}

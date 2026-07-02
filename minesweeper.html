@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>FSK | Sudoku</title>
+    <title>FSK | Minesweeper</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="sudoku.css">
+    <link rel="stylesheet" href="minesweeper.css">
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-brands/css/uicons-brands.css'>
@@ -35,25 +35,38 @@
     </div>
 
     <div class="title-section">
-        <h1>Sudoku</h1>
+        <h1>Minesweeper</h1>
     </div>
 
-    <div class="sudoku-container">
-        <div class="sudoku-difficulty">
-            <button onclick="setSudokuDifficulty('easy')" class="difficulty-button" id="sdk-diff-easy">Easy</button>
-            <button onclick="setSudokuDifficulty('medium')" class="difficulty-button" id="sdk-diff-medium">Medium</button>
-            <button onclick="setSudokuDifficulty('hard')" class="difficulty-button" id="sdk-diff-hard">Hard</button>
+    <div class="minesweeper-container">
+        <div class="ms-status-bar">
+            <div class="ms-status-item">
+                <i class="fa-solid fa-bomb"></i>
+                <span id="mine-count">10</span>
+            </div>
+            <button id="ms-face" class="ms-face-button" onclick="generateMinesweeper()">🙂</button>
+            <div class="ms-status-item">
+                <i class="fa-solid fa-clock"></i>
+                <span id="ms-timer">000</span>
+            </div>
         </div>
-        <div class="sudoku-board-wrapper">
-            <table id="sudoku-grid"></table>
+
+        <div class="ms-difficulty">
+            <button onclick="setDifficulty('easy')" class="difficulty-button" id="diff-easy">Easy</button>
+            <button onclick="setDifficulty('medium')" class="difficulty-button" id="diff-medium">Medium</button>
+            <button onclick="setDifficulty('hard')" class="difficulty-button" id="diff-hard">Hard</button>
         </div>
+
+        <div class="ms-board-wrapper">
+            <table id="minesweeper-grid"></table>
+        </div>
+
         <div class="buttons">
-            <button onclick="generateSudoku()" class="action-button"><i class="fa-solid fa-plus"></i> Generate</button>
-            <button onclick="solveSudoku()" class="action-button"><i class="fa-solid fa-lightbulb"></i> Solution</button>
-            <button onclick="checkSolution()" class="action-button"><i class="fa-solid fa-check"></i> Check</button>
-            <button onclick="clearGrid()" class="action-button"><i class="fa-solid fa-xmark"></i> Clear</button>
+            <button onclick="generateMinesweeper()" class="action-button"><i class="fa-solid fa-plus"></i> New Game</button>
+            <button onclick="toggleFlagMode()" id="flag-mode-button" class="action-button"><i class="fa-solid fa-flag"></i> Flag Mode</button>
         </div>
     </div>
+
     <div class="result-message">
         <p class="result-text"></p>
         <button onclick="closePopup()" class="popup-button">Close</button>
@@ -83,6 +96,6 @@
 
 
     <script src="script.js"></script>
-    <script src="sudoku.js"></script>
+    <script src="minesweeper.js"></script>
 </body>
 </html>

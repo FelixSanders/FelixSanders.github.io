@@ -1,48 +1,74 @@
 .sudoku-container {
     text-align: center;
     padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
 }
 
-.result-message {
-    display: none;
-    padding: 25px;
-    font-size: 18px;
-    font-weight: 500;
-    color: black;
-    position: fixed;
-    background-color: #ffffff;
-    border-radius: 15px;
-    margin: auto;
-    border: 3px solid rgb(0, 0, 0);
-    padding: 20px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center; /* Center the text inside the div */
-    z-index: 1000; /* Ensure the message stays on top of other elements */
+/* Difficulty selector (mirrors minesweeper) */
+.sudoku-difficulty {
+    display: flex;
+    gap: 10px;
 }
 
-.popup-button {
-    font-family: "DM Sans", sans-serif;
-    font-weight: 500;
-    background-color: #ff0000;
-    margin-top: 15px;
-    padding: 5px 15px;
-    font-size: 16px;
+.difficulty-button {
+    background-color: transparent;
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9em;
     cursor: pointer;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.popup-button:hover {
-    background-color: #830000;
+#sdk-diff-easy {
+    color: #00ae5a;
+    border-color: #00ae5a;
+}
+#sdk-diff-easy:hover { background-color: rgba(0, 191, 99, 0.15); }
+#sdk-diff-easy.active {
+    background-color: #00ae5a;
+    color: #0a0a0a;
+}
+
+#sdk-diff-medium {
+    color: #FFC107;
+    border-color: #FFC107;
+}
+#sdk-diff-medium:hover { background-color: rgba(255, 193, 7, 0.15); }
+#sdk-diff-medium.active {
+    background-color: #FFC107;
+    color: #0a0a0a;
+}
+
+#sdk-diff-hard {
+    color: #EF4444;
+    border-color: #EF4444;
+}
+#sdk-diff-hard:hover { background-color: rgba(239, 68, 68, 0.15); }
+#sdk-diff-hard.active {
+    background-color: #EF4444;
+    color: #0a0a0a;
+}
+
+/* Board wrapper — dark panel framing the grid, like the minesweeper board */
+.sudoku-board-wrapper {
+    background-color: #141414;
+    border: 2px solid #00BF63;
+    border-radius: 14px;
+    padding: 14px;
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 table {
     border-collapse: collapse;
     margin: 0 auto;
-    border: 1px solid #000;
+    border: none;
     padding: 0px;
 }
 
@@ -53,73 +79,76 @@ tr {
 td {
     width: 40px;
     height: 40px;
-    border: 1px solid #000;
-    border-right: 1px solid #000;
+    border: 1px solid #2a2a2a;
     position: relative;
     margin: 0px;
     text-align: center;
-    background-color: #f0f0f0;
+    background-color: #1e1e1e;
+    transition: background-color 0.15s ease;
 }
 
 input[type="text"] {
-    font-family: "Poppins", sans-serif;
+    font-family: "DM Sans", sans-serif;
     width: 90%;
     height: 90%;
     text-align: center;
     font-size: 20px;
+    font-weight: 500;
     border: none;
-    background-color: #00000000;
+    background-color: transparent;
+    color: #f4f4f4;
+    caret-color: #00BF63;
+    border-radius: 4px;
 }
 
 input[type="text"]:focus {
     outline: none;
+    background-color: rgba(0, 191, 99, 0.18);
+    box-shadow: inset 0 0 0 2px #00BF63;
 }
 
+/* Given (non-editable) cells — bold, faint green tint, distinct from user entries */
 input:not(.editable) {
-    font-weight: bold;
-    background-color: #d1d1d1; /* Gray background for non-editable cells */
+    font-weight: 700;
+    color: #00BF63;
+    background-color: rgba(0, 191, 99, 0.08);
     cursor: default;
 }
 
-
-.buttons {
-    margin-top: 20px;
-    margin-bottom: 50px;
+/* Correct / incorrect feedback, replaces inline style.backgroundColor */
+input.cell-correct {
+    background-color: rgba(0, 191, 99, 0.35) !important;
+    box-shadow: inset 0 0 0 2px #00BF63;
 }
 
-.action-button {
-    cursor: pointer;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    display: inline-block;
-    font-size: 1.1em;
-    color: #000000;
-    padding: 10px 20px;
-    text-align: center;
-    margin: 15px 20px;
-    border: none;
-    text-decoration: none;
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
+input.cell-incorrect {
+    background-color: rgba(239, 68, 68, 0.35) !important;
+    box-shadow: inset 0 0 0 2px #EF4444;
 }
 
-.action-button:hover {
-    background-color: #5a5a5a;
-}
-
-/* Add thicker borders to separate 3x3 grids */
+/* Thicker green borders to separate 3x3 grids */
 td:nth-child(3n) {
-    border-right: 3px solid #000;
+    border-right: 3px solid #00BF63;
 }
 
 tr:nth-child(3n) td {
-    border-bottom: 3px solid #000;
+    border-bottom: 3px solid #00BF63;
 }
 
 td:first-child {
-    border-left: 3px solid #000;
+    border-left: 3px solid #00BF63;
 }
 
 tr:first-child td {
-    border-top: 3px solid #000;
+    border-top: 3px solid #00BF63;
+}
+
+@media (max-width: 480px) {
+    td {
+        width: 32px;
+        height: 32px;
+    }
+    input[type="text"] {
+        font-size: 16px;
+    }
 }

@@ -1,6 +1,13 @@
 let solvedBoard = []; // Store the solved board here
 let generatedBoard = []; // Track the generated board to keep cells uneditable
 
+const SDK_DIFFICULTIES = {
+    easy: 40,
+    medium: 50,
+    hard: 60
+};
+let sdkHoles = SDK_DIFFICULTIES.easy;
+
 // Create the Sudoku grid in HTML
 const grid = document.getElementById("sudoku-grid");
 
@@ -15,13 +22,74 @@ for (let i = 0; i < 9; i++) {
         input.classList.add("editable"); // Add a class for editable cells
         input.inputMode = "numeric"; // Suggest numeric keyboard on mobile
         input.pattern = "[0-9]"; // Pattern to allow only single digits
-        input.addEventListener("input", function() {
-            this.value = this.value.replace(/[^0-9]/g, ''); // Ensure only numbers are entered
+        input.dataset.row = i;
+        input.dataset.col = j;
+
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/[^1-9]/g, ''); // Ensure only 1-9 entered
+            this.classList.remove('cell-correct', 'cell-incorrect');
+            if (this.value !== '') {
+                focusNextCell(i, j);
+            }
         });
+
+        input.addEventListener("keydown", function (e) {
+            handleCellNavigation(e, i, j);
+        });
+
         cell.appendChild(input);
         row.appendChild(cell);
     }
     grid.appendChild(row);
+}
+
+// Move focus to the next editable cell after typing a digit
+function focusNextCell(row, col) {
+    let r = row, c = col;
+    for (let step = 0; step < 81; step++) {
+        c++;
+        if (c > 8) { c = 0; r++; }
+        if (r > 8) return; // reached the end
+        const next = document.getElementById(`cell-${r}-${c}`);
+        if (next && !next.disabled) {
+            next.focus();
+            return;
+        }
+    }
+}
+
+// Arrow key + backspace navigation between cells
+function handleCellNavigation(e, row, col) {
+    const move = (r, c) => {
+        const target = document.getElementById(`cell-${r}-${c}`);
+        if (target) target.focus();
+    };
+
+    switch (e.key) {
+        case "ArrowRight": if (col < 8) move(row, col + 1); e.preventDefault(); break;
+        case "ArrowLeft": if (col > 0) move(row, col - 1); e.preventDefault(); break;
+        case "ArrowDown": if (row < 8) move(row + 1, col); e.preventDefault(); break;
+        case "ArrowUp": if (row > 0) move(row - 1, col); e.preventDefault(); break;
+        case "Backspace":
+            if (e.target.value === '') {
+                let c = col - 1, r = row;
+                if (c < 0) { c = 8; r--; }
+                if (r >= 0) move(r, c);
+            }
+            break;
+    }
+}
+
+// Set difficulty and start a fresh puzzle
+function setSudokuDifficulty(level) {
+    if (!SDK_DIFFICULTIES[level]) return;
+    sdkHoles = SDK_DIFFICULTIES[level];
+
+    document.querySelectorAll('.sudoku-difficulty .difficulty-button').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById('sdk-diff-' + level);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    generateSudoku();
 }
 
 // Get the board state from HTML inputs
@@ -47,9 +115,9 @@ function setBoard(board) {
         cols.forEach((col, j) => {
             col.value = board[i][j] !== 0 ? board[i][j] : "";
             // If the cell is part of the generated board, keep it non-editable
-            col.disabled = generatedBoard[i][j] !== 0; 
-            col.classList.toggle('editable', generatedBoard[i][j] === 0); 
-            col.style.backgroundColor = ""; // Reset background color
+            col.disabled = generatedBoard[i][j] !== 0;
+            col.classList.toggle('editable', generatedBoard[i][j] === 0);
+            col.classList.remove('cell-correct', 'cell-incorrect');
         });
     });
 }
@@ -111,7 +179,7 @@ function clearGrid() {
         input.value = "";
         input.disabled = false;
         input.classList.add('editable');
-        input.style.backgroundColor = ""; // Reset background color
+        input.classList.remove('cell-correct', 'cell-incorrect');
     });
     generatedBoard = [];
 }
@@ -121,7 +189,7 @@ function generateSudoku() {
     clearGrid();  // Clear the grid before generating a new puzzle
     const board = generateFullSudoku();
     solvedBoard = JSON.parse(JSON.stringify(board)); // Store the full solution
-    removeNumbersFromBoard(board, 50);  // Adjust this number to change difficulty
+    removeNumbersFromBoard(board, sdkHoles);  // Difficulty-controlled hole count
     generatedBoard = JSON.parse(JSON.stringify(board)); // Store generated board
     setBoard(board); // Set the board with correct editability
 }
@@ -175,17 +243,15 @@ function checkSolution() {
     const userBoard = getBoard(); // Get user's current board state
     let isCorrect = true; // Flag to track if the solution is correct
 
-    // Iterate over each cell to check the user's input
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             const input = document.getElementById(`cell-${i}-${j}`);
+            input.classList.remove('cell-correct', 'cell-incorrect');
             if (userBoard[i][j] === solvedBoard[i][j]) {
-                // If correct, turn the cell green
-                input.style.backgroundColor = '#00e043';
+                input.classList.add('cell-correct');
             } else {
-                // If incorrect, turn it red
-                input.style.backgroundColor = '#e00700';
-                isCorrect = false; // Mark the solution as incorrect
+                input.classList.add('cell-incorrect');
+                isCorrect = false;
             }
         }
     }
@@ -195,19 +261,15 @@ function checkSolution() {
     } else {
         showResultMessage("The solution is incorrect!", false);
 
-        // Revert incorrect cells back to default color after 2 seconds
+        // Revert incorrect cells back to default after a short delay
         setTimeout(() => {
             for (let i = 0; i < 9; i++) {
                 for (let j = 0; j < 9; j++) {
                     const input = document.getElementById(`cell-${i}-${j}`);
-                    if (input.style.backgroundColor === 'rgb(224, 7, 0)') { // Checking if it's red
-                        input.style.backgroundColor = ''; // Reset background color
-                    } else if (input.style.backgroundColor === 'rgb(0, 224, 67)') { // Checking if it's green
-                        input.style.backgroundColor = ''; // Reset background color
-                    }
+                    input.classList.remove('cell-incorrect');
                 }
             }
-        }, 1500); // 2 seconds delay
+        }, 1500);
     }
 }
 
@@ -216,17 +278,13 @@ function showResultMessage(message, isCorrect) {
     const resultText = document.querySelector('.result-text');
     resultText.textContent = message;
 
-    if (isCorrect) {
-        resultMessageDiv.style.backgroundColor = '#90EE90'; // Light green for correct
-    } else {
-        resultMessageDiv.style.backgroundColor = '#FFB6C1'; // Light pink for incorrect
-    }
-
-    resultMessageDiv.style.display = 'block';
+    resultMessageDiv.classList.remove('success', 'error');
+    resultMessageDiv.classList.add(isCorrect ? 'success' : 'error');
+    resultMessageDiv.classList.add('active');
 }
 
 // Function to close the popup
 function closePopup() {
     const resultMessageDiv = document.querySelector('.result-message');
-    resultMessageDiv.style.display = 'none';
+    resultMessageDiv.classList.remove('active', 'success', 'error');
 }

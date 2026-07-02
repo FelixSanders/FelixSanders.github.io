@@ -647,6 +647,105 @@ h2 {
     background-color: #005f31;
 }
 
+.result-message {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 32px 28px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #f4f4f4;
+    position: fixed;
+    background-color: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px;
+    border: 2px solid #00BF63;
+    box-shadow: 0 0 0 1px rgba(0, 191, 99, 0.15),
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(0, 191, 99, 0.25);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1000;
+    min-width: 260px;
+    max-width: 90vw;
+    animation: resultPopIn 0.25s ease-out;
+}
+
+.result-message.active {
+    display: flex;
+}
+
+@keyframes resultPopIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.result-text {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.popup-button {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600;
+    background-color: #00BF63;
+    color: #0a0a0a;
+    border: none;
+    margin-top: 4px;
+    padding: 8px 24px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.popup-button:hover {
+    background-color: #00913f;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.popup-button:active {
+    transform: translateY(0);
+}
+
+.buttons {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.action-button {
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    display: inline-block;
+    font-size: 1.1em;
+    color: #000000;
+    padding: 10px 20px;
+    text-align: center;
+    margin: 15px 20px;
+    border: none;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #5a5a5a;
+}
+
 .tiltable {
     transform-style: preserve-3d;
     transform: perspective(1000px);
