@@ -676,6 +676,7 @@ h2 {
     animation: resultPopIn 0.25s ease-out;
 }
 
+
 .result-message.active {
     display: flex;
 }
