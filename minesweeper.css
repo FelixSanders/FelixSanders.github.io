@@ -149,10 +149,10 @@
 }
 
 #minesweeper-grid td {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    min-height: 30px;
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    min-height: 35px;
     text-align: center;
     vertical-align: middle;
     border: 1px solid var(--ms-border);
