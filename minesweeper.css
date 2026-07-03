@@ -1,11 +1,3 @@
-/* =========================================
-   FSK Minesweeper — game-specific styles
-   Shares theme tokens with the rest of the
-   site (black + #00BF63 green accent).
-   Layout/nav/footer/button-base styles are
-   inherited from styles.css.
-   ========================================= */
-
 :root {
     --ms-green: #00BF63;
     --ms-green-dark: #00913f;

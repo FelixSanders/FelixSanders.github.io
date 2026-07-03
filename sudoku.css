@@ -70,7 +70,6 @@
     border-color: #0a0a0a;
 }
 
-/* Board wrapper — dark panel framing the grid, like the minesweeper board */
 .sudoku-board-wrapper {
     background-color: #141414;
     border: 2px solid #00BF63;
