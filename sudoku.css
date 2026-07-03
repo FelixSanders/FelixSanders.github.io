@@ -25,37 +25,52 @@
     transition: background-color 0.15s ease, color 0.15s ease;
 }
 
+.difficulty-button {
+    background-color: #0a0a0a;
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
 
 #sdk-diff-easy {
-    color: #00ae5a;
-    border-color: #00ae5a;
+    color: #00BF63;
+    border-color: #00BF63;
 }
-#sdk-diff-easy:hover { background-color: rgba(0, 191, 99, 0.15); }
+#sdk-diff-easy:hover { background-color: #1e1e1e; }
 #sdk-diff-easy.active {
-    background-color: #00ae5a;
+    background-color: #00BF63;
     color: #0a0a0a;
+    border-color: #0a0a0a;
 }
 
 #sdk-diff-medium {
     color: #FFC107;
     border-color: #FFC107;
 }
-#sdk-diff-medium:hover { background-color: rgba(255, 193, 7, 0.15); }
+#sdk-diff-medium:hover { background-color: #1e1e1e; }
 #sdk-diff-medium.active {
     background-color: #FFC107;
     color: #0a0a0a;
+    border-color: #0a0a0a;
 }
 
 #sdk-diff-hard {
     color: #EF4444;
     border-color: #EF4444;
 }
-#sdk-diff-hard:hover { background-color: rgba(239, 68, 68, 0.15); }
+#sdk-diff-hard:hover { background-color: #1e1e1e; }
 #sdk-diff-hard.active {
     background-color: #EF4444;
     color: #0a0a0a;
+    border-color: #0a0a0a;
 }
 
+/* Board wrapper — dark panel framing the grid, like the minesweeper board */
 .sudoku-board-wrapper {
     background-color: #141414;
     border: 2px solid #00BF63;
@@ -77,8 +92,8 @@ tr {
 }
 
 td {
-    width: 40px;
-    height: 40px;
+    width: clamp(34px, 10vw, 46px);
+    height: clamp(34px, 10vw, 46px);
     border: 1px solid #2a2a2a;
     position: relative;
     margin: 0px;
@@ -92,7 +107,7 @@ input[type="text"] {
     width: 90%;
     height: 90%;
     text-align: center;
-    font-size: 20px;
+    font-size: clamp(16px, 4.4vw, 21px);
     font-weight: 500;
     border: none;
     background-color: transparent;
@@ -144,11 +159,11 @@ tr:first-child td {
 }
 
 @media (max-width: 480px) {
-    td {
-        width: 32px;
-        height: 32px;
+    .sudoku-board-wrapper {
+        padding: 8px;
+        border-radius: 10px;
     }
-    input[type="text"] {
-        font-size: 16px;
+    .sudoku-container {
+        padding: 0 6px;
     }
 }

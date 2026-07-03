@@ -1,3 +1,10 @@
+/* =========================================
+   FSK Minesweeper — game-specific styles
+   Shares theme tokens with the rest of the
+   site (black + #00BF63 green accent).
+   Layout/nav/footer/button-base styles are
+   inherited from styles.css.
+   ========================================= */
 
 :root {
     --ms-green: #00BF63;
@@ -15,7 +22,6 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 20px;
     margin: 0 auto 40px;
     max-width: 640px;
 }
@@ -74,17 +80,13 @@
 /* Difficulty selector */
 .ms-difficulty {
     display: flex;
-    gap: 10px;
-}
-
-/* Difficulty selector */
-.ms-difficulty {
-    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 
 .difficulty-button {
-    background-color: transparent;
+    background-color: #0a0a0a;
     border: 2px solid;
     border-radius: 8px;
     padding: 8px 18px;
@@ -92,20 +94,19 @@
     font-weight: 600;
     font-size: 0.9em;
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 /* Easy — green */
 #diff-easy {
-    color: #00ae5a;
-    border-color: #00ae5a;
+    color: #00BF63;
+    border-color: #00BF63;
 }
-#diff-easy:hover {
-    background-color: rgba(0, 191, 99, 0.15);
-}
+#diff-easy:hover { background-color: #1e1e1e; }
 #diff-easy.active {
-    background-color: #00ae5a;
+    background-color: #00BF63;
     color: #0a0a0a;
+    border-color: #0a0a0a;
 }
 
 /* Medium — yellow */
@@ -113,12 +114,11 @@
     color: #FFC107;
     border-color: #FFC107;
 }
-#diff-medium:hover {
-    background-color: rgba(255, 193, 7, 0.15);
-}
+#diff-medium:hover { background-color: #1e1e1e; }
 #diff-medium.active {
     background-color: #FFC107;
     color: #0a0a0a;
+    border-color: #0a0a0a;
 }
 
 /* Hard — red */
@@ -126,13 +126,13 @@
     color: #EF4444;
     border-color: #EF4444;
 }
-#diff-hard:hover {
-    background-color: rgba(239, 68, 68, 0.15);
-}
+#diff-hard:hover { background-color: #1e1e1e; }
 #diff-hard.active {
     background-color: #EF4444;
     color: #0a0a0a;
+    border-color: #0a0a0a;
 }
+
 /* Board */
 .ms-board-wrapper {
     background-color: var(--ms-panel);
@@ -149,10 +149,10 @@
 }
 
 #minesweeper-grid td {
-    width: 35px;
-    height: 35px;
-    min-width: 35px;
-    min-height: 35px;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
     text-align: center;
     vertical-align: middle;
     border: 1px solid var(--ms-border);
@@ -200,10 +200,7 @@
 #minesweeper-grid td.ms-n7 { color: #212121; }
 #minesweeper-grid td.ms-n8 { color: #5d4037; }
 
-#flag-mode-button.active {
-    background-color: var(--ms-green);
-    color: var(--ms-black);
-}
+/* Flag Mode toggle state now handled by the shared .action-button.active rule in styles.css */
 
 @media (max-width: 480px) {
     #minesweeper-grid td {
