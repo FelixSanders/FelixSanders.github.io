@@ -90,6 +90,9 @@
   .dir-toggle .opt{flex:1;text-align:center;padding:9px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-dim);}
   .dir-toggle .opt.active{background:var(--green);color:#052b17;}
   .quiz-progress-bar{height:6px;background:var(--panel2);border-radius:6px;overflow:hidden;}
+  .quiz-live-stats{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-dim);margin-bottom:8px;font-weight:600;}
+  .quiz-live-stats #quizLiveScore{color:var(--green);display:flex;align-items:center;gap:5px;}
+  .quiz-live-stats #quizLiveScore i{font-size:11px;}
   .quiz-progress-fill{height:100%;background:var(--green);transition:width .3s;}
   .quiz-question{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:26px;text-align:center;}
   .quiz-q-label{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
@@ -217,6 +220,10 @@
       </div>
 
       <div id="quizRunning" style="display:none;">
+        <div class="quiz-live-stats">
+          <span id="quizLiveCount">Frage 1 / 1</span>
+          <span id="quizLiveScore"><i class="fa-solid fa-star"></i> 0%</span>
+        </div>
         <div class="quiz-progress-bar" style="margin-bottom:16px;"><div class="quiz-progress-fill" id="quizProgFill" style="width:0%;"></div></div>
         <div class="quiz-question">
           <div class="quiz-q-label" id="quizQLabel">Deutsch</div>
@@ -620,6 +627,12 @@ function buildHint(target){
   return primary.charAt(0).toUpperCase() + ' …';
 }
 
+/* Percentage correct out of a given number of answered questions */
+function livePercent(answeredCount){
+  if(answeredCount === 0) return 0;
+  return Math.round((quizScore/answeredCount)*100);
+}
+
 function renderQuizQuestion(){
   if(quizDeck.length===0){ finishQuiz(); return; }
   const w = quizDeck[quizIndex];
@@ -627,6 +640,8 @@ function renderQuizQuestion(){
   document.getElementById('quizQLabel').textContent = label;
   document.getElementById('quizQWord').textContent = quizDir==='de-id' ? w.de : w.id_;
   document.getElementById('quizProgFill').style.width = ((quizIndex)/quizDeck.length*100)+'%';
+  document.getElementById('quizLiveCount').textContent = `Frage ${quizIndex+1} / ${quizDeck.length}`;
+  document.getElementById('quizLiveScore').innerHTML = `<i class="fa-solid fa-star"></i> ${livePercent(quizIndex)}%`;
   const input = document.getElementById('quizAnswerInput');
   input.value = '';
   input.readOnly = false;
@@ -665,6 +680,7 @@ function submitQuizAnswer(){
       fb.textContent = `Richtige Antwort: ${target}`;
       fb.className = 'quiz-feedback wrong';
     }
+    document.getElementById('quizLiveScore').innerHTML = `<i class="fa-solid fa-star"></i> ${livePercent(quizIndex+1)}%`;
     document.getElementById('quizSubmitBtn').innerHTML = 'Weiter <i class="fa-solid fa-arrow-right"></i>';
   }else{
     quizIndex++;
