@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adjektivtisch — Deutsch Adjektive lernen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --green:#00BF63;
+    --green-dim:#00BF6322;
+    --black:#0a0a0a;
+    --panel:#141414;
+    --panel2:#1c1c1c;
+    --border:#2a2a2a;
+    --text:#f2f2f2;
+    --text-dim:#9a9a9a;
+    --red:#ff5c5c;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+  h1,h2,h3,.brand{font-family:'Poppins',sans-serif;}
+
+  .app{max-width:920px;margin:0 auto;padding:28px 18px 60px;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;}
+  .brand{font-size:20px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
+  .brand span{color:var(--green);}
+  .stats-pill{display:flex;gap:14px;font-size:13px;color:var(--text-dim);}
+  .stats-pill b{color:var(--green);font-weight:700;}
+
+  .tabs{display:flex;gap:8px;margin-bottom:22px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:6px;}
+  .tab{flex:1;text-align:center;padding:10px 8px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;color:var(--text-dim);transition:.15s;user-select:none;}
+  .tab i{margin-right:6px;}
+  .tab.active{background:var(--green);color:#052b17;}
+  .tab:not(.active):hover{background:var(--panel2);color:var(--text);}
+
+  .view{display:none;}
+  .view.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---- Reference view ---- */
+  .search-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .search-row input{flex:1;min-width:160px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:14px;}
+  .search-row input:focus{outline:none;border-color:var(--green);}
+  select.cat-select{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:14px;}
+
+  .cat-block{margin-bottom:26px;}
+  .cat-title{color:var(--green);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px 2px;display:flex;align-items:center;gap:8px;}
+  .cat-title .count{background:var(--green-dim);color:var(--green);border-radius:20px;padding:2px 9px;font-size:11px;}
+
+  .word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+  .word-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:2px;transition:.15s;}
+  .word-card:hover{border-color:var(--green);}
+  .word-de{font-weight:700;font-size:15px;}
+  .word-id{color:var(--text-dim);font-size:13px;}
+  .word-actions{display:flex;justify-content:flex-end;margin-top:6px;}
+  .star-btn{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;}
+  .star-btn.active{color:var(--green);}
+
+  /* ---- Flashcard view ---- */
+  .fc-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;}
+  .fc-progress{color:var(--text-dim);font-size:13px;}
+  .flashcard{width:100%;max-width:480px;height:280px;position:relative;perspective:1200px;cursor:pointer;}
+  .flashcard-inner{position:absolute;inset:0;transition:transform .45s cubic-bezier(.2,.8,.3,1);transform-style:preserve-3d;}
+  .flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;backface-visibility:hidden;background:var(--panel);border:1px solid var(--border);padding:30px;text-align:center;}
+  .fc-face.back{transform:rotateY(180deg);border-color:var(--green);}
+  .fc-tag{position:absolute;top:16px;left:18px;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+  .fc-word{font-size:34px;font-weight:800;font-family:'Poppins',sans-serif;}
+  .fc-hint{color:var(--text-dim);font-size:13px;}
+  .fc-controls{display:flex;gap:12px;width:100%;max-width:480px;}
+  .btn{flex:1;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);padding:13px;font-weight:600;font-size:14px;cursor:pointer;transition:.15s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn:hover{background:var(--panel2);}
+  .btn.primary{background:var(--green);color:#052b17;border-color:var(--green);}
+  .btn.primary:hover{filter:brightness(1.08);}
+  .btn.danger:hover{border-color:var(--red);color:var(--red);}
+  .btn.ok:hover{border-color:var(--green);color:var(--green);}
+  .fc-topbar{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:480px;}
+  .icon-btn{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;padding:6px;}
+  .icon-btn:hover{color:var(--green);}
+
+  /* ---- Quiz view ---- */
+  .quiz-wrap{display:flex;flex-direction:column;gap:18px;max-width:560px;margin:0 auto;}
+  .quiz-setup{display:flex;flex-direction:column;gap:14px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px;}
+  .quiz-setup label{font-size:13px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+  .dir-toggle{display:flex;background:var(--panel2);border-radius:10px;padding:4px;gap:4px;}
+  .dir-toggle .opt{flex:1;text-align:center;padding:9px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-dim);}
+  .dir-toggle .opt.active{background:var(--green);color:#052b17;}
+  .quiz-progress-bar{height:6px;background:var(--panel2);border-radius:6px;overflow:hidden;}
+  .quiz-progress-fill{height:100%;background:var(--green);transition:width .3s;}
+  .quiz-question{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:26px;text-align:center;}
+  .quiz-q-label{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+  .quiz-q-word{font-size:28px;font-weight:800;font-family:'Poppins',sans-serif;}
+  .quiz-input{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--text);font-size:16px;text-align:center;font-family:inherit;}
+  .quiz-input:focus{outline:none;border-color:var(--green);}
+  .quiz-input.correct{border-color:var(--green);color:var(--green);}
+  .quiz-input.wrong{border-color:var(--red);color:var(--red);}
+  .quiz-feedback{font-size:14px;text-align:center;min-height:20px;color:var(--text-dim);}
+  .quiz-feedback.correct{color:var(--green);}
+  .quiz-feedback.wrong{color:var(--red);}
+  .quiz-summary{text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;padding:20px 0;}
+  .quiz-summary .big{font-size:44px;font-weight:800;color:var(--green);font-family:'Poppins',sans-serif;}
+
+  .empty-state{text-align:center;color:var(--text-dim);padding:40px 10px;}
+  .empty-state i{font-size:30px;color:var(--green);margin-bottom:10px;display:block;}
+
+  ::selection{background:var(--green);color:#052b17;}
+  @media(max-width:480px){
+    .fc-word{font-size:26px;}
+    .flashcard{height:250px;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="brand"><i class="fa-solid fa-language" style="color:var(--green)"></i> FSK <span>Adjektivtisch</span></div>
+    <div class="stats-pill">
+      <div><b id="statTotal">0</b> Wörter</div>
+      <div><b id="statStarred">0</b> markiert</div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-view="reference"><i class="fa-solid fa-book"></i>Referenz</div>
+    <div class="tab" data-view="flashcards"><i class="fa-solid fa-clone"></i>Karten</div>
+    <div class="tab" data-view="quiz"><i class="fa-solid fa-graduation-cap"></i>Quiz</div>
+  </div>
+
+  <!-- REFERENCE VIEW -->
+  <div class="view active" id="view-reference">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="Suchen... (Deutsch oder Indonesisch)">
+      <select class="cat-select" id="catFilter">
+        <option value="all">Alle Kategorien</option>
+      </select>
+    </div>
+    <div id="referenceList"></div>
+  </div>
+
+  <!-- FLASHCARD VIEW -->
+  <div class="view" id="view-flashcards">
+    <div class="fc-wrap">
+      <div class="fc-topbar">
+        <div class="fc-progress" id="fcProgress">1 / 1</div>
+        <div>
+          <select class="cat-select" id="fcCatFilter" style="font-size:12px;padding:7px 10px;">
+            <option value="all">Alle Kategorien</option>
+          </select>
+          <button class="icon-btn" id="fcShuffleBtn" title="Mischen"><i class="fa-solid fa-shuffle"></i></button>
+          <button class="icon-btn" id="fcStarredOnly" title="Nur markierte"><i class="fa-regular fa-star"></i></button>
+        </div>
+      </div>
+
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-inner">
+          <div class="fc-face front">
+            <div class="fc-tag">Deutsch</div>
+            <div class="fc-word" id="fcFrontWord">—</div>
+            <div class="fc-hint">Klicken zum Umdrehen</div>
+          </div>
+          <div class="fc-face back">
+            <div class="fc-tag">Indonesisch</div>
+            <div class="fc-word" id="fcBackWord">—</div>
+            <div class="fc-hint">Wie gut kanntest du es?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-controls">
+        <button class="btn danger" id="fcUnknownBtn"><i class="fa-solid fa-xmark"></i> Nicht gewusst</button>
+        <button class="btn ok" id="fcKnownBtn"><i class="fa-solid fa-check"></i> Gewusst</button>
+      </div>
+      <div class="fc-controls">
+        <button class="btn" id="fcPrevBtn"><i class="fa-solid fa-arrow-left"></i> Zurück</button>
+        <button class="btn primary" id="fcNextBtn">Weiter <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ VIEW -->
+  <div class="view" id="view-quiz">
+    <div class="quiz-wrap">
+
+      <div class="quiz-setup" id="quizSetup">
+        <div>
+          <label>Richtung</label>
+          <div class="dir-toggle" style="margin-top:8px;">
+            <div class="opt active" data-dir="de-id">DE → ID</div>
+            <div class="opt" data-dir="id-de">ID → DE</div>
+          </div>
+        </div>
+        <div>
+          <label>Kategorie</label>
+          <select class="cat-select" id="quizCatFilter" style="width:100%;margin-top:8px;">
+            <option value="all">Alle Kategorien</option>
+          </select>
+        </div>
+        <div>
+          <label>Anzahl Fragen</label>
+          <div class="dir-toggle" style="margin-top:8px;" id="quizCountToggle">
+            <div class="opt" data-n="10">10</div>
+            <div class="opt active" data-n="20">20</div>
+            <div class="opt" data-n="9999">Alle</div>
+          </div>
+        </div>
+        <button class="btn primary" id="quizStartBtn" style="margin-top:6px;"><i class="fa-solid fa-play"></i> Quiz starten</button>
+      </div>
+
+      <div id="quizRunning" style="display:none;">
+        <div class="quiz-progress-bar" style="margin-bottom:16px;"><div class="quiz-progress-fill" id="quizProgFill" style="width:0%;"></div></div>
+        <div class="quiz-question">
+          <div class="quiz-q-label" id="quizQLabel">Deutsch</div>
+          <div class="quiz-q-word" id="quizQWord">—</div>
+        </div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;">
+          <input type="text" class="quiz-input" id="quizAnswerInput" placeholder="Antwort eingeben..." autocomplete="off">
+          <div class="quiz-feedback" id="quizFeedback"></div>
+          <button class="btn primary" id="quizSubmitBtn">Prüfen <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div id="quizDone" style="display:none;">
+        <div class="quiz-summary">
+          <i class="fa-solid fa-trophy" style="font-size:36px;color:var(--green);"></i>
+          <div class="big" id="quizScoreText">0 / 0</div>
+          <div class="fc-hint" id="quizScorePct">0%</div>
+          <button class="btn primary" id="quizRestartBtn" style="max-width:220px;"><i class="fa-solid fa-rotate-right"></i> Nochmal</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============ DATA ============ */
+const DATA = [
+  // Größe & Form
+  ["klein","kecil","Größe & Form"],["groß","besar","Größe & Form"],["lang","panjang","Größe & Form"],
+  ["kurz","pendek","Größe & Form"],["hoch","tinggi","Größe & Form"],["niedrig","rendah","Größe & Form"],
+  ["breit","lebar","Größe & Form"],["eng","sempit","Größe & Form"],["weit","jauh","Größe & Form"],
+  ["nah","dekat","Größe & Form"],["winzig","sangat kecil","Größe & Form"],["riesig, gigantisch","sangat besar","Größe & Form"],
+  ["spitzig","runcing","Größe & Form"],["glatt","licin, mulus","Größe & Form"],
+
+  // Alter & Zeit
+  ["alt","tua","Alter & Zeit"],["jung","muda","Alter & Zeit"],["neu","baru","Alter & Zeit"],
+  ["schnell","cepat","Alter & Zeit"],["langsam","lambat","Alter & Zeit"],["pünktlich","tepat waktu","Alter & Zeit"],
+  ["ständig, kontinuierlich","terus menerus","Alter & Zeit"],["plötzlich","tiba-tiba","Alter & Zeit"],
+  ["neulich","baru-baru ini","Alter & Zeit"],["modern","modern","Alter & Zeit"],["altmodisch","kuno","Alter & Zeit"],
+  ["rasant","sangat cepat","Alter & Zeit"],
+
+  // Farben
+  ["weiß","putih","Farben"],["rot","merah","Farben"],["schwarz","hitam","Farben"],["braun","coklat","Farben"],
+  ["golden","emas","Farben"],["silbern","perak","Farben"],["lila","ungu","Farben"],["pink, rosa","pink","Farben"],
+  ["grün","hijau","Farben"],["blau","biru","Farben"],["dunkelbraun","coklat tua","Farben"],["hellbraun","coklat muda","Farben"],
+  ["orange","oranye","Farben"],["farblos","tak berwarna","Farben"],["gelb","kuning","Farben"],["türkis","tosca","Farben"],
+  ["bunt","warna-warni","Farben"],["durchsichtig, transparent","transparan","Farben"],
+
+  // Geschmack & Textur
+  ["süß","manis","Geschmack & Textur"],["sauer","asam","Geschmack & Textur"],["salzig","asin","Geschmack & Textur"],
+  ["scharf","pedas, tajam","Geschmack & Textur"],["lecker","enak","Geschmack & Textur"],["knusprig","garing, renyah","Geschmack & Textur"],
+  ["köstlich","lezat","Geschmack & Textur"],["klebrig","lengket","Geschmack & Textur"],["flüssig","cair, mengalir","Geschmack & Textur"],
+  ["weich","lembek, lembut","Geschmack & Textur"],["hart","keras","Geschmack & Textur"],["rutschig","licin (lantai)","Geschmack & Textur"],
+  ["rein","murni","Geschmack & Textur"],
+
+  // Wetter & Natur
+  ["warm","hangat","Wetter & Natur"],["kühl","sejuk","Wetter & Natur"],["heiß","panas","Wetter & Natur"],
+  ["kalt","dingin","Wetter & Natur"],["nass","basah","Wetter & Natur"],["trocken","kering","Wetter & Natur"],
+  ["feucht","lembab","Wetter & Natur"],["neblig","berkabut","Wetter & Natur"],["windig","berangin","Wetter & Natur"],
+  ["staubig","berdebu","Wetter & Natur"],["duftend","wangi","Wetter & Natur"],["stinkend","bau","Wetter & Natur"],
+
+  // Charakter & Persönlichkeit
+  ["fleißig","rajin","Charakter & Persönlichkeit"],["faul","malas","Charakter & Persönlichkeit"],
+  ["bescheiden","sederhana","Charakter & Persönlichkeit"],["verantwortlich","bertanggung jawab","Charakter & Persönlichkeit"],
+  ["gründlich","teliti, mendasar","Charakter & Persönlichkeit"],["ehrgeizig","berambisi","Charakter & Persönlichkeit"],
+  ["geizig","pelit","Charakter & Persönlichkeit"],["großzügig","murah hati","Charakter & Persönlichkeit"],
+  ["zuverlässig","bisa diandalkan","Charakter & Persönlichkeit"],["treu","setia","Charakter & Persönlichkeit"],
+  ["brav","patuh","Charakter & Persönlichkeit"],["frech","nakal","Charakter & Persönlichkeit"],
+  ["scheu","pemalu","Charakter & Persönlichkeit"],["stur","keras kepala","Charakter & Persönlichkeit"],
+  ["mutig","berani","Charakter & Persönlichkeit"],["ängstlich","penakut","Charakter & Persönlichkeit"],
+  ["neugierig","kepo, penasaran","Charakter & Persönlichkeit"],["stolz","bangga","Charakter & Persönlichkeit"],
+  ["zufrieden","puas","Charakter & Persönlichkeit"],["hochnäsig","sombong","Charakter & Persönlichkeit"],
+  ["eifersüchtig","cemburu (pacaran)","Charakter & Persönlichkeit"],["neidisch","iri","Charakter & Persönlichkeit"],
+  ["leichtsinnig","ceroboh, anggap remeh","Charakter & Persönlichkeit"],["zielstrebig","bertekad","Charakter & Persönlichkeit"],
+  ["ehrlich","jujur","Charakter & Persönlichkeit"],
+
+  // Körper & Gesundheit
+  ["müde","capek","Körper & Gesundheit"],["fit","fit, bugar","Körper & Gesundheit"],["gesund","sehat","Körper & Gesundheit"],
+  ["krank","sakit","Körper & Gesundheit"],["stark","kuat","Körper & Gesundheit"],["schwach","lemah","Körper & Gesundheit"],
+  ["verletzt","terluka","Körper & Gesundheit"],["einsam","sendirian, lonely","Körper & Gesundheit"],
+  ["arm","miskin","Körper & Gesundheit"],["reich","kaya","Körper & Gesundheit"],["verheiratet","status menikah","Körper & Gesundheit"],
+  ["beweglich","lentur, fleksibel","Körper & Gesundheit"],
+
+  // Preis & Wert
+  ["teuer","mahal","Preis & Wert"],["billig","murah, murahan","Preis & Wert"],["günstig","murah, hemat","Preis & Wert"],
+  ["kostspielig","mahal","Preis & Wert"],["luxuriös","mewah","Preis & Wert"],["kostenlos","gratis","Preis & Wert"],
+  ["preiswert","terjangkau","Preis & Wert"],["wertvoll","berharga","Preis & Wert"],
+
+  // Menge & Ausreichung
+  ["leer","kosong","Menge & Ausreichung"],["voll","penuh","Menge & Ausreichung"],
+  ["ausreichend, genügend","cukup","Menge & Ausreichung"],["zahlreich, viel","banyak","Menge & Ausreichung"],
+  ["wenig","sedikit","Menge & Ausreichung"],["gering","sangat sedikit","Menge & Ausreichung"],
+  ["rar","hal yang jarang","Menge & Ausreichung"],
+
+  // Zustand & Qualität
+  ["haltbar","tahan lama","Zustand & Qualität"],["kaputt","rusak","Zustand & Qualität"],
+  ["defekt","rusak (mesin)","Zustand & Qualität"],["einwandfrei, problemlos","tanpa masalah","Zustand & Qualität"],
+  ["sauber","bersih","Zustand & Qualität"],["schmutzig, dreckig","kotor","Zustand & Qualität"],
+  ["regelmäßig","teratur","Zustand & Qualität"],["üblich","hal yang biasa","Zustand & Qualität"],
+  ["normal","normal","Zustand & Qualität"],["echt","asli","Zustand & Qualität"],
+  ["glaubhaft","bisa dipercaya","Zustand & Qualität"],["trennbar","bisa dipisah","Zustand & Qualität"],
+  ["machbar","bisa dikerjakan","Zustand & Qualität"],["trinkbar","bisa diminum","Zustand & Qualität"],
+  ["essbar","bisa dimakan","Zustand & Qualität"],["freiwillig","sukarela","Zustand & Qualität"],
+  ["glänzend","berkilau","Zustand & Qualität"],["locker","longgar, santai","Zustand & Qualität"],
+  ["bemerkbar","terasa, terlihat","Zustand & Qualität"],["auffällig","mencolok","Zustand & Qualität"],
+  ["zufällig","secara kebetulan","Zustand & Qualität"],["beliebig","sembarang","Zustand & Qualität"],
+  ["idyllisch","asri","Zustand & Qualität"],["lebendig","hidup, ramai","Zustand & Qualität"],
+  ["bestimmt","tertentu, pasti","Zustand & Qualität"],["begehrt","diminati, dicari","Zustand & Qualität"],
+  ["bekannt, berühmt","terkenal","Zustand & Qualität"],["giftig","beracun","Zustand & Qualität"],
+
+  // Meinung & Gefühl
+  ["gut","bagus","Meinung & Gefühl"],["schlecht","jelek, buruk","Meinung & Gefühl"],
+  ["schön","cantik, bagus","Meinung & Gefühl"],["häßlich","jelek","Meinung & Gefühl"],
+  ["interessant","menarik","Meinung & Gefühl"],["langweilig","membosankan","Meinung & Gefühl"],
+  ["wunderbar","luar biasa","Meinung & Gefühl"],["hervorragend","sangat bagus","Meinung & Gefühl"],
+  ["wunderschön","sangat cantik","Meinung & Gefühl"],["großartig","luar biasa","Meinung & Gefühl"],
+  ["unglaublich","tak terpercaya","Meinung & Gefühl"],["freundlich","ramah","Meinung & Gefühl"],
+  ["nett","baik, ramah","Meinung & Gefühl"],["fröhlich","ceria, periang","Meinung & Gefühl"],
+  ["traurig","sedih, menyedihkan","Meinung & Gefühl"],["gruselig","menyeramkan","Meinung & Gefühl"],
+  ["grausam","kejam, mengerikan","Meinung & Gefühl"],["bequem, angenehm, gemütlich","nyaman","Meinung & Gefühl"],
+  ["verrückt, bescheuert","gila","Meinung & Gefühl"],["doof, blöd","bego","Meinung & Gefühl"],
+  ["herzlich","tulus","Meinung & Gefühl"],["niedlich","lucu","Meinung & Gefühl"],
+
+  // Schwierigkeit & Verstand
+  ["einfach","gampang, ringan","Schwierigkeit & Verstand"],["schwierig","susah","Schwierigkeit & Verstand"],
+  ["leicht","ringan (bobot)","Schwierigkeit & Verstand"],["schwer","berat, susah","Schwierigkeit & Verstand"],
+  ["problematisch","problematik","Schwierigkeit & Verstand"],["kompliziert","rumit","Schwierigkeit & Verstand"],
+  ["dumm","bodoh","Schwierigkeit & Verstand"],["klug","pintar","Schwierigkeit & Verstand"],
+  ["intelligent","pintar","Schwierigkeit & Verstand"],["schlau","cerdik","Schwierigkeit & Verstand"],
+  ["verwirrend","membingungkan","Schwierigkeit & Verstand"],["komisch, merkwürdig, kurios","aneh","Schwierigkeit & Verstand"],
+  ["eintönig","monoton","Schwierigkeit & Verstand"],["deutlich","jelas","Schwierigkeit & Verstand"],
+  ["klar","jernih, jelas","Schwierigkeit & Verstand"],["trüb","keruh","Schwierigkeit & Verstand"],
+
+  // Verhalten & Situation
+  ["gefährlich","berbahaya","Verhalten & Situation"],["zahm","jinak","Verhalten & Situation"],
+  ["wild","liar","Verhalten & Situation"],["ruhig","tenang","Verhalten & Situation"],
+  ["chaotisch","kaotis, berantakan","Verhalten & Situation"],["direkt","langsung","Verhalten & Situation"],
+  ["durcheinander","berantakan, bingung","Verhalten & Situation"],["heftig","berat, hebat","Verhalten & Situation"],
+  ["stressig","membuat stres","Verhalten & Situation"],
+];
+
+/* Build word objects with unique ids */
+const WORDS = DATA.map((d,i)=>({id:i, de:d[0], id_:d[1], cat:d[2]}));
+
+/* ============ STORAGE ============ */
+const LS_KEY = "adjektivtisch_state_v1";
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {starred:{}, known:{}, seen:{}};
+}
+let state = loadState();
+function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+/* ============ SHARED: categories ============ */
+const CATEGORIES = [...new Set(WORDS.map(w=>w.cat))];
+
+function populateCatSelect(sel){
+  CATEGORIES.forEach(c=>{
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    sel.appendChild(opt);
+  });
+}
+populateCatSelect(document.getElementById('catFilter'));
+populateCatSelect(document.getElementById('fcCatFilter'));
+populateCatSelect(document.getElementById('quizCatFilter'));
+
+/* ============ TABS ============ */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('view-'+tab.dataset.view).classList.add('active');
+    if(tab.dataset.view==='flashcards') initFlashcards();
+  });
+});
+
+/* ============ HEADER STATS ============ */
+function updateHeaderStats(){
+  document.getElementById('statTotal').textContent = WORDS.length;
+  document.getElementById('statStarred').textContent = Object.values(state.starred).filter(Boolean).length;
+}
+updateHeaderStats();
+
+/* ============ REFERENCE VIEW ============ */
+function renderReference(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const catVal = document.getElementById('catFilter').value;
+  const container = document.getElementById('referenceList');
+  container.innerHTML = '';
+
+  const filtered = WORDS.filter(w=>{
+    const matchesCat = catVal==='all' || w.cat===catVal;
+    const matchesQ = !q || w.de.toLowerCase().includes(q) || w.id_.toLowerCase().includes(q);
+    return matchesCat && matchesQ;
+  });
+
+  if(filtered.length===0){
+    container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i>Keine Wörter gefunden.</div>';
+    return;
+  }
+
+  const byCat = {};
+  filtered.forEach(w=>{ (byCat[w.cat] = byCat[w.cat]||[]).push(w); });
+
+  Object.keys(byCat).forEach(cat=>{
+    const block = document.createElement('div');
+    block.className = 'cat-block';
+    block.innerHTML = `<div class="cat-title">${cat} <span class="count">${byCat[cat].length}</span></div>`;
+    const grid = document.createElement('div');
+    grid.className = 'word-grid';
+    byCat[cat].forEach(w=>{
+      const card = document.createElement('div');
+      card.className = 'word-card';
+      const starred = !!state.starred[w.id];
+      card.innerHTML = `
+        <div class="word-de">${w.de}</div>
+        <div class="word-id">${w.id_}</div>
+        <div class="word-actions">
+          <button class="star-btn ${starred?'active':''}" data-id="${w.id}">
+            <i class="fa-${starred?'solid':'regular'} fa-star"></i>
+          </button>
+        </div>`;
+      grid.appendChild(card);
+    });
+    block.appendChild(grid);
+    container.appendChild(block);
+  });
+
+  container.querySelectorAll('.star-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.id;
+      state.starred[id] = !state.starred[id];
+      saveState();
+      updateHeaderStats();
+      renderReference();
+    });
+  });
+}
+document.getElementById('searchInput').addEventListener('input', renderReference);
+document.getElementById('catFilter').addEventListener('change', renderReference);
+renderReference();
+
+/* ============ FLASHCARD VIEW ============ */
+let fcDeck = [];
+let fcIndex = 0;
+let fcStarredOnly = false;
+
+function buildFcDeck(){
+  const catVal = document.getElementById('fcCatFilter').value;
+  let pool = WORDS.filter(w=> catVal==='all' || w.cat===catVal);
+  if(fcStarredOnly) pool = pool.filter(w=> state.starred[w.id]);
+  fcDeck = pool;
+  fcIndex = 0;
+}
+
+function renderFlashcard(){
+  const card = document.getElementById('flashcard');
+  card.classList.remove('flipped');
+  if(fcDeck.length===0){
+    document.getElementById('fcFrontWord').textContent = '—';
+    document.getElementById('fcBackWord').textContent = 'Keine Karten in dieser Auswahl';
+    document.getElementById('fcProgress').textContent = '0 / 0';
+    return;
+  }
+  const w = fcDeck[fcIndex];
+  document.getElementById('fcFrontWord').textContent = w.de;
+  document.getElementById('fcBackWord').textContent = w.id_;
+  document.getElementById('fcProgress').textContent = `${fcIndex+1} / ${fcDeck.length}`;
+}
+
+function initFlashcards(){
+  buildFcDeck();
+  renderFlashcard();
+}
+
+document.getElementById('flashcard').addEventListener('click', ()=>{
+  document.getElementById('flashcard').classList.toggle('flipped');
+});
+
+document.getElementById('fcNextBtn').addEventListener('click', ()=>{
+  if(fcDeck.length===0) return;
+  fcIndex = (fcIndex+1) % fcDeck.length;
+  renderFlashcard();
+});
+document.getElementById('fcPrevBtn').addEventListener('click', ()=>{
+  if(fcDeck.length===0) return;
+  fcIndex = (fcIndex-1+fcDeck.length) % fcDeck.length;
+  renderFlashcard();
+});
+document.getElementById('fcKnownBtn').addEventListener('click', ()=>{
+  if(fcDeck.length===0) return;
+  state.known[fcDeck[fcIndex].id] = true;
+  saveState();
+  document.getElementById('fcNextBtn').click();
+});
+document.getElementById('fcUnknownBtn').addEventListener('click', ()=>{
+  if(fcDeck.length===0) return;
+  state.known[fcDeck[fcIndex].id] = false;
+  saveState();
+  document.getElementById('fcNextBtn').click();
+});
+document.getElementById('fcShuffleBtn').addEventListener('click', ()=>{
+  for(let i=fcDeck.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [fcDeck[i],fcDeck[j]] = [fcDeck[j],fcDeck[i]];
+  }
+  fcIndex = 0;
+  renderFlashcard();
+});
+document.getElementById('fcStarredOnly').addEventListener('click', ()=>{
+  fcStarredOnly = !fcStarredOnly;
+  const btn = document.getElementById('fcStarredOnly');
+  btn.innerHTML = fcStarredOnly ? '<i class="fa-solid fa-star" style="color:var(--green)"></i>' : '<i class="fa-regular fa-star"></i>';
+  buildFcDeck();
+  renderFlashcard();
+});
+document.getElementById('fcCatFilter').addEventListener('change', ()=>{
+  buildFcDeck();
+  renderFlashcard();
+});
+
+/* keyboard nav for flashcards */
+document.addEventListener('keydown', (e)=>{
+  if(!document.getElementById('view-flashcards').classList.contains('active')) return;
+  if(e.key === ' '){ e.preventDefault(); document.getElementById('flashcard').classList.toggle('flipped'); }
+  if(e.key === 'ArrowRight'){ document.getElementById('fcNextBtn').click(); }
+  if(e.key === 'ArrowLeft'){ document.getElementById('fcPrevBtn').click(); }
+});
+
+/* ============ QUIZ VIEW ============ */
+let quizDeck = [];
+let quizIndex = 0;
+let quizScore = 0;
+let quizDir = 'de-id';
+let quizCount = 20;
+let quizAnswered = false;
+
+document.querySelectorAll('.dir-toggle .opt[data-dir]').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    document.querySelectorAll('.dir-toggle .opt[data-dir]').forEach(o=>o.classList.remove('active'));
+    opt.classList.add('active');
+    quizDir = opt.dataset.dir;
+  });
+});
+document.querySelectorAll('#quizCountToggle .opt').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    document.querySelectorAll('#quizCountToggle .opt').forEach(o=>o.classList.remove('active'));
+    opt.classList.add('active');
+    quizCount = parseInt(opt.dataset.n,10);
+  });
+});
+
+function normalize(str){
+  return str.toLowerCase()
+    .replace(/ß/g,'ss')
+    .replace(/[äàá]/g,'a').replace(/[öò]/g,'o').replace(/[üù]/g,'u')
+    .replace(/[.,]/g,'')
+    .trim();
+}
+
+/* accept if the user's answer matches ANY comma/slash separated alternative in the target */
+function isCorrectAnswer(userAns, target){
+  const alts = target.split(/,|\//).map(s=>normalize(s));
+  const u = normalize(userAns);
+  return alts.some(a=> a === u || (a.length>3 && (a.includes(u) && u.length>3)) );
+}
+
+function startQuiz(){
+  const catVal = document.getElementById('quizCatFilter').value;
+  let pool = WORDS.filter(w=> catVal==='all' || w.cat===catVal);
+  for(let i=pool.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]] = [pool[j],pool[i]];
+  }
+  quizDeck = pool.slice(0, Math.min(quizCount, pool.length));
+  quizIndex = 0;
+  quizScore = 0;
+  quizAnswered = false;
+
+  document.getElementById('quizSetup').style.display = 'none';
+  document.getElementById('quizDone').style.display = 'none';
+  document.getElementById('quizRunning').style.display = 'block';
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  if(quizDeck.length===0){ finishQuiz(); return; }
+  const w = quizDeck[quizIndex];
+  const label = quizDir==='de-id' ? 'Deutsch → Indonesisch' : 'Indonesisch → Deutsch';
+  document.getElementById('quizQLabel').textContent = label;
+  document.getElementById('quizQWord').textContent = quizDir==='de-id' ? w.de : w.id_;
+  document.getElementById('quizProgFill').style.width = ((quizIndex)/quizDeck.length*100)+'%';
+  const input = document.getElementById('quizAnswerInput');
+  input.value = '';
+  input.classList.remove('correct','wrong');
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  quizAnswered = false;
+  input.disabled = false;
+  input.focus();
+  document.getElementById('quizSubmitBtn').innerHTML = 'Prüfen <i class="fa-solid fa-arrow-right"></i>';
+}
+
+function submitQuizAnswer(){
+  const input = document.getElementById('quizAnswerInput');
+  const w = quizDeck[quizIndex];
+  const target = quizDir==='de-id' ? w.id_ : w.de;
+
+  if(!quizAnswered){
+    const correct = isCorrectAnswer(input.value, target);
+    quizAnswered = true;
+    input.disabled = true;
+    const fb = document.getElementById('quizFeedback');
+    if(correct){
+      quizScore++;
+      input.classList.add('correct');
+      fb.textContent = 'Richtig! ✓';
+      fb.className = 'quiz-feedback correct';
+    }else{
+      input.classList.add('wrong');
+      fb.textContent = `Richtige Antwort: ${target}`;
+      fb.className = 'quiz-feedback wrong';
+    }
+    document.getElementById('quizSubmitBtn').innerHTML = 'Weiter <i class="fa-solid fa-arrow-right"></i>';
+  }else{
+    quizIndex++;
+    if(quizIndex >= quizDeck.length){
+      finishQuiz();
+    }else{
+      renderQuizQuestion();
+    }
+  }
+}
+
+function finishQuiz(){
+  document.getElementById('quizRunning').style.display = 'none';
+  document.getElementById('quizDone').style.display = 'block';
+  document.getElementById('quizScoreText').textContent = `${quizScore} / ${quizDeck.length}`;
+  const pct = quizDeck.length ? Math.round(quizScore/quizDeck.length*100) : 0;
+  document.getElementById('quizScorePct').textContent = pct + '% richtig';
+  document.getElementById('quizProgFill').style.width = '100%';
+}
+
+document.getElementById('quizStartBtn').addEventListener('click', startQuiz);
+document.getElementById('quizSubmitBtn').addEventListener('click', submitQuizAnswer);
+document.getElementById('quizRestartBtn').addEventListener('click', ()=>{
+  document.getElementById('quizDone').style.display = 'none';
+  document.getElementById('quizSetup').style.display = 'flex';
+});
+document.getElementById('quizAnswerInput').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    submitQuizAnswer();
+  }
+});
+</script>
+</body>
+</html>
