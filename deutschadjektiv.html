@@ -98,6 +98,11 @@
   .quiz-input:focus{outline:none;border-color:var(--green);}
   .quiz-input.correct{border-color:var(--green);color:var(--green);}
   .quiz-input.wrong{border-color:var(--red);color:var(--red);}
+  .hint-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;min-height:26px;}
+  .hint-btn{background:none;border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-size:12px;font-weight:600;padding:5px 12px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:.15s;}
+  .hint-btn:hover{border-color:var(--green);color:var(--green);}
+  .hint-btn.used{border-color:var(--green);color:var(--green);}
+  .hint-text{color:var(--green);font-size:15px;font-weight:600;letter-spacing:.08em;font-family:'DM Sans',monospace;}
   .quiz-feedback{font-size:14px;text-align:center;min-height:20px;color:var(--text-dim);}
   .quiz-feedback.correct{color:var(--green);}
   .quiz-feedback.wrong{color:var(--red);}
@@ -218,9 +223,13 @@
           <div class="quiz-q-word" id="quizQWord">—</div>
         </div>
         <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;">
-          <input type="text" class="quiz-input" id="quizAnswerInput" placeholder="Antwort eingeben..." autocomplete="off">
+          <div class="hint-row">
+            <button class="hint-btn" id="quizHintBtn" type="button"><i class="fa-solid fa-lightbulb"></i> Hinweis</button>
+            <span class="hint-text" id="quizHintText"></span>
+          </div>
+          <input type="text" class="quiz-input" id="quizAnswerInput" placeholder="Antwort eingeben..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next">
           <div class="quiz-feedback" id="quizFeedback"></div>
-          <button class="btn primary" id="quizSubmitBtn">Prüfen <i class="fa-solid fa-arrow-right"></i></button>
+          <button class="btn primary" id="quizSubmitBtn" type="button">Prüfen <i class="fa-solid fa-arrow-right"></i></button>
         </div>
       </div>
 
@@ -555,6 +564,7 @@ let quizScore = 0;
 let quizDir = 'de-id';
 let quizCount = 20;
 let quizAnswered = false;
+let quizHintUsed = false;
 
 document.querySelectorAll('.dir-toggle .opt[data-dir]').forEach(opt=>{
   opt.addEventListener('click', ()=>{
@@ -604,6 +614,12 @@ function startQuiz(){
   renderQuizQuestion();
 }
 
+/* Reveal only the first letter — no underscores, so word length isn't given away */
+function buildHint(target){
+  const primary = target.split(/,|\//)[0].trim();
+  return primary.charAt(0).toUpperCase() + ' …';
+}
+
 function renderQuizQuestion(){
   if(quizDeck.length===0){ finishQuiz(); return; }
   const w = quizDeck[quizIndex];
@@ -613,13 +629,17 @@ function renderQuizQuestion(){
   document.getElementById('quizProgFill').style.width = ((quizIndex)/quizDeck.length*100)+'%';
   const input = document.getElementById('quizAnswerInput');
   input.value = '';
-  input.classList.remove('correct','wrong');
+  input.readOnly = false;
+  input.classList.remove('correct','wrong','answered');
   document.getElementById('quizFeedback').textContent = '';
   document.getElementById('quizFeedback').className = 'quiz-feedback';
   quizAnswered = false;
-  input.disabled = false;
-  input.focus();
+  quizHintUsed = false;
+  document.getElementById('quizHintText').textContent = '';
+  document.getElementById('quizHintBtn').classList.remove('used');
+  document.getElementById('quizHintBtn').style.visibility = 'visible';
   document.getElementById('quizSubmitBtn').innerHTML = 'Prüfen <i class="fa-solid fa-arrow-right"></i>';
+  input.focus({preventScroll:true});
 }
 
 function submitQuizAnswer(){
@@ -630,7 +650,10 @@ function submitQuizAnswer(){
   if(!quizAnswered){
     const correct = isCorrectAnswer(input.value, target);
     quizAnswered = true;
-    input.disabled = true;
+    // Use readOnly, never disabled — disabled blurs the field and closes the mobile keyboard.
+    input.readOnly = true;
+    input.classList.add('answered');
+    document.getElementById('quizHintBtn').style.visibility = 'hidden';
     const fb = document.getElementById('quizFeedback');
     if(correct){
       quizScore++;
@@ -647,10 +670,13 @@ function submitQuizAnswer(){
     quizIndex++;
     if(quizIndex >= quizDeck.length){
       finishQuiz();
+      return;
     }else{
       renderQuizQuestion();
     }
   }
+  // Keep focus on the input at all times so the on-screen keyboard never closes.
+  input.focus({preventScroll:true});
 }
 
 function finishQuiz(){
@@ -661,6 +687,16 @@ function finishQuiz(){
   document.getElementById('quizScorePct').textContent = pct + '% richtig';
   document.getElementById('quizProgFill').style.width = '100%';
 }
+
+document.getElementById('quizHintBtn').addEventListener('click', ()=>{
+  if(quizAnswered || quizDeck.length===0) return;
+  const w = quizDeck[quizIndex];
+  const target = quizDir==='de-id' ? w.id_ : w.de;
+  quizHintUsed = true;
+  document.getElementById('quizHintText').textContent = buildHint(target);
+  document.getElementById('quizHintBtn').classList.add('used');
+  document.getElementById('quizAnswerInput').focus({preventScroll:true});
+});
 
 document.getElementById('quizStartBtn').addEventListener('click', startQuiz);
 document.getElementById('quizSubmitBtn').addEventListener('click', submitQuizAnswer);
